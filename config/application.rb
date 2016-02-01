@@ -1,9 +1,11 @@
 require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
-
+require 'parse-ruby-client'
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
+Parse.init :application_id => "Y25GZkeg7cc6dGRDBkhw8SgxmOwT3orM7O6SxSlD",
+             :api_key => "LMXA2ffbXm2yORUgCvGuEKsgu8fOgbpqNFwQUz8Z"
 Bundler.require(*Rails.groups)
 
 module Grouped
