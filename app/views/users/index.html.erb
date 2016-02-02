@@ -71,12 +71,12 @@ License URL: http://creativecommons.org/licenses/by/3.0/
 			  	<div class="Regisration-head">
 			    	<h2><span></span>Register</h2>
 			 	</div>
-				<form autocomplete="off" action="/users" method="post">
-					<input type="text" name="fname" placeholder="First Name">
-					<input type="text" name="lname" placeholder="Last Name">
-					<input type="text" name="email" placeholder="Email Address">
-					<input type="password" name="password" placeholder="Password">
-					<input type="password" name="cpassword" placeholder=" Confirm Password">
+				<form autocomplete="off" action="/users" method="post" required>
+					<input type="text" name="fname" placeholder="First Name" required>
+					<input type="text" name="lname" placeholder="Last Name" required>
+					<input type="text" name="email" placeholder="Email Address" required>
+					<input type="password" name="password" placeholder="Password" required>
+					<input type="password" name="cpassword" placeholder=" Confirm Password" required>
 					<div class="Remember-me">
 						<div class="submit">
 							<input type="submit" value="Sign Me Up" >
