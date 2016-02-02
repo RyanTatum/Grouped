@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/adelevie/parse-ruby-client.git
+  revision: f77add56fffc1af567436d7bca4b846023c0b931
+  specs:
+    parse-ruby-client (1.0.0)
+      faraday (~> 0.9.2)
+      faraday_middleware (~> 0.10.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -97,9 +105,6 @@ GEM
     netrc (0.10.3)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
-    parse-ruby-client (0.3.0)
-      faraday
-      faraday_middleware
     rack (1.6.4)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -189,7 +194,7 @@ DEPENDENCIES
   jquery-rails
   mailgun-ruby (~> 1.0.2)
   mailgun_rails
-  parse-ruby-client
+  parse-ruby-client!
   rails (= 4.2.4)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)

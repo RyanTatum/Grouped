@@ -1,7 +1,8 @@
 class HomeController < ApplicationController
+    before_filter :set_current_user
+    before_filter :set_client
+    
     def index
-        query = Parse::Query.new("Test")
-        @thequery = query.exists("field")
-        @results = @thequery.get
+        @current_user
     end
 end

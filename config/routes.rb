@@ -55,6 +55,6 @@ Rails.application.routes.draw do
   #   end
   resources :login
   resources :home
-  resources :session
-  resources :user
+  resources :sessions
+  resources :users
 end

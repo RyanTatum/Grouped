@@ -26,7 +26,7 @@ gem 'bootstrap-sass', '~> 3.2.0'
 gem 'simplecov', :require => false
 gem 'mailgun-ruby', '~>1.0.2', require: 'mailgun'
 gem 'mailgun_rails'
-gem 'parse-ruby-client'
+gem 'parse-ruby-client', git: 'https://github.com/adelevie/parse-ruby-client.git'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
