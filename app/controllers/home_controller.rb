@@ -3,6 +3,6 @@ class HomeController < ApplicationController
     before_filter :set_client
     
     def index
-        @current_user
+       
     end
 end

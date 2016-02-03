@@ -24,6 +24,7 @@ class SessionsController < ApplicationController
         cookies.delete(:username)
         cookies.delete(:password)
         session.clear
+        flash[:notice]="You have successfully logged out!"
         redirect_to users_path
     end
 end
