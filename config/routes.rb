@@ -57,4 +57,6 @@ Rails.application.routes.draw do
   resources :home
   resources :sessions
   resources :users
+  
+  root 'users#index'
 end
