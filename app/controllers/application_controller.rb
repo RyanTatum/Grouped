@@ -33,7 +33,8 @@ class ApplicationController < ActionController::Base
       begin
         @current_user ||= Parse::User.authenticate(cookies[:username],cookies[:password], @client)
         session[:current_user] = @current_user
-      rescue Parse::ParseProtocolError
+      rescue Parse::ParseProtocolError => e
+        flash[:notice]="Error: " + e.error + "!"
         redirect_to users_path
       end
     end

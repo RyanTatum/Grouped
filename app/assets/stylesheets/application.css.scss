@@ -15,3 +15,13 @@
  */
 @import "bootstrap-sprockets";
 @import "bootstrap";
+
+#notice {
+    color: yellow;
+    margin: 1em 0;
+    padding-left: 10px;
+}
+
+#navbar-brand {
+    color: white;
+}
