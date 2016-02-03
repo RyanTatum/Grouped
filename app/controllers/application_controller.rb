@@ -31,10 +31,9 @@ class ApplicationController < ActionController::Base
                :api_key        => 'LMXA2ffbXm2yORUgCvGuEKsgu8fOgbpqNFwQUz8Z'
     if session[:current_user] == nil
       begin
-        @current_user ||= Parse::User.authenticate(cookies[:username],cookies[:password], @client)
-        session[:current_user] = @current_user
-      rescue Parse::ParseProtocolError => e
-        flash[:notice]="Error: " + e.error + "!"
+        session[:current_user] ||= Parse::User.authenticate(cookies[:username],cookies[:password], @client)
+      rescue Parse::ParseProtocolError
+        #flash[:notice]="Error: " + e.error + "!"
         redirect_to users_path
       end
     end

@@ -9,15 +9,9 @@ class SessionsController < ApplicationController
     end
     
     def create
-        #@user = Parse::User.authenticate(params["email"],params["password"])
-        #rescue Parse::ParseProtocolError
-        #if @user
-            cookies.permanent[:username]=params["email"]
-            cookies.permanent[:password]=params["password"]
-            redirect_to home_index_path
-        #else 
-        #    redirect_to users_path
-        #end
+        cookies.permanent[:username]=params["email"]
+        cookies.permanent[:password]=params["password"]
+        redirect_to home_index_path
     end
     
     def destroy
