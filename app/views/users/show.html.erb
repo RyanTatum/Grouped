@@ -1,0 +1,146 @@
+
+<head>
+  <head><script type="text/javascript" async="" src="//www.googleadservices.com/pagead/conversion_async.js"></script><script type="text/javascript" async="" src="//munchkin.marketo.net/151/munchkin.js"></script><script type="text/javascript" async="" src="//munchkin.marketo.net/151/munchkin.js"></script><script async="" src="//connect.facebook.net/en_US/fbds.js"></script><script async="" src="//www.googletagmanager.com/gtm.js?id=GTM-56BZ4D"></script><script type="text/javascript" async="" src="https://tag.perfectaudience.com/serve/52373e831aa4c02794000069.js"></script><script type="text/javascript" async="" src="https://ssl.google-analytics.com/ga.js"></script>
+    <title>Home | Parse</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:600italic,400,600,700" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100" rel="stylesheet" type="text/css">
+    <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
+    <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+
+        <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="/apple-touch-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="/apple-touch-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="/apple-touch-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="/apple-touch-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-180x180.png">
+        <meta name="apple-mobile-web-app-title" content="Parse">
+        <link rel="icon" type="image/png" href="/favicon-192x192.png" sizes="192x192">
+        <link rel="icon" type="image/png" href="/favicon-160x160.png" sizes="160x160">
+        <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96">
+        <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+        <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+        <meta name="msapplication-TileColor" content="#5298fc">
+        <meta name="msapplication-TileImage" content="/mstile-144x144.png">
+        <meta name="application-name" content="Parse">
+
+    <link href="/assets/main.css?ef16d0b" media="screen" rel="stylesheet" type="text/css">
+    <link href="/assets/print.css?ef16d0b" media="print" rel="stylesheet" type="text/css">
+    <!--[if lt IE 8]>
+        <link rel="stylesheet" type="text/css" href="/stylesheets/ie7.css" />
+    <![endif]-->
+    <!--[if IE 8]>
+        <link rel="stylesheet" type="text/css" href="/stylesheets/ie8.css" />
+    <![endif]-->
+    <!--[if lt IE 10]>
+        <link rel="stylesheet" type="text/css" href="/stylesheets/ie89.css" />
+    <![endif]-->
+    <script>if(Function('/*@cc_on return document.documentMode===10@*/')()){document.documentElement.className+=' ie10';}</script>
+
+    <script src="/assets/main.js?ef16d0b" type="text/javascript"></script><style type="text/css"></style><style type="text/css"></style>
+
+    <meta name="csrf-param" content="authenticity_token">
+<meta name="csrf-token" content="uYGOKj06BBOqKKGdqZEXaFHgNN/1qJG/w+WJwP803q8=">
+    <meta name="description" content="Focus on creating unique &amp; engaging apps on any platform. We take care of everything else your app needs, from the core of your app to analytics and push notifications.">
+    <meta name="keywords" content="backend, mobile, development, server, code">
+    <meta property="fb:app_id" content="361736430535656">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Parse">
+    <meta property="og:image" content="http://parse.com/images/og/default.jpg">
+    <meta property="og:description" content="Focus on creating unique &amp; engaging apps on any platform. We take care of everything else your app needs, from the core of your app to analytics and push notifications.">
+    <meta property="og:url" content="https://parse.com/apps">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+
+    <script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
+<script type="text/javascript" async="" src="https://pixel-geo.prfct.co/tagjs?a_id=16580&amp;source=js_tag"></script></head>
+  
+</head>
+
+<% if session[:current_user]["profile_picture"]
+    profile_picture = session[:current_user]["profile_picture"]["url"]
+  else
+    profile_picture = "profile_picture.png"
+  end
+%>
+
+<div class="container">
+      <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
+   
+   
+          <div class="panel panel-info">
+            <div class="panel-heading">
+              <h3 class="panel-title"><%= session[:current_user]["firstname"] %> <%= session[:current_user]["lastname"] %></h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-md-3 col-lg-3 " align="center"> 
+                <%= image_tag profile_picture, class:"img-circle img-responsive" %>
+                </div>
+                <!--<div class="col-xs-10 col-sm-10 hidden-md hidden-lg"> <br>
+                  <dl>
+                    <dt>DEPARTMENT:</dt>
+                    <dd>Administrator</dd>
+                    <dt>HIRE DATE</dt>
+                    <dd>11/12/2013</dd>
+                    <dt>DATE OF BIRTH</dt>
+                       <dd>11/12/2013</dd>
+                    <dt>GENDER</dt>
+                    <dd>Male</dd>
+                  </dl>
+                </div>-->
+                <div class=" col-md-9 col-lg-9 "> 
+                  <table class="table table-user-information">
+                    <tbody>
+                      <tr>
+                        <td>First Name</td>
+                        <td><%= session[:current_user]["firstname"] %></td>
+                      </tr>
+                      <tr>
+                        <td>Last Name</td>
+                        <td><%= session[:current_user]["lastname"] %></td>
+                      </tr>
+                      <tr>
+                        <td>Email</td>
+                        <td><%= session[:current_user]["email"] %></td>
+                      </tr>
+                      <tr>
+                        <td>Email2</td>
+                        <td><a href="mailto:info@support.com">info@support.com</a></td>
+                      </tr>
+                     
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+                <div class="panel-footer">
+                    <a data-original-title="Broadcast Message" data-toggle="tooltip" type="button" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-envelope"></i></a>
+                        <span class="pull-right">
+                            <a href="edit.html" data-original-title="Edit this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i></a>
+                            <a data-original-title="Remove this user" data-toggle="tooltip" type="button" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></a>
+                        </span>
+                </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<div class="project">
+  <%= image_tag "add.png", height: '100', width: '100' %>
+  <h2>Create Project</h2>
+</div>
+    
+<% @groups.each do |group| %>
+<div class="project">
+  <%= image_tag "project.png", height: '100', width: '100' %>
+  <h2><%= group["name"] %></h2>
+  <% d = DateTime.new(group["createdAt"][0..3].to_i, group["createdAt"][5..6].to_i, group["createdAt"][8..9].to_i) %>
+  <p>Created on <%= d.strftime("%B") %>  <%= group["createdAt"][5..6].to_i.ordinalize %>, <%=d.strftime("%Y") %> </p>
+</div>
+<% end %>
+
+

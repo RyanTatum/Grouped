@@ -13,6 +13,12 @@ class UsersController < ApplicationController
         end
     end
     
+    def show
+        @groups_query = @client.query("Project")
+        @groups = @groups_query.get
+        
+    end
+    
     def create
         if params["password"] === params["cpassword"]
             @no_error=true
