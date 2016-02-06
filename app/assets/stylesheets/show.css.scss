@@ -38,7 +38,6 @@
     padding: 15px;
     width: 300px;
     height: 300px;
-    border: 1px solid black;
 } 
 
 img {
@@ -54,4 +53,9 @@ h2 {
 
 p {
     text-align: center;
+    color: white;
+}
+
+.link:hover {
+    text-decoration: none;
 }

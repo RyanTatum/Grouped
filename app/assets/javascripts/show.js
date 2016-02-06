@@ -27,3 +27,14 @@ $(document).ready(function() {
 
     $('[data-toggle="tooltip"]').tooltip();
 });
+
+$(document).ready(function(){
+    $("#edit").click(function(){
+        $("#view").hide();
+        $("#editprofile").show();
+    });
+    $("#cancel").click(function(){
+        $("#editprofile").hide();
+        $("#view").show();
+    });
+});

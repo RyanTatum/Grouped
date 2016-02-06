@@ -37,6 +37,8 @@ class ApplicationController < ActionController::Base
         redirect_to users_path
       end
     end
+    @groups_query = @client.query("Project")
+    @groups = @groups_query.get
   end
   
   def logged_in?
