@@ -37,6 +37,19 @@ $(document).ready(function(){
         $("#editprofile").hide();
         $("#view").show();
     });
+    $("#password").click(function(){
+        document.getElementById('password').disabled = true;
+        var url = "/password_reset";
+        $.ajax({
+           type: "POST",
+           url: url,
+           data: {email: "email"},
+           success: function(data)
+           {
+               
+           }
+        });
+    });
     /*$("#submit").click(function(){
         $("#editprofile").hide();
         $("#view").show();

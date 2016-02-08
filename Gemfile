@@ -27,8 +27,6 @@ gem 'simplecov', :require => false
 gem 'mailgun-ruby', '~>1.0.2', require: 'mailgun'
 gem 'mailgun_rails'
 gem 'parse-ruby-client', git: 'https://github.com/adelevie/parse-ruby-client.git'
-gem 'parsejs-rails', '~> 1.2', '>= 1.2.10.0'
-gem 'remotipart', '~> 1.2'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

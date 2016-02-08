@@ -18,6 +18,11 @@ class UsersController < ApplicationController
         @groups = @groups_query.get
     end
     
+    def password
+      Parse::User.reset_password(session[:current_user]["email"], @client)
+      redirect_to home_index_path
+    end
+    
     def update
         @updateuser = @client.query("User_Info").eq("user_objectId", session[:current_user]["objectId"]).get.first
         if params[:file]

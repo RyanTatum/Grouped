@@ -57,6 +57,6 @@ Rails.application.routes.draw do
   resources :home
   resources :sessions
   resources :users
-  
+  match '/password_reset/', to: 'users#password', via: :post
   root 'users#index'
 end

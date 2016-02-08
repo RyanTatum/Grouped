@@ -104,7 +104,7 @@
                       </tr>
                       <tr>
                         <td>Email</td>
-                        <td><%= session[:current_user]["email"] %></td>
+                        <td id="user_email"><%= session[:current_user]["email"] %></td>
                       </tr>
                     </tbody>
                   </table>
@@ -149,7 +149,7 @@
                   </tr>
                   <tr>
                     <td>Email</td>
-                    <td><%= session[:current_user]["email"] %></td>
+                    <td id="user_email"><%= session[:current_user]["email"] %></td>
                   </tr>
                   <tr>
                     <td>Profile Picture</td>
@@ -161,6 +161,10 @@
                         </span>
                       </td>
                     </div>
+                  </tr>
+                  <tr>
+                    <td>Password Reset</td>
+                    <td><button type="button" id="password" class="btn btn-info">Request Reset</button></td>
                   </tr>
                 </tbody>
               </table>
