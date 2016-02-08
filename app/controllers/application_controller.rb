@@ -14,6 +14,7 @@ class ApplicationController < ActionController::Base
   end
   
   def set_client
+    
     @client = Parse.create(
                     application_id: 'Y25GZkeg7cc6dGRDBkhw8SgxmOwT3orM7O6SxSlD',
                     api_key:        'LMXA2ffbXm2yORUgCvGuEKsgu8fOgbpqNFwQUz8Z')
@@ -32,6 +33,11 @@ class ApplicationController < ActionController::Base
     if session[:current_user] == nil
       begin
         session[:current_user] ||= Parse::User.authenticate(cookies[:username],cookies[:password], @client)
+        @userinfoquery = @client.query("User_Info").eq("user_objectId", session[:current_user]["objectId"]).get.first
+        session[:current_user]["email"]=@userinfoquery["email"]
+        session[:current_user]["first_name"]=@userinfoquery["first_name"]
+        session[:current_user]["last_name"]=@userinfoquery["last_name"]
+        session[:current_user]["profile_picture"]=@userinfoquery["profile_picture"]
       rescue Parse::ParseProtocolError
         #flash[:notice]="Error: " + e.error + "!"
         redirect_to users_path

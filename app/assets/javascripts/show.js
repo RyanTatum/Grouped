@@ -37,4 +37,22 @@ $(document).ready(function(){
         $("#editprofile").hide();
         $("#view").show();
     });
+    /*$("#submit").click(function(){
+        $("#editprofile").hide();
+        $("#view").show();
+        var url = "/users/id"; // the script where you handle the form input.
+		$.ajax({
+			   type: "PUT",
+			   url: url,
+			   data: $("#theForm").serialize(),
+			   //data: {firstname: document.getElementById("pnumber").value + "&&&" + document.getElementById("max").value},
+			   //data: {information: document.getElementById("editfname").value + "&&&" + document.getElementById("editlname").value},
+			   success: function(data)
+			   {
+				   alert(data); // show response from the php script.
+			   }
+		});
+    });
+    */
 });
+

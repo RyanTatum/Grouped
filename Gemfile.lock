@@ -103,6 +103,8 @@ GEM
     netrc (0.10.3)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
+    parsejs-rails (1.2.10.0)
+      railties (>= 3.1)
     rack (1.6.4)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -133,6 +135,7 @@ GEM
     rake (10.5.0)
     rdoc (4.2.1)
       json (~> 1.4)
+    remotipart (1.2.1)
     rest-client (1.8.0)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
@@ -188,11 +191,13 @@ DEPENDENCIES
   coffee-rails (~> 4.1.0)
   factory_girl_rails
   jbuilder (~> 2.0)
-  jquery-rails
+  jquery-rails (~> 4.1.0)
   mailgun-ruby (~> 1.0.2)
   mailgun_rails
   parse-ruby-client!
+  parsejs-rails (~> 1.2, >= 1.2.10.0)
   rails (= 4.2.4)
+  remotipart (~> 1.2)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   simplecov

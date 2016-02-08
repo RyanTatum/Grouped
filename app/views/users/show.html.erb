@@ -52,15 +52,12 @@
     <meta property="og:image" content="http://parse.com/images/og/default.jpg">
     <meta property="og:description" content="Focus on creating unique &amp; engaging apps on any platform. We take care of everything else your app needs, from the core of your app to analytics and push notifications.">
     <meta property="og:url" content="https://parse.com/apps">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-
+    <meta name="viewport" content="width=device-width, initial-scale=1"><script src="//www.parsecdn.com/js/parse-1.6.14.min.js"></script>
     <script type="text/javascript">var _sf_startpt=(new Date()).getTime()</script>
-<script type="text/javascript" async="" src="https://pixel-geo.prfct.co/tagjs?a_id=16580&amp;source=js_tag"></script></head>
-  
+    <script src="//www.parsecdn.com/js/parse-1.6.14.min.js"></script>
+    <script type="text/javascript" async="" src="https://pixel-geo.prfct.co/tagjs?a_id=16580&amp;source=js_tag"></script></head>
 </head>
-
-<% if session[:current_user]["profile_picture"]
+<% if session[:current_user]["profile_picture"]["url"]
     profile_picture = session[:current_user]["profile_picture"]["url"]
   else
     profile_picture = "profile_picture.png"
@@ -75,7 +72,7 @@
    
           <div class="panel panel-info">
             <div class="panel-heading">
-              <h3 class="panel-title"><%= session[:current_user]["firstname"] %> <%= session[:current_user]["lastname"] %></h3>
+              <h3 class="panel-title"><%= session[:current_user]["first_name"] %> <%= session[:current_user]["last_name"] %></h3>
             </div>
             <div class="panel-body">
               <div class="row">
@@ -99,11 +96,11 @@
                     <tbody>
                       <tr>
                         <td>First Name</td>
-                        <td><%= session[:current_user]["firstname"] %></td>
+                        <td><%= session[:current_user]["first_name"] %></td>
                       </tr>
                       <tr>
                         <td>Last Name</td>
-                        <td><%= session[:current_user]["lastname"] %></td>
+                        <td><%= session[:current_user]["last_name"] %></td>
                       </tr>
                       <tr>
                         <td>Email</td>
@@ -126,66 +123,62 @@
     </div>
 
 
-
 <div class="container" id="editprofile" style="display: none">
-      <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
-          <div class="panel panel-info">
-            <div class="panel-heading">
-              <h3 class="panel-title">Your Profile</h3>
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <h3 class="panel-title">Your Profile</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-md-3 col-lg-3 " align="center"> 
+            <%= image_tag profile_picture, class:"img-circle img-responsive" %>
             </div>
-            <div class="panel-body">
-              <div class="row">
-                <div class="col-md-3 col-lg-3 " align="center"> 
-                <%= image_tag profile_picture, class:"img-circle img-responsive" %>
-                </div>
-                <!--<div class="col-xs-10 col-sm-10 hidden-md hidden-lg"> <br>
-                  <dl>
-                    <dt>DEPARTMENT:</dt>
-                    <dd>Administrator</dd>
-                    <dt>HIRE DATE</dt>
-                    <dd>11/12/2013</dd>
-                    <dt>DATE OF BIRTH</dt>
-                       <dd>11/12/2013</dd>
-                    <dt>GENDER</dt>
-                    <dd>Male</dd>
-                  </dl>
-                </div>-->
-                <div class=" col-md-9 col-lg-9 "> 
-                  <table class="table table-user-information">
-                    <tbody>
-                      <tr>
-                        <td>First Name</td>
-                        <td><input type="text" class="form-control input-sm" value="<%= session[:current_user]["firstname"] %>"></td>
-                      </tr>
-                      <tr>
-                        <td>Last Name</td>
-                        <td><input type="text" class="form-control input-sm" value="<%= session[:current_user]["lastname"] %>"></td>
-                      </tr>
-                      <tr>
-                        <td>Email</td>
-                        <td><input type="text" class="form-control input-sm" value="<%= session[:current_user]["email"] %>"></td>
-                      </tr>
-                      <tr>
-                        <td>Profile Picture</td>
-                        <td><input type="text" class="form-control input-sm" value="<%= profile_picture %>"></td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-                <div class="panel-footer">
-                    <a data-original-title="Broadcast Message" data-toggle="tooltip" type="button" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-envelope"></i></a>
-                        <span class="pull-right">
-                          <button id="edit" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-ok"></i></button>
-                          <button id="cancel" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></button>
+            <div class=" col-md-9 col-lg-9 "> 
+              <table class="table table-user-information">
+                <%= form_tag(user_path(session[:current_user]["objectId"]), multipart: true, method: 'put') do %>
+                <tbody>
+                  <tr>
+                    <td>First Name</td>
+                    <td><%= text_field_tag(:first_name, session[:current_user]["first_name"], :required => true, class: "form-control") %></td>
+                  </tr>
+                  <tr>
+                    <td>Last Name</td>
+                    <td><%= text_field_tag(:last_name, session[:current_user]["last_name"], :required => true, class: "form-control") %></td>
+                  </tr>
+                  <tr>
+                    <td>Email</td>
+                    <td><%= session[:current_user]["email"] %></td>
+                  </tr>
+                  <tr>
+                    <td>Profile Picture</td>
+                    <div class="form-group">
+                      <td id= "createFile">
+                        <span class="btn btn-large btn-default btn-file">
+                          Choose File
+                          <%= file_field_tag :file %>
                         </span>
-                </div>
+                      </td>
+                    </div>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
+        <div class="panel-footer">
+            <a data-original-title="Broadcast Message" data-toggle="tooltip" type="button" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-envelope"></i></a>
+                <span class="pull-right">
+                  <%= submit_tag("Save", class: 'btn btn-success', 'data-disable-with' => "Saving") %>
+                  <button type="button" id="cancel" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></button>
+                </span>
+        </div>
+        <% end %>
       </div>
     </div>
+  </div>
+</div>
 
 
 
@@ -193,13 +186,13 @@
 
 <div class="project">
   <a href="https://icon.uiowa.edu"><%= image_tag "add.png", height: '100', width: '100' %></a>
-  <a href="https://icon.uiowa.edu"><h2>Create Project</h2></a>
+  <a href="https://icon.uiowa.edu" style="text-decoration: none"><h2>Create Project</h2></a>
 </div>
     
 <% @groups.each do |group| %>
 <div class="project">
   <a href="https://icon.uiowa.edu"><%= image_tag "project.png", height: '100', width: '100' %></a>
-  <a href="https://icon.uiowa.edu"><h2><%= group["name"] %></h2>
+  <a href="https://icon.uiowa.edu" style="text-decoration: none"><h2><%= group["name"] %></h2></a>
   <% d = DateTime.new(group["createdAt"][0..3].to_i, group["createdAt"][5..6].to_i, group["createdAt"][8..9].to_i) %>
   <p>Created on <%= d.strftime("%B") %>  <%= group["createdAt"][5..6].to_i.ordinalize %>, <%=d.strftime("%Y") %> </p>
 </div>
