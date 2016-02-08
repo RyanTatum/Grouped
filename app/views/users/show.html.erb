@@ -164,7 +164,7 @@
                   </tr>
                   <tr>
                     <td>Password Reset</td>
-                    <td><button type="button" id="password" class="btn btn-info">Request Reset</button></td>
+                    <td><button type="button" id="password" class="btn btn-info" disabled>Request Reset</button></td>
                   </tr>
                 </tbody>
               </table>
@@ -174,7 +174,7 @@
         <div class="panel-footer">
             <a data-original-title="Broadcast Message" data-toggle="tooltip" type="button" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-envelope"></i></a>
                 <span class="pull-right">
-                  <%= submit_tag("Save", class: 'btn btn-success', 'data-disable-with' => "Saving") %>
+                  <%= submit_tag("Save", class: 'btn btn-sm btn-success', 'data-disable-with' => "Saving") %>
                   <button type="button" id="cancel" class="btn btn-sm btn-danger"><i class="glyphicon glyphicon-remove"></i></button>
                 </span>
         </div>

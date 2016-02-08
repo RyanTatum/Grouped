@@ -29,6 +29,7 @@ $(document).ready(function() {
 });
 
 $(document).ready(function(){
+    document.getElementById('password').disabled = false;
     $("#edit").click(function(){
         $("#view").hide();
         $("#editprofile").show();
@@ -37,7 +38,9 @@ $(document).ready(function(){
         $("#editprofile").hide();
         $("#view").show();
     });
-    $("#password").click(function(){
+    $("#password").click(function(e){
+        e.preventDefault();
+        e.stopImmediatePropagation();
         document.getElementById('password').disabled = true;
         var url = "/password_reset";
         $.ajax({
