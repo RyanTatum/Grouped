@@ -14,8 +14,22 @@ class UsersController < ApplicationController
     end
     
     def show
-        @groups_query = @client.query("Project")
-        @groups = @groups_query.get
+      @user_group_query = @client.query("User_Group").tap do |q|
+        q.eq("user_id", Parse::Pointer.new({"className" => "_User","objectId"  => session[:current_user]["objectId"]}))
+      end.get
+      
+      @group_ids = []
+      @status_hash = {}
+      @user_group_query.each do |i|
+        @status_hash[i["group_id"].to_s.sub('Group:','')] = i["status"]
+        @group_ids.push(i["group_id"].to_s.sub('Group:',''))
+      end
+        
+      @groups = @client.query("Group").tap do |i|
+        i.value_in("objectId", @group_ids)
+      end.get
+      #@groups_query = @client.query("Project")
+      #@groups = @groups_query.get
     end
     
     def password
@@ -97,5 +111,22 @@ class UsersController < ApplicationController
            flash[:notice]= "Error: Passwords do not match!" 
            redirect_to home_index_path
         end
+    end
+    
+    def status
+      puts "status method"
+      #group_update = params["group_id"]
+      #button = params["button"]
+      
+      #if button == "accept"
+        #update_group = @user_group_query.eq("group_id", group_update).get.first
+        #update_group["status"] = "active"
+        #update_group.save
+      #elsif button == 'decline'
+        #delete_group = @user_group_query.eq("group_id", group_update).get.first
+        #delete_group.parse_delete
+        #redirect_to user_path(session[:current_user]["objectId"])
+      #end
+      #redirect_to user_path(session[:current_user]["objectId"])
     end
 end

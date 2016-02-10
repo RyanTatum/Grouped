@@ -72,3 +72,44 @@ $(document).ready(function(){
     */
 });
 
+$(document).ready(function()
+{
+    $('#created_on').hide();
+    var groupId;
+    $('#accept_btn').click(function()
+    {
+        groupId = $(this).get(0).name;
+        $.ajax({
+            url: '/status',
+            data: {group_id: groupId, button: "accept"},
+            type: 'post',
+            success: function(data) 
+            {
+                $("#accept_btn").hide();
+                $('#decline_btn').hide();
+                $('#created_on').show();
+            
+            },
+            failure: function() 
+            {
+                console.log("Failure");
+            }
+        });
+    });
+    $("#decline_btn").click(function()
+    {
+        $.ajax({
+            url: '/status',
+            data: {group_id: groupId, button: "decline"},
+            type: 'post',
+            success: function(data) 
+            {
+                console.log("success");
+            },
+            failure: function() 
+            {
+                console.log("Failure");
+            }
+        });
+    });
+});

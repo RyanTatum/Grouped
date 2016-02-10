@@ -27,10 +27,8 @@
         <meta name="msapplication-TileImage" content="/mstile-144x144.png">
         <meta name="application-name" content="Parse">
 
-    <!--
     <link href="/assets/main.css?ef16d0b" media="screen" rel="stylesheet" type="text/css">
     <link href="/assets/print.css?ef16d0b" media="print" rel="stylesheet" type="text/css">
-    >
     <!--[if lt IE 8]>
         <link rel="stylesheet" type="text/css" href="/stylesheets/ie7.css" />
     <![endif]-->
@@ -42,7 +40,7 @@
     <![endif]-->
     <script>if(Function('/*@cc_on return document.documentMode===10@*/')()){document.documentElement.className+=' ie10';}</script>
 
-     <script src="/assets/main.js?ef16d0b" type="text/javascript"></script><style type="text/css"></style><style type="text/css"></style>
+    <script src="/assets/main.js?ef16d0b" type="text/javascript"></script><style type="text/css"></style><style type="text/css"></style>
 
     <meta name="csrf-param" content="authenticity_token">
 <meta name="csrf-token" content="uYGOKj06BBOqKKGdqZEXaFHgNN/1qJG/w+WJwP803q8=">
@@ -192,7 +190,7 @@
 <div class= "center_wrapper">
   <div class="project">
     <a href="https://icon.uiowa.edu"><%= image_tag "add.png", height: '100', width: '100' %></a>
-    <a href="https://icon.uiowa.edu" style="text-decoration: none"><h2>Create Group</h2></a>
+    <a href="https://icon.uiowa.edu" style="text-decoration: none"><h2>Create Project</h2></a>
   </div>
       
   <% @groups.each do |group| %>
@@ -200,15 +198,7 @@
     <a href="https://icon.uiowa.edu"><%= image_tag "project.png", height: '100', width: '100' %></a>
     <a href="https://icon.uiowa.edu" style="text-decoration: none"><h2><%= group["name"] %></h2></a>
     <% d = DateTime.new(group["createdAt"][0..3].to_i, group["createdAt"][5..6].to_i, group["createdAt"][8..9].to_i) %>
-    <%if @status_hash[group["objectId"]] == "pending"%>
-      <div class= "center_wrapper">
-        <button name= <%=group["objectId"]%> id= "accept_btn" class= "btn btn-default">Accept</button>
-        <button name= <%=group["objectId"]%> id= "decline_btn" class= "btn btn-default">Decline</button>
-      </div>
-      <p id= "created_on">Created on <%= d.strftime("%B") %>  <%= group["createdAt"][5..6].to_i.ordinalize %>, <%=d.strftime("%Y") %> </p>
-    <%else%>
-      <p>Created on <%= d.strftime("%B") %>  <%= group["createdAt"][5..6].to_i.ordinalize %>, <%=d.strftime("%Y") %> </p>
-    <%end%>
+    <p>Created on <%= d.strftime("%B") %>  <%= group["createdAt"][5..6].to_i.ordinalize %>, <%=d.strftime("%Y") %> </p>
   </div>
   <% end %>
 </div>
