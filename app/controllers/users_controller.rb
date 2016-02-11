@@ -80,6 +80,7 @@ class UsersController < ApplicationController
                 flash[:notice]="Error: " + e.error + "!"
             end
             if @no_error
+                UserMailer.welcome_email(params["email"], params["fname"]).deliver_now
                 flash[:notice]="You have successfully registered a new account!"
                 @userquery = @client.query("_User").eq("username", params["email"]).get.first
                 @userinfo = @client.object("User_Info")
