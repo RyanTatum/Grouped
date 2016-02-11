@@ -196,14 +196,14 @@
   </div>
       
   <% @groups.each do |group| %>
-  <div class="project">
+  <div id = <%=@objectId_hash[group["objectId"]]%> class="project">
     <a href="https://icon.uiowa.edu"><%= image_tag "project.png", height: '100', width: '100' %></a>
     <a href="https://icon.uiowa.edu" style="text-decoration: none"><h2><%= group["name"] %></h2></a>
     <% d = DateTime.new(group["createdAt"][0..3].to_i, group["createdAt"][5..6].to_i, group["createdAt"][8..9].to_i) %>
     <%if @status_hash[group["objectId"]] == "pending"%>
       <div class= "center_wrapper">
-        <button name= <%=group["objectId"]%> id= "accept_btn" class= "btn btn-default">Accept</button>
-        <button name= <%=group["objectId"]%> id= "decline_btn" class= "btn btn-default">Decline</button>
+        <button name= <%=@objectId_hash[group["objectId"]]%> id= "accept_btn" class= "btn btn-default">Accept</button>
+        <button name= <%=@objectId_hash[group["objectId"]]%> id= "decline_btn" class= "btn btn-default">Decline</button>
       </div>
       <p id= "created_on">Created on <%= d.strftime("%B") %>  <%= group["createdAt"][5..6].to_i.ordinalize %>, <%=d.strftime("%Y") %> </p>
     <%else%>

@@ -75,13 +75,13 @@ $(document).ready(function(){
 $(document).ready(function()
 {
     $('#created_on').hide();
-    var groupId;
+    var userGroupId;
     $('#accept_btn').click(function()
     {
-        groupId = $(this).get(0).name;
+        userGroupId = $(this).get(0).name;
         $.ajax({
             url: '/status',
-            data: {group_id: groupId, button: "accept"},
+            data: {user_group_id: userGroupId, button: "accept"},
             type: 'post',
             success: function(data) 
             {
@@ -98,13 +98,14 @@ $(document).ready(function()
     });
     $("#decline_btn").click(function()
     {
+        userGroupId = $(this).get(0).name;
         $.ajax({
             url: '/status',
-            data: {group_id: groupId, button: "decline"},
+            data: {user_group_id: userGroupId, button: "decline"},
             type: 'post',
             success: function(data) 
             {
-                console.log("success");
+                $('#' + userGroupId).hide();
             },
             failure: function() 
             {

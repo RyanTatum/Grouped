@@ -15,13 +15,15 @@ class UsersController < ApplicationController
     
     def show
       @user_group_query = @client.query("User_Group").tap do |q|
-        q.eq("user_id", Parse::Pointer.new({"className" => "_User","objectId"  => session[:current_user]["objectId"]}))
+        q.eq("user_id", session[:current_user]["objectId"])
       end.get
       
       @group_ids = []
       @status_hash = {}
+      @objectId_hash = {}
       @user_group_query.each do |i|
         @status_hash[i["group_id"].to_s.sub('Group:','')] = i["status"]
+        @objectId_hash[i["group_id"].to_s.sub('Group:','')] = i["objectId"]
         @group_ids.push(i["group_id"].to_s.sub('Group:',''))
       end
         
@@ -114,19 +116,18 @@ class UsersController < ApplicationController
     end
     
     def status
-      puts "status method"
-      #group_update = params["group_id"]
-      #button = params["button"]
-      
-      #if button == "accept"
-        #update_group = @user_group_query.eq("group_id", group_update).get.first
-        #update_group["status"] = "active"
-        #update_group.save
-      #elsif button == 'decline'
-        #delete_group = @user_group_query.eq("group_id", group_update).get.first
-        #delete_group.parse_delete
-        #redirect_to user_path(session[:current_user]["objectId"])
-      #end
-      #redirect_to user_path(session[:current_user]["objectId"])
+      user_group_update = params["user_group_id"]
+      button = params["button"]
+      if (user_group_update != nil)
+        if button == "accept" 
+          update_status = @client.query("User_Group").eq("objectId", user_group_update).get.first
+          update_status["status"] = "active"
+          update_status.save
+        elsif button == 'decline'
+          delete_group = @client.query("User_Group").eq("objectId", user_group_update).get.first
+          delete_group.parse_delete
+        end
+      end
+      redirect_to user_path(session[:current_user]["objectId"])
     end
 end
