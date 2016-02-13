@@ -48,7 +48,18 @@ class GroupsController < ApplicationController
     end
     
     def edit
-    
+        @group_id = params[:id]
+        email = params[:new_name]
+        @newMember = @client.query("User_Info").eq("email", email).get.first
+        if @newMember != nil
+            puts "**************************"
+            @addMember = @client.object("User_Group")
+            @addMember["group_id"] = @group_id
+            @addMember["user_id"] = @newMember["user_objectId"]
+            @addMember["status"] = "pending"
+            @addMember.save
+        end
+        redirect_to group_path(@group_id)
     end
     
     def create

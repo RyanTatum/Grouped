@@ -99,7 +99,7 @@
       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
         <div class="panel panel-info">
           <div class="panel-heading">
-            <h3 class="panel-title">Your Profile</h3>
+            <h3 class="panel-title">Edit Group</h3>
           </div>
           <%= form_tag(group_path(@group_id), multipart: true, method: 'put') do %>
           <div class="panel-body">
@@ -149,20 +149,46 @@
     </div>
   </div>
 
+  <div id= "ovrlay"</div></div>
+  <div class="container" id="add_user_modal" style="display: none">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title">New Member</h3>
+          </div>
+          <%= form_tag(edit_group_path(@group_id), multipart: true, method: 'get') do %>
+          <div class="panel-body center_wrapper">
+            <div id= "modal_name">Email</div>
+            <div id= "modal_name_input"><%= text_field_tag(:new_name, "", :required => true, class: "form-control") %></div>
+          </div>
+          <div id= "custom_footer" class="panel-footer">
+            <!--<span class="pull-right">-->
+              <button type="button" id="modal_exit" class="btn btn-sm btn-danger button-right">
+                <i class="glyphicon glyphicon-remove"></i>
+              </button>
+              <%= submit_tag("Add", class: 'btn btn-sm btn-success button-right', 'data-disable-with' => "Adding") %>
+            <!--</span>-->
+          </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
 
 
 
 <div class= "center_wrapper">
   <%if @permissions_hash[session[:current_user]["objectId"]] == "group_admin"%>
-    <div class="project">
-      <a href="https://icon.uiowa.edu"><%= image_tag "add.png", height: '100', width: '100' %></a>
-      <a href="https://icon.uiowa.edu" style="text-decoration: none"><h2>Add Member</h2></a>
+    <div id= "new_member" class="project">
+      <a><%= image_tag "add.png", height: '100', width: '100' %></a>
+      <a style="text-decoration: none"><h2>Add Member</h2></a>
     </div>
   <%end%>  
   <% @users.each do |user| %>
   <div id = <%=@objectId_hash[user["user_objectId"]]%> class="project">
-    <a href=<%= user_path(user["user_objectId"])%>><%= image_tag "project.png", height: '100', width: '100' %></a>
-    <a href=<%= user_path(user["user_objectId"])%> style="text-decoration: none"><h2><%=user["first_name"]%> <%=user["last_name"]%></h2></a>
+    <a><%= image_tag "project.png", height: '100', width: '100' %></a>
+    <h2 style= "color: white"><%=user["first_name"]%> <%=user["last_name"]%></h2>
     <% d = DateTime.new(user["createdAt"][0..3].to_i, user["createdAt"][5..6].to_i, user["createdAt"][8..9].to_i) %>
     <%if @status_hash[user["user_objectId"]] == "pending"%>
       <div class= "center_wrapper">

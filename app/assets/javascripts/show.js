@@ -40,7 +40,8 @@ $(document).ready(function() {
     $("#password").click(function(e){
         e.preventDefault();
         e.stopImmediatePropagation();
-        document.getElementById('password').disabled = true;
+        $('#password').prop("disabled",true);
+        //document.getElementById('password').disabled = true;
         var url = "/password_reset";
         $.ajax({
            type: "POST",
@@ -108,5 +109,17 @@ $(document).ready(function() {
                 console.log("Failure");
             }
         });
+    });
+    $('#new_member').click(function()
+    {
+        $("#ovrlay").addClass("modalOverlay");
+       //$("#ovrlay").append('<div class="modalOverlay">');
+       $('#add_user_modal').show();
+       //$("#id").css("display", "block");
+    });
+    $('#modal_exit').click(function() 
+    {
+        $("#ovrlay").removeClass("modalOverlay");
+        $('#add_user_modal').hide();
     });
 });

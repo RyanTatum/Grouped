@@ -134,3 +134,42 @@ a:hover + .box,.box:hover{
     width: inherit;
     height: inherit;
 }
+
+#add_user_modal{
+    position: fixed;
+    top: 23%;
+    overflow: auto;
+    margin: auto;
+}
+
+@media only screen and (max-width: 769px) {
+    #add_user_modal{
+        position: fixed;
+        width: 100%;
+        top: 23%;
+        margin: auto;
+    }
+}
+
+#new_member{
+    cursor: pointer;
+}
+.modalOverlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    background-color: rgba(0,0,0,0.3); /* black semi-transparent */
+}
+
+#modal_name{
+    display:inline-block;
+}
+#modal_name_input{
+    width: 60%;
+    display:inline-block;
+}
+h2{
+    color: white;
+}
