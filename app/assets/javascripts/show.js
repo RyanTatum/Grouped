@@ -26,10 +26,9 @@ $(document).ready(function() {
 
 
     $('[data-toggle="tooltip"]').tooltip();
-});
 
-$(document).ready(function(){
-    document.getElementById('password').disabled = false;
+    $('#password').prop("disabled",false);
+    //document.getElementById('password').disabled = false;
     $("#edit").click(function(){
         $("#view").hide();
         $("#editprofile").show();
@@ -70,10 +69,7 @@ $(document).ready(function(){
 		});
     });
     */
-});
 
-$(document).ready(function()
-{
     $('#created_on').hide();
     var userGroupId;
     $('#accept_btn').click(function()

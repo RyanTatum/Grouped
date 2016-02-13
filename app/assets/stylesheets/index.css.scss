@@ -37,7 +37,7 @@ nav.horizontal ul li{	display: inline-block;}/* horizontal menu */
 img{max-width:100%;}
 /*end reset*/
 body{
-	background:url("http://www.zenoss.org/sites/default/files/Careers-Banner-background-fixed_0.jpg")  no-repeat center fixed;
+	background: image-url('background.jpg') no-repeat center fixed;  //url("http://www.zenoss.org/sites/default/files/Careers-Banner-background-fixed_0.jpg")  no-repeat center fixed;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;

@@ -14,6 +14,8 @@ class UsersController < ApplicationController
     end
     
     def show
+      @profile_id = params[:id]
+      
       @user_group_query = @client.query("User_Group").tap do |q|
         q.eq("user_id", session[:current_user]["objectId"])
       end.get

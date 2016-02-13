@@ -57,6 +57,7 @@ Rails.application.routes.draw do
   resources :home
   resources :sessions
   resources :users
+  resources :groups
   match '/status', to: 'users#status', via: :post
   match '/status', to: 'users#status', via: :get
   match '/password_reset/', to: 'users#password', via: :post
