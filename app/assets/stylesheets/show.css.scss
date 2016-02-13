@@ -33,11 +33,12 @@
 }
 
 .project {
-    float: left;
     margin: 5px;
     padding: 15px;
     width: 300px;
     height: 300px;
+    display: inline-block;
+    vertical-align: middle;
 } 
 
 img {
@@ -91,4 +92,84 @@ a:hover + .box,.box:hover{
     display: block;
     position: static;
     z-index: 0;
+}
+
+.center_wrapper{
+    text-align: center;
+}
+
+#accept_btn, #decline_btn{
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 3px;
+    margin-right: 3px;
+    padding: 2px 6px;
+    font-size: 12px;
+}
+
+#group_pic{
+    width: 25%;
+    margin: auto;
+    margin-bottom: 12px;
+}
+
+#group_info{
+    width: 75%;
+    margin: auto;
+}
+
+#custom_footer{
+    height: 50px;
+}
+
+.button-right{
+    margin-left: 2px;
+    margin-right: 2px;
+    float: right;
+}
+
+#form_cancel{
+    top: 0;
+    left: 0;
+    width: inherit;
+    height: inherit;
+}
+
+#add_user_modal{
+    position: fixed;
+    top: 23%;
+    overflow: auto;
+    margin: auto;
+}
+
+@media only screen and (max-width: 769px) {
+    #add_user_modal{
+        position: fixed;
+        width: 100%;
+        top: 23%;
+        margin: auto;
+    }
+}
+
+#new_member{
+    cursor: pointer;
+}
+.modalOverlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    background-color: rgba(0,0,0,0.3); /* black semi-transparent */
+}
+
+#modal_name{
+    display:inline-block;
+}
+#modal_name_input{
+    width: 60%;
+    display:inline-block;
+}
+h2{
+    color: white;
 }

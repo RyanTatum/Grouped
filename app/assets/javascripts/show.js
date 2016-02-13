@@ -26,10 +26,9 @@ $(document).ready(function() {
 
 
     $('[data-toggle="tooltip"]').tooltip();
-});
 
-$(document).ready(function(){
-    document.getElementById('password').disabled = false;
+    $('#password').prop("disabled",false);
+    //document.getElementById('password').disabled = false;
     $("#edit").click(function(){
         $("#view").hide();
         $("#editprofile").show();
@@ -41,7 +40,8 @@ $(document).ready(function(){
     $("#password").click(function(e){
         e.preventDefault();
         e.stopImmediatePropagation();
-        document.getElementById('password').disabled = true;
+        $('#password').prop("disabled",true);
+        //document.getElementById('password').disabled = true;
         var url = "/password_reset";
         $.ajax({
            type: "POST",
@@ -70,5 +70,56 @@ $(document).ready(function(){
 		});
     });
     */
-});
 
+    $('#created_on').hide();
+    var userGroupId;
+    $('#accept_btn').click(function()
+    {
+        userGroupId = $(this).get(0).name;
+        $.ajax({
+            url: '/status',
+            data: {user_group_id: userGroupId, button: "accept"},
+            type: 'post',
+            success: function(data) 
+            {
+                $("#accept_btn").hide();
+                $('#decline_btn').hide();
+                $('#created_on').show();
+            
+            },
+            failure: function() 
+            {
+                console.log("Failure");
+            }
+        });
+    });
+    $("#decline_btn").click(function()
+    {
+        userGroupId = $(this).get(0).name;
+        $.ajax({
+            url: '/status',
+            data: {user_group_id: userGroupId, button: "decline"},
+            type: 'post',
+            success: function(data) 
+            {
+                $('#' + userGroupId).hide();
+            },
+            failure: function() 
+            {
+                console.log("Failure");
+            }
+        });
+    });
+    $('#new_member').click(function()
+    {
+        $("#ovrlay").addClass("modalOverlay");
+       //$("#ovrlay").append('<div class="modalOverlay">');
+       $('#add_user_modal').show();
+       //$("#id").css("display", "block");
+    });
+    $('#modal_exit').click(function() 
+    {
+        $("#ovrlay").removeClass("modalOverlay");
+        $('#add_user_modal').hide();
+    });
+});

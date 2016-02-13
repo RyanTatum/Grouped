@@ -14,8 +14,26 @@ class UsersController < ApplicationController
     end
     
     def show
-        @groups_query = @client.query("Project")
-        @groups = @groups_query.get
+      @profile_id = params[:id]
+      
+      @user_group_query = @client.query("User_Group").tap do |q|
+        q.eq("user_id", session[:current_user]["objectId"])
+      end.get
+      
+      @group_ids = []
+      @status_hash = {}
+      @objectId_hash = {}
+      @user_group_query.each do |i|
+        @status_hash[i["group_id"].to_s.sub('Group:','')] = i["status"]
+        @objectId_hash[i["group_id"].to_s.sub('Group:','')] = i["objectId"]
+        @group_ids.push(i["group_id"].to_s.sub('Group:',''))
+      end
+        
+      @groups = @client.query("Group").tap do |i|
+        i.value_in("objectId", @group_ids)
+      end.get
+      #@groups_query = @client.query("Project")
+      #@groups = @groups_query.get
     end
     
     def password
@@ -98,5 +116,21 @@ class UsersController < ApplicationController
            flash[:notice]= "Error: Passwords do not match!" 
            redirect_to home_index_path
         end
+    end
+    
+    def status
+      user_group_update = params["user_group_id"]
+      button = params["button"]
+      if (user_group_update != nil)
+        if button == "accept" 
+          update_status = @client.query("User_Group").eq("objectId", user_group_update).get.first
+          update_status["status"] = "active"
+          update_status.save
+        elsif button == 'decline'
+          delete_group = @client.query("User_Group").eq("objectId", user_group_update).get.first
+          delete_group.parse_delete
+        end
+      end
+      redirect_to user_path(session[:current_user]["objectId"])
     end
 end

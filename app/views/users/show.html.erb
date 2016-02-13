@@ -5,8 +5,8 @@
     <title>Home | Parse</title>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:600italic,400,600,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Raleway:100" rel="stylesheet" type="text/css">
-    <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
-    <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
+    <!--<%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
+    <%= javascript_include_tag "application", "data-turbolinks-track" => true %>-->
 
         <link rel="apple-touch-icon" sizes="57x57" href="/apple-touch-icon-57x57.png">
         <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
@@ -27,8 +27,10 @@
         <meta name="msapplication-TileImage" content="/mstile-144x144.png">
         <meta name="application-name" content="Parse">
 
+    <!--
     <link href="/assets/main.css?ef16d0b" media="screen" rel="stylesheet" type="text/css">
     <link href="/assets/print.css?ef16d0b" media="print" rel="stylesheet" type="text/css">
+    >
     <!--[if lt IE 8]>
         <link rel="stylesheet" type="text/css" href="/stylesheets/ie7.css" />
     <![endif]-->
@@ -40,8 +42,8 @@
     <![endif]-->
     <script>if(Function('/*@cc_on return document.documentMode===10@*/')()){document.documentElement.className+=' ie10';}</script>
 
-    <script src="/assets/main.js?ef16d0b" type="text/javascript"></script><style type="text/css"></style><style type="text/css"></style>
-
+     <!--<script src="/assets/main.js?ef16d0b" type="text/javascript"></script><style type="text/css"></style><style type="text/css"></style> -->
+     
     <meta name="csrf-param" content="authenticity_token">
 <meta name="csrf-token" content="uYGOKj06BBOqKKGdqZEXaFHgNN/1qJG/w+WJwP803q8=">
     <meta name="description" content="Focus on creating unique &amp; engaging apps on any platform. We take care of everything else your app needs, from the core of your app to analytics and push notifications.">
@@ -187,20 +189,29 @@
 
 
 
-
-<div class="project">
-  <a href="https://icon.uiowa.edu"><%= image_tag "add.png", height: '100', width: '100' %></a>
-  <a href="https://icon.uiowa.edu" style="text-decoration: none"><h2>Create Project</h2></a>
+<div class= "center_wrapper">
+  <div class="project">
+    <a href= <%=new_group_path%>><%= image_tag "add.png", height: '100', width: '100' %></a>
+    <a href=<%=new_group_path%> style="text-decoration: none"><h2>Create Group</h2></a>
+  </div>
+      
+  <% @groups.each do |group| %>
+  <div id = <%=@objectId_hash[group["objectId"]]%> class="project">
+    <a href=<%=group_path(group["objectId"])%>><%= image_tag "project.png", height: '100', width: '100' %></a>
+    <a href=<%=group_path(group["objectId"])%> style="text-decoration: none"><h2><%=group["name"]%></h2></a>
+    <% d = DateTime.new(group["createdAt"][0..3].to_i, group["createdAt"][5..6].to_i, group["createdAt"][8..9].to_i) %>
+    <%if @status_hash[group["objectId"]] == "pending"%>
+      <div class= "center_wrapper">
+        <button name= <%=@objectId_hash[group["objectId"]]%> id= "accept_btn" class= "btn btn-default">Accept</button>
+        <button name= <%=@objectId_hash[group["objectId"]]%> id= "decline_btn" class= "btn btn-default">Decline</button>
+      </div>
+      <p id= "created_on">Created on <%= d.strftime("%B") %>  <%= group["createdAt"][5..6].to_i.ordinalize %>, <%=d.strftime("%Y") %> </p>
+    <%else%>
+      <p>Created on <%= d.strftime("%B") %>  <%= group["createdAt"][5..6].to_i.ordinalize %>, <%=d.strftime("%Y") %> </p>
+    <%end%>
+  </div>
+  <% end %>
 </div>
-    
-<% @groups.each do |group| %>
-<div class="project">
-  <a href="https://icon.uiowa.edu"><%= image_tag "project.png", height: '100', width: '100' %></a>
-  <a href="https://icon.uiowa.edu" style="text-decoration: none"><h2><%= group["name"] %></h2></a>
-  <% d = DateTime.new(group["createdAt"][0..3].to_i, group["createdAt"][5..6].to_i, group["createdAt"][8..9].to_i) %>
-  <p>Created on <%= d.strftime("%B") %>  <%= group["createdAt"][5..6].to_i.ordinalize %>, <%=d.strftime("%Y") %> </p>
-</div>
-<% end %>
 </body>
 </head>
 
