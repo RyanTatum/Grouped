@@ -26,6 +26,9 @@ class GroupsController < ApplicationController
     def show
         @group_id = params[:id]
         @group_record = @client.query("Group").eq("objectId", @group_id).get.first
+        #@group_record_query = @client.query("Group").eq("objectId", @group_id)
+        #@group_record_query.include = "File"
+        #@group_record = @group_record_query.get.first
         
         @user_group_query = @client.query("User_Group").tap do |q|
             q.eq("group_id", @group_id)

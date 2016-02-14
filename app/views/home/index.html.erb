@@ -3,7 +3,14 @@
       @user_group_query = @client.query("User_Group").tap do |q|
         q.eq("user_id", Parse::Pointer.new({"className" => "_User","objectId"  => session[:current_user]["objectId"]}))
       end.get
-      
+        <%
+  @g = @client.query("Group").eq("objectId", @group_id)
+  @g.include = "project_id"
+  @a = @g.get.first
+  %>
+  
+  <div><%= @a["project_id"]["name"]%></div>
+   <%   
         #@group_query = @client.query("Group").tap do |i|
          #   i.eq("objectId", {
           #      "$select" => {
