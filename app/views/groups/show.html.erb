@@ -46,9 +46,9 @@
 </head>
 <% if @group_record["group_icon"]
     tempStr = @group_record["group_icon"].url
-    @profile_picture = tempStr.gsub("http" , "https")
+    @group_picture = tempStr.gsub("http" , "https")
   else
-    @profile_picture = "default_group_icon.png"
+    @group_picture = "project.png"
   end
 %>
 
@@ -63,7 +63,7 @@
           <div class="panel-body">
             <div class="row">
               <div id= "group_pic" align="center"> 
-                <%=image_tag @profile_picture, class:"img-circle img-responsive" %>
+                <%=image_tag @group_picture, class:"img-circle img-responsive" %>
               </div>
               <div id= "group_info"> 
                 <table class="table table-user-information">
@@ -106,7 +106,7 @@
           <div class="panel-body">
             <div class="row">
               <div class="col-md-3 col-lg-3 " align="center"> 
-                <%= image_tag @profile_picture, class:"img-circle img-responsive" %>
+                <%= image_tag @group_picture, class:"img-circle img-responsive" %>
               </div>
               <div class=" col-md-9 col-lg-9 "> 
                 <table class="table table-user-information">
@@ -187,8 +187,15 @@
     </div>
   <%end%>  
   <% @users.each do |user| %>
+    <% if user["profile_picture"]
+      tempStr = user["profile_picture"].url
+      profile_picture = tempStr.gsub("http" , "https")
+    else
+      profile_picture = "profile_picture.png"
+    end
+    %>
   <div id = <%=@objectId_hash[user["user_objectId"]]%> class="project">
-    <a><%= image_tag "project.png", height: '100', width: '100' %></a>
+    <a><%= image_tag profile_picture, height: '100', width: '100' %></a>
     <h2 style= "color: white"><%=user["first_name"]%> <%=user["last_name"]%></h2>
     <% d = DateTime.new(user["createdAt"][0..3].to_i, user["createdAt"][5..6].to_i, user["createdAt"][8..9].to_i) %>
     <%if @status_hash[user["user_objectId"]] == "pending"%>

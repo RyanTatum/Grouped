@@ -198,7 +198,14 @@
       
   <% @groups.each do |group| %>
   <div id = <%=@objectId_hash[group["objectId"]]%> class="project">
-    <a href=<%=group_path(group["objectId"])%>><%= image_tag "project.png", height: '100', width: '100' %></a>
+    <% if group["group_icon"]
+      tempStr = group["group_icon"].url
+      group_picture = tempStr.gsub("http" , "https")
+    else
+      group_picture = "project.png"
+    end
+    %>
+    <a href=<%=group_path(group["objectId"])%>><%= image_tag group_picture, height: '100', width: '100' %></a>
     <a href=<%=group_path(group["objectId"])%> style="text-decoration: none"><h2><%=group["name"]%></h2></a>
     <% d = DateTime.new(group["createdAt"][0..3].to_i, group["createdAt"][5..6].to_i, group["createdAt"][8..9].to_i) %>
     <%if @status_hash[group["objectId"]] == "pending"%>
