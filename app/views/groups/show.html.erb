@@ -45,7 +45,8 @@
     <script type="text/javascript" async="" src="https://pixel-geo.prfct.co/tagjs?a_id=16580&amp;source=js_tag"></script>
 </head>
 <% if @group_record["group_icon"]
-    @profile_picture = @group_record["group_icon"].url
+    tempStr = @group_record["group_icon"].url
+    @profile_picture = tempStr.gsub("http" , "https")
   else
     @profile_picture = "default_group_icon.png"
   end

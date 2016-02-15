@@ -60,7 +60,8 @@
     <script type="text/javascript" async="" src="https://pixel-geo.prfct.co/tagjs?a_id=16580&amp;source=js_tag"></script></head>
 </head>
 <% if session[:current_user]["profile_picture"]["url"]
-    profile_picture = session[:current_user]["profile_picture"]["url"]
+    tempStr = session[:current_user]["profile_picture"]["url"]
+    profile_picture = tempStr.gsub("http" , "https")
   else
     profile_picture = "profile_picture.png"
   end
