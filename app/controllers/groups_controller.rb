@@ -38,10 +38,12 @@ class GroupsController < ApplicationController
         @status_hash = {}
         @objectId_hash = {}
         @permissions_hash = {}
+        @updated_hash = {}
         @user_group_query.each do |i|
             @status_hash[i["user_id"]] = i["status"]
             @objectId_hash[i["user_id"]] = i["objectId"]
             @permissions_hash[i["user_id"]] = i["permissions"]
+            @updated_hash[i["user_id"]] = i["updatedAt"]
             @user_ids.push(i["user_id"])
         end
         

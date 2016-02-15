@@ -197,13 +197,13 @@
   <div id = <%=@objectId_hash[user["user_objectId"]]%> class="project">
     <a><%= image_tag profile_picture, height: '100', width: '100' %></a>
     <h2 style= "color: white"><%=user["first_name"]%> <%=user["last_name"]%></h2>
-    <% d = DateTime.new(user["createdAt"][0..3].to_i, user["createdAt"][5..6].to_i, user["createdAt"][8..9].to_i) %>
     <%if @status_hash[user["user_objectId"]] == "pending"%>
       <div class= "center_wrapper">
         <p>Status: Pending</p>
       </div>
     <%else%>
-      <p>Joined on <%= d.strftime("%B") %>  <%= user["createdAt"][8..9].to_i.ordinalize %>, <%=d.strftime("%Y") %> </p>
+      <% d = DateTime.new(@updated_hash[user["user_objectId"]][0..3].to_i, @updated_hash[user["user_objectId"]][5..6].to_i, @updated_hash[user["user_objectId"]][8..9].to_i) %>
+      <p>Joined on <%= d.strftime("%B") %>  <%= @updated_hash[user["user_objectId"]][8..9].to_i.ordinalize %>, <%=d.strftime("%Y") %> </p>
     <%end%>
   </div>
   <% end %>

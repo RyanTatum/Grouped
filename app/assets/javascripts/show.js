@@ -71,7 +71,7 @@ $(document).ready(function() {
     });
     */
 
-    $('#created_on').hide();
+    /*$('#created_on').hide();
     var userGroupId;
     $('#accept_btn').click(function()
     {
@@ -92,7 +92,6 @@ $(document).ready(function() {
                 console.log("Failure");
             }
         });
-    });
     $("#decline_btn").click(function()
     {
         userGroupId = $(this).get(0).name;
@@ -109,7 +108,7 @@ $(document).ready(function() {
                 console.log("Failure");
             }
         });
-    });
+    });*/
     $('#new_member').click(function()
     {
         $("#ovrlay").addClass("modalOverlay");
