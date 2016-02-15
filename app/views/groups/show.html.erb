@@ -63,7 +63,7 @@
           <div class="panel-body">
             <div class="row">
               <div id= "group_pic" align="center"> 
-                <%=image_tag @group_picture, class:"img-circle img-responsive" %>
+                <%=image_tag @group_picture, class:" img-responsive" %>
               </div>
               <div id= "group_info"> 
                 <table class="table table-user-information">
@@ -75,7 +75,7 @@
                     <tr>
                       <td>Created on</td>
                       <% dt = DateTime.new(@group_record["createdAt"][0..3].to_i, @group_record["createdAt"][5..6].to_i, @group_record["createdAt"][8..9].to_i) %>
-                      <td><%= dt.strftime("%B") %>  <%= @group_record["createdAt"][5..6].to_i.ordinalize %>, <%=dt.strftime("%Y") %></td>
+                      <td><%= dt.strftime("%B") %>  <%= @group_record["createdAt"][8..9].to_i.ordinalize %>, <%=dt.strftime("%Y") %></td>
                     </tr>
                   </tbody>
                 </table>
@@ -106,7 +106,7 @@
           <div class="panel-body">
             <div class="row">
               <div class="col-md-3 col-lg-3 " align="center"> 
-                <%= image_tag @group_picture, class:"img-circle img-responsive" %>
+                <%= image_tag @group_picture, class:"img-responsive" %>
               </div>
               <div class=" col-md-9 col-lg-9 "> 
                 <table class="table table-user-information">
@@ -118,7 +118,7 @@
                     </tr>
                     <tr>
                       <td>Created on</td>
-                      <td><%= dt.strftime("%B") %>  <%= @group_record["createdAt"][5..6].to_i.ordinalize %>, <%=dt.strftime("%Y") %></td>
+                      <td><%= dt.strftime("%B") %>  <%= @group_record["createdAt"][8..9].to_i.ordinalize %>, <%=dt.strftime("%Y") %></td>
                     </tr>
                     <tr>
                       <td>Group Icon</td>
@@ -203,7 +203,7 @@
         <p>Status: Pending</p>
       </div>
     <%else%>
-      <p>Joined on <%= d.strftime("%B") %>  <%= user["createdAt"][5..6].to_i.ordinalize %>, <%=d.strftime("%Y") %> </p>
+      <p>Joined on <%= d.strftime("%B") %>  <%= user["createdAt"][8..9].to_i.ordinalize %>, <%=d.strftime("%Y") %> </p>
     <%end%>
   </div>
   <% end %>

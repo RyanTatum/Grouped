@@ -82,7 +82,7 @@ $(document).ready(function() {
             type: 'post',
             success: function(data) 
             {
-                $("#accept_btn").hide();
+                $('#accept_btn').hide();
                 $('#decline_btn').hide();
                 $('#created_on').show();
             

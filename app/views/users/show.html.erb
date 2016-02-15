@@ -210,12 +210,13 @@
     <% d = DateTime.new(group["createdAt"][0..3].to_i, group["createdAt"][5..6].to_i, group["createdAt"][8..9].to_i) %>
     <%if @status_hash[group["objectId"]] == "pending"%>
       <div class= "center_wrapper">
-        <button name= <%=@objectId_hash[group["objectId"]]%> id= "accept_btn" class= "btn btn-default">Accept</button>
-        <button name= <%=@objectId_hash[group["objectId"]]%> id= "decline_btn" class= "btn btn-default">Decline</button>
+        <%= button_to 'Accept', status_path(:user_group_id => @objectId_hash[group["objectId"]], :button => "accept"), :id => "accept_btn", :class => 'btn btn-default', method: :post%>
+        <%= button_to 'Decline', status_path(:user_group_id => @objectId_hash[group["objectId"]], :button => "decline"), :id => "decline_btn", :class => 'btn btn-default', method: :post%>
+        <!--<button name= <%=@objectId_hash[group["objectId"]]%> id= "accept_btn" class= "btn btn-default">Accept</button>
+        <button name= <%=@objectId_hash[group["objectId"]]%> id= "decline_btn" class= "btn btn-default">Decline</button>-->
       </div>
-      <p id= "created_on">Created on <%= d.strftime("%B") %>  <%= group["createdAt"][5..6].to_i.ordinalize %>, <%=d.strftime("%Y") %> </p>
     <%else%>
-      <p>Created on <%= d.strftime("%B") %>  <%= group["createdAt"][5..6].to_i.ordinalize %>, <%=d.strftime("%Y") %> </p>
+      <p id= "created_on">Created on <%= d.strftime("%B") %>  <%= group["createdAt"][8..9].to_i.ordinalize %>, <%=d.strftime("%Y") %> </p>
     <%end%>
   </div>
   <% end %>

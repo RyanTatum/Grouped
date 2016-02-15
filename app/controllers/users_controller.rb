@@ -122,10 +122,14 @@ class UsersController < ApplicationController
       user_group_update = params["user_group_id"]
       button = params["button"]
       if (user_group_update != nil)
-        if button == "accept" 
+        if button == "accept"
+          puts "*************************"
           update_status = @client.query("User_Group").eq("objectId", user_group_update).get.first
           update_status["status"] = "active"
+          begin
           update_status.save
+          rescue Parse::ParseProtocolError
+          end
         elsif button == 'decline'
           delete_group = @client.query("User_Group").eq("objectId", user_group_update).get.first
           delete_group.parse_delete
