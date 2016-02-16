@@ -6,17 +6,21 @@ class GroupsController < ApplicationController
     before_filter :set_current_user, :only => ['show', 'edit', 'update', 'delete']
     
     def index
-    
+      redirect_to home_index_path
     end
     
     def new
+        @user_info = @client.query("User_Info").eq("user_objectId", session[:current_user]["objectId"]).get.first
+      
         new_group = @client.object("Group")
         new_group["name"] = "New Group"
         group_result = new_group.save
         
         new_user_group = @client.object("User_Group")
-        new_user_group["user_id"] = session[:current_user]["objectId"]
-        new_user_group["group_id"] = group_result["objectId"]
+        #new_user_group["user_id"] = session[:current_user]["objectId"]
+        #new_user_group["group_id"] = group_result["objectId"]
+        new_user_group["user_info_ptr"] = Parse::Pointer.new({"className" => "User_Info","objectId"  =>  @user_info["objectId"]})
+        new_user_group["group_ptr"] = Parse::Pointer.new({"className" => "Group","objectId"  =>  group_result["objectId"]})
         new_user_group["status"] = "active"
         new_user_group["permissions"] = "group_admin"
         new_user_group.save
@@ -76,7 +80,6 @@ class GroupsController < ApplicationController
         email = params[:new_name]
         @newMember = @client.query("User_Info").eq("email", email).get.first
         if @newMember != nil
-            puts "**************************"
             @addMember = @client.object("User_Group")
             @addMember["group_id"] = @group_id
             @addMember["user_id"] = @newMember["user_objectId"]
@@ -126,6 +129,12 @@ class GroupsController < ApplicationController
     end
     
     def destroy
-    
+      @user_group_id = params[:delete_user_id]
+      if @user_group_id
+        delete_user = @client.query("User_Group").eq("objectId", @user_group_id).get.first
+      end
+      if delete_user
+        delete_user.parse_delete
+      end
     end
 end
