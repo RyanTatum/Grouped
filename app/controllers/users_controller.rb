@@ -14,8 +14,15 @@ class UsersController < ApplicationController
     end
     
     def show
-      @profile_id = params[:id]
-      
+
+      @user_info = @client.query("User_Info").eq("user_objectId", session[:current_user]["objectId"]).get.first
+
+      @groups = @client.query("User_Group").tap do |q|
+        q.eq("user_info_ptr", Parse::Pointer.new({"className" => "User_Info","objectId"  =>  @user_info["objectId"]}))
+        q.include = "group_ptr,user_info_ptr"
+      end.get
+    end
+=begin 
       @user_group_query = @client.query("User_Group").tap do |q|
         q.eq("user_id", session[:current_user]["objectId"])
       end.get
@@ -35,7 +42,7 @@ class UsersController < ApplicationController
       #@groups_query = @client.query("Project")
       #@groups = @groups_query.get
     end
-    
+=end
     def password
       Parse::User.reset_password(session[:current_user]["email"], @client)
       redirect_to home_index_path
@@ -123,7 +130,6 @@ class UsersController < ApplicationController
       button = params["button"]
       if (user_group_update != nil)
         if button == "accept"
-          puts "*************************"
           update_status = @client.query("User_Group").eq("objectId", user_group_update).get.first
           update_status["status"] = "active"
           begin

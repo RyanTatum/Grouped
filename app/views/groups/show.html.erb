@@ -83,7 +83,7 @@
             </div>
           </div>
           <div id= "custom_footer" class="panel-footer">
-            <%if @permissions_hash[session[:current_user]["objectId"]] == "group_admin"%>
+            <%if @permissions #@permissions_hash[session[:current_user]["objectId"]] == "group_admin"%>
               <span class="pull-right">
                 <button id="edit" class="btn btn-sm btn-warning"><i class="glyphicon glyphicon-edit"></i></button>
               </span>
@@ -177,33 +177,31 @@
     </div>
   </div>
 
-
-
 <div class= "center_wrapper">
-  <%if @permissions_hash[session[:current_user]["objectId"]] == "group_admin"%>
+  <%if @permissions%>
     <div id= "new_member" class="project">
       <a><%= image_tag "add.png", height: '100', width: '100' %></a>
       <a style="text-decoration: none"><h2>Add Member</h2></a>
     </div>
   <%end%>  
   <% @users.each do |user| %>
-    <% if user["profile_picture"]
-      tempStr = user["profile_picture"].url
+    <% if user["user_info_ptr"]["profile_picture"]
+      tempStr = user["user_info_ptr"]["profile_picture"].url
       profile_picture = tempStr.gsub("http" , "https")
     else
       profile_picture = "profile_picture.png"
     end
     %>
-  <div id = <%=@objectId_hash[user["user_objectId"]]%> class="project">
+  <div id = <%=user["objectId"]%> class="project">
     <a><%= image_tag profile_picture, height: '100', width: '100' %></a>
-    <h2 style= "color: white"><%=user["first_name"]%> <%=user["last_name"]%></h2>
-    <%if @status_hash[user["user_objectId"]] == "pending"%>
+    <h2 style= "color: white"><%=user["user_info_ptr"]["first_name"]%> <%=user["user_info_ptr"]["last_name"]%></h2>
+    <%if user["status"] == "pending"%>
       <div class= "center_wrapper">
         <p>Status: Pending</p>
       </div>
     <%else%>
-      <% d = DateTime.new(@updated_hash[user["user_objectId"]][0..3].to_i, @updated_hash[user["user_objectId"]][5..6].to_i, @updated_hash[user["user_objectId"]][8..9].to_i) %>
-      <p>Joined on <%= d.strftime("%B") %>  <%= @updated_hash[user["user_objectId"]][8..9].to_i.ordinalize %>, <%=d.strftime("%Y") %> </p>
+      <% d = DateTime.new(user["updatedAt"][0..3].to_i, user["updatedAt"][5..6].to_i, user["updatedAt"][8..9].to_i) %>
+      <p>Joined on <%= d.strftime("%B") %>  <%= user["updatedAt"][8..9].to_i.ordinalize %>, <%=d.strftime("%Y") %> </p>
     <%end%>
   </div>
   <% end %>

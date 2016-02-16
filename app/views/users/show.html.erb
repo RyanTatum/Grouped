@@ -195,28 +195,26 @@
     <a href= <%=new_group_path%>><%= image_tag "add.png", height: '100', width: '100' %></a>
     <a href=<%=new_group_path%> style="text-decoration: none"><h2>Create Group</h2></a>
   </div>
-      
+
   <% @groups.each do |group| %>
-  <div id = <%=@objectId_hash[group["objectId"]]%> class="project">
-    <% if group["group_icon"]
-      tempStr = group["group_icon"].url
+  <div id = <%=group["objectId"]%> class="project">
+    <% if group["group_ptr"]["group_icon"]
+      tempStr = group["group_ptr"]["group_icon"].url
       group_picture = tempStr.gsub("http" , "https")
     else
       group_picture = "project.png"
     end
     %>
-    <a href=<%=group_path(group["objectId"])%>><%= image_tag group_picture, height: '100', width: '100' %></a>
-    <a href=<%=group_path(group["objectId"])%> style="text-decoration: none"><h2><%=group["name"]%></h2></a>
-    <% d = DateTime.new(group["createdAt"][0..3].to_i, group["createdAt"][5..6].to_i, group["createdAt"][8..9].to_i) %>
-    <%if @status_hash[group["objectId"]] == "pending"%>
+    <a href=<%=group_path(group["group_ptr"]["objectId"])%>><%= image_tag group_picture, height: '100', width: '100' %></a>
+    <a href=<%=group_path(group["group_ptr"]["objectId"])%> style="text-decoration: none"><h2><%=group["group_ptr"]["name"]%></h2></a>
+    <% d = DateTime.new(group["group_ptr"]["createdAt"][0..3].to_i, group["group_ptr"]["createdAt"][5..6].to_i, group["group_ptr"]["createdAt"][8..9].to_i) %>
+    <%if group["status"] == "pending"%>
       <div class= "center_wrapper">
-        <%= button_to 'Accept', status_path(:user_group_id => @objectId_hash[group["objectId"]], :button => "accept"), :id => "accept_btn", :class => 'btn btn-default', method: :post%>
-        <%= button_to 'Decline', status_path(:user_group_id => @objectId_hash[group["objectId"]], :button => "decline"), :id => "decline_btn", :class => 'btn btn-default', method: :post%>
-        <!--<button name= <%=@objectId_hash[group["objectId"]]%> id= "accept_btn" class= "btn btn-default">Accept</button>
-        <button name= <%=@objectId_hash[group["objectId"]]%> id= "decline_btn" class= "btn btn-default">Decline</button>-->
+        <%= button_to 'Accept', status_path(:user_group_id => group["objectId"], :button => "accept"), :id => "accept_btn", :class => 'btn btn-default', method: :post%>
+        <%= button_to 'Decline', status_path(:user_group_id => group["objectId"], :button => "decline"), :id => "decline_btn", :class => 'btn btn-default', method: :post%>
       </div>
     <%else%>
-      <p id= "created_on">Created on <%= d.strftime("%B") %>  <%= group["createdAt"][8..9].to_i.ordinalize %>, <%=d.strftime("%Y") %> </p>
+      <p id= "created_on">Created on <%= d.strftime("%B") %>  <%= group["group_ptr"]["createdAt"][8..9].to_i.ordinalize %>, <%=d.strftime("%Y") %> </p>
     <%end%>
   </div>
   <% end %>

@@ -1,58 +1,29 @@
 <h1><%=session[:current_user]["email"]%></h1>
-<%
-      @user_group_query = @client.query("User_Group").tap do |q|
-        q.eq("user_id", Parse::Pointer.new({"className" => "_User","objectId"  => session[:current_user]["objectId"]}))
-      end.get
-       
-  @g = @client.query("Group").eq("objectId", @group_id)
-  @g.include = "project_id"
-  @a = @g.get.first
-  %>
-  
-   <%   
-        #@group_query = @client.query("Group").tap do |i|
-         #   i.eq("objectId", {
-          #      "$select" => {
-           #            "className" => "User_Group",
-               #             "where" => {
-                #                "status" => {"$eq" => "active"}
-                 #           }
-                  #  },
-                  #  "key" => "group_id"
-                #}
-            #}.to_s.sub('Group:','')
-            #)
-        #end.get
-    @group_ids = []
-    @user_group_query.each do |i|
-        @group_ids.push(i["group_id"].to_s.sub('Group:',''))
-    end
-        
-    @groups = @client.query("Group").tap do |i|
-       i.value_in("objectId", @group_ids)
-    end.get
-        
-    #{"$eq" => Parse::Pointer.new({"className" => "_User","objectId"  => session[:current_user]["objectId"]})}
-    
-    #@group_query = @client.query("Group").tap do |i|
-     #   i.eq("objectId", @user_group_query[0]["group_id"].to_s.sub('Group:',''))
-      #  i.eq("objectId", @user_group_query[1]["group_id"].to_s.sub('Group:',''))
-    #end.get
-      
-      #@user_group_query.each do |i|
-      #  @group_query.eq("objectId", i["group_id"].to_s)
-      #end
-      #@groups = @group_query.get
-      
-      #@groups = @client.query("Group").tap do |i|
-       # @user_group_query.each do |j|
-        #  i.eq("objectId", j["group_id"])
-        #end
-      #end.get
-%>
-        <h1><%=@temp%></h1>
-        <% @groups.each do |a|%>
-        <h1><%=a%></h1>
-        <%end%>
 
-<h1><%=session[:current_user]%></h1>
+<%
+#game_score_query = client.query("GameScore")
+#game_score_query.eq("objectId", "GeqPWJdNqp")
+#game_score_query.include = "game"
+#game_score = game_score_query.get
+
+
+@a = @client.query("User_Group")
+@a.eq("objectId", "Z9SImOxQA8")
+@a.include = "group_ptr"
+
+@b = @a.get.first
+
+@c = @user_group_query = @client.query("User_Group").tap do |q|
+        q.eq("user_id", session[:current_user]["objectId"])
+        q.include = "group_ptr,user_info_ptr"
+end.get
+
+@user_info = @client.query("User_Info").eq("user_objectId", session[:current_user]["objectId"]).get.first
+
+@d = @client.query("User_Group").tap do |q|
+        q.eq("user_info_ptr", Parse::Pointer.new({"className" => "User_Info","objectId"  =>  @user_info["objectId"]}))
+        q.include = "group_ptr,user_info_ptr"
+end.get
+
+%>
+<div><%= @d[0]["user_info_ptr"]["email"] %> </div>
