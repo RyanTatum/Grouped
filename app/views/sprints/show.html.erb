@@ -78,11 +78,11 @@
       });
         
         function changeTable() {
+          Parse.initialize("Y25GZkeg7cc6dGRDBkhw8SgxmOwT3orM7O6SxSlD","lidAaWkyQwVQRgeMwKB3PCPt09Mzfwe0T02KK0Mg");
           document.getElementById("todo").innerHTML = "<h2 class='title'>ToDo</h2>";
           document.getElementById("doing").innerHTML = "<h2 class='title'>Doing</h2>";
           document.getElementById("done").innerHTML = "<h2 class='title'>Done</h2>";
-
-          Parse.initialize("Y25GZkeg7cc6dGRDBkhw8SgxmOwT3orM7O6SxSlD","lidAaWkyQwVQRgeMwKB3PCPt09Mzfwe0T02KK0Mg");
+          
           var Feature = Parse.Object.extend("Feature");
           var query = new Parse.Query(Feature);
           var text = "";
@@ -92,6 +92,7 @@
                 for (i = 0; i < features.length; i++) { 
                     var object = features[i];
                     var div = document.createElement('div');
+                    div.setAttribute("id", object.id);
                     div.setAttribute('class', 'portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all');
                     document.body.appendChild(div);
                     text = "<div class='portlet-header ui-sortable-handle ui-widget-header ui-corner-all'>" + "<span class='ui-icon ui-icon-minusthick portlet-toggle'></span>" + object.get('name') + "</div>" + "<div class='portlet-content'>" + object.get('description') + "</div>";
@@ -110,6 +111,36 @@
                 }
             }
           });
+        }
+        
+        function save_status(item) {
+            var Feature = Parse.Object.extend("Feature");
+            var query = new Parse.Query(Feature);
+            query.get(item.context.id, {
+              success: function(feature) {
+                // The object was retrieved successfully.
+                alert($(item.parent()).attr('id'));
+                feature.set("Status", $(item.parent()).attr('id'))
+                feature.save(null, {
+                  success: function(feature) {
+                    // Execute any logic that should take place after the object is saved.
+                    alert('New object created with objectId: ' + feature.id);
+                  },
+                  error: function(feature, error) {
+                    // Execute any logic that should take place if the save fails.
+                    // error is a Parse.Error with an error code and message.
+                    alert('Failed to create new object, with error code: ' + error.message);
+                  }
+                });
+              },
+              error: function(object, error) {
+                  alert('not found');
+                // The object was not retrieved successfully.
+                // error is a Parse.Error with an error code and message.
+              }
+            });
+            
+            
         }
         
         // Monitor tilt direction and switch between classes accordingly
@@ -140,6 +171,9 @@
                     ui.item.addClass('tilt');
                     // Start monitoring tilt direction
                     tilt_direction(ui.item);
+              },
+              update: function (event, ui) {
+                  save_status(ui.item);
               },
               stop: function (event, ui) {
                     ui.item.removeClass("tilt");
@@ -235,8 +269,6 @@
       <li>New Sprint</li> 
       <li><%= select_tag(:sprint_id, options_for_select(sprints_array), :onchange => 'changeTable()', :id => "sprint_field", :class => "form-control") %></li>
     </ul>
-        
-        
     </div>
   <div class= "center_wrapper">
       <div class="column" id="todo"></div>
