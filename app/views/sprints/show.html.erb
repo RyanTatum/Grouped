@@ -4,82 +4,46 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
     <script src="//code.jquery.com/jquery-1.10.2.js"></script>
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-    <style>
-      body {
-        min-width: 520px;
-      }
-      .column {
-        width: 175px;
-        display: inline-block;
-        vertical-align: top;
-        position: relative;
-        padding-bottom: 100px;
-      }
-      .portlet {
-        margin: 0 1em 1em 0;
-        padding: 0.3em;
-      }
-      .portlet-header {
-        padding: 0.2em 0.3em;
-        margin-bottom: 0.5em;
-        position: relative;
-      }
-      .portlet-toggle {
-        position: absolute;
-        top: 50%;
-        right: 0;
-        margin-top: -8px;
-      }
-      .portlet-content {
-        padding: 0.4em;
-      }
-      .portlet-placeholder {
-        border: 1px dotted black;
-        margin: 0 1em 1em 0;
-        height: 50px;
-      }
-      
-      .title {
-          color: white;
-      }
-      .sprint_container {
-          margin-left: 14%;
-          margin-right: 14%;
-          display: inline-block;
-          width: 72%;
-          background-color: #ffa366;
-      }
-      .tilt.right {
-        transform: rotate(3deg);
-        -moz-transform: rotate(3deg);
-        -webkit-transform: rotate(3deg);
-      }
-      tilt.left {
-        transform: rotate(-3deg);
-        -moz-transform: rotate(-3deg);
-        -webkit-transform: rotate(-3deg);
-      }
-      .menu {
-          background-color:white;
-          width: 15%;
-          height: 100px%;
-          margin: 0 1em 1em 0;
-          padding: 0.3em;
-          float: left;
-      }
-      
-      .menu li {
-          margin: 0 1em 1em 0;
-      }
-    </style>
-      
     <script type="text/javascript">
-      $(document).ready(function() {
-      });
+        
+        function div_show() {
+          document.getElementById('abc').style.display = "block";
+        }
+        //Function to Hide Popup
+        function div_hide(){
+          document.getElementById('abc').style.display = "none";
+        }
+        
+        //Function to save a new feature
+        function saveFeature() {
+          var NewFeature = Parse.Object.extend("Feature");
+          var newFeature = new NewFeature();
+          newFeature.set("name", $('#name').val());
+          $('#name').val("");
+          newFeature.set("description", $('#description').val());
+          $('#description').val("");
+          newFeature.set("sprint_id", $('#sprint_field').val());
+          newFeature.set("status", "todo")
+          
+          newFeature.save(null, {
+            success: function(newFeature) {
+              div_hide();
+              changeTable();
+              return true;
+            },
+            error: function(newFeature, error) {
+              // Execute any logic that should take place if the save fails.
+              // error is a Parse.Error with an error code and message.
+              alert('Failed to create new object, with error code: ' + error.message);
+              return false;
+            }
+          });
+          
+        }
         
         function changeTable() {
           Parse.initialize("Y25GZkeg7cc6dGRDBkhw8SgxmOwT3orM7O6SxSlD","lidAaWkyQwVQRgeMwKB3PCPt09Mzfwe0T02KK0Mg");
-          document.getElementById("todo").innerHTML = "<h2 class='title'>ToDo</h2>";
+          document.getElementById("todo").innerHTML = "<h2 class='title'>Todo</h2>";
           document.getElementById("doing").innerHTML = "<h2 class='title'>Doing</h2>";
           document.getElementById("done").innerHTML = "<h2 class='title'>Done</h2>";
           
@@ -97,7 +61,7 @@
                     document.body.appendChild(div);
                     text = "<div class='portlet-header ui-sortable-handle ui-widget-header ui-corner-all'>" + "<span class='ui-icon ui-icon-minusthick portlet-toggle'></span>" + object.get('name') + "</div>" + "<div class='portlet-content'>" + object.get('description') + "</div>";
                     div.innerHTML = text;
-                    var columnName = object.get("Status")
+                    var columnName = object.get("status")
                     
                     if (columnName == "todo") {
                       document.getElementById("todo").appendChild(div);
@@ -119,12 +83,10 @@
             query.get(item.context.id, {
               success: function(feature) {
                 // The object was retrieved successfully.
-                alert($(item.parent()).attr('id'));
-                feature.set("Status", $(item.parent()).attr('id'))
+                feature.set("status", $(item.parent()).attr('id'))
                 feature.save(null, {
                   success: function(feature) {
                     // Execute any logic that should take place after the object is saved.
-                    alert('New object created with objectId: ' + feature.id);
                   },
                   error: function(feature, error) {
                     // Execute any logic that should take place if the save fails.
@@ -263,9 +225,10 @@
 <div class="sprint_container" id="view">
     <% sprints_array = @sprints.map { |sprint| [sprint["name"], sprint["objectId"]] } %>
     <a class = 'title' href="https://icon.uiowa.edu" style="text-decoration: none"><h2>Sprint Board</h2></a>
+    <hr>
     <div class = "menu">
     <ul>
-      <li>Add A Feature</li>
+      <li><button id="popup" onclick="div_show()">Add Feature</button></li>
       <li>New Sprint</li> 
       <li><%= select_tag(:sprint_id, options_for_select(sprints_array), :onchange => 'changeTable()', :id => "sprint_field", :class => "form-control") %></li>
     </ul>
@@ -275,6 +238,20 @@
       <div class="column" id="doing"></div>
       <div class="column" id="done"></div>
   </div>
+    <div id="abc">
+    <!-- Popup Div Starts Here -->
+    <div id="popupContact">
+    <!-- Contact Us Form -->
+    <%=image_tag("closebutton.png", alt: "Example Image", :onclick => 'div_hide()', :id => 'close')%>
+    <form id = "form">
+      <input type="text" id = "name" name="name" placeholder="Feature Name"><br>
+      <input type="text" id = "description" name="description" placeholder="Description">
+      <!--<input type="submit" value="Submit" id="submit">-->
+      <input type="button" name="submit" id="submit" value="submit" onclick="saveFeature();"/>
+    </form>
+    </div>
+    <!-- Popup Div Ends Here -->
+    </div>
 </div>
 </body>
 </html>

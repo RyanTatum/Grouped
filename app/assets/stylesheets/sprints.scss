@@ -1,3 +1,170 @@
 // Place all the styles related to the sprints controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+body {
+  min-width: 520px;
+}
+.column {
+  width: 175px;
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+  padding-bottom: 100px;
+}
+.portlet {
+  margin: 0 1em 1em 0;
+  padding: 0.3em;
+}
+.portlet-header {
+  padding: 0.2em 0.3em;
+  margin-bottom: 0.5em;
+  position: relative;
+}
+.portlet-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  margin-top: -8px;
+}
+.portlet-content {
+  padding: 0.4em;
+}
+.portlet-placeholder {
+  border: 1px dotted black;
+  margin: 0 1em 1em 0;
+  height: 50px;
+}
+
+.title {
+  color: #89bdd3;
+}
+.sprint_container {
+  margin-left: 14%;
+  margin-right: 14%;
+  display: inline-block;
+  width: 72%;
+  background-color: #e3e3e3;
+}
+.tilt.right {
+  transform: rotate(3deg);
+  -moz-transform: rotate(3deg);
+  -webkit-transform: rotate(3deg);
+}
+tilt.left {
+  transform: rotate(-3deg);
+  -moz-transform: rotate(-3deg);
+  -webkit-transform: rotate(-3deg);
+}
+.menu {
+  background-color:white;
+  width: 15%;
+  height: 100%;
+  margin: 0 1em 1em 0;
+  padding: 0.3em;
+  float: left;
+}
+
+.menu li {
+  margin: 0 1em 1em 0;
+}
+#abc {
+  width:100%;
+  height:100%;
+  opacity:.95;
+  top:0;
+  left:0;
+  display:none;
+  position:fixed;
+  background-color:#313131;
+  overflow:auto
+}
+img#close {
+  position:absolute;
+  right:5px;
+  top:5px;
+  height: 25px;
+  width: 25px;
+  cursor:pointer
+}
+div#popupContact {
+  position:absolute;
+  left:50%;
+  top:17%;
+  margin-left:-202px;
+  font-family:'Raleway',sans-serif
+}
+#form {
+  max-width:300px;
+  min-width:250px;
+  padding:10px 50px;
+  border:2px solid gray;
+  border-radius:10px;
+  font-family:raleway;
+  background-color:#fff
+}
+
+#contactUs {
+  background-color:#FEFFED;
+  padding:20px 35px;
+  margin:-10px -50px;
+  text-align:center;
+  border-radius:10px 10px 0 0
+}
+input[type=text] {
+  width:82%;
+  padding:10px;
+  margin-top:20px;
+  border:1px solid #ccc;
+  padding-left:40px;
+  font-size:16px;
+  font-family:raleway
+}
+#name {
+  width:100%;
+}
+#description {
+  width:100%;
+  margin-bottom: 1em;
+}
+#message {
+  background-image:url(../images/msg.png);
+  background-repeat:no-repeat;
+  background-position:5px 7px;
+  width:82%;
+  height:95px;
+  padding:10px;
+  resize:none;
+  margin-top:30px;
+  border:1px solid #ccc;
+  padding-left:40px;
+  font-size:16px;
+  font-family:raleway;
+  margin-bottom:30px
+}
+#submit {
+  text-decoration:none;
+  width:100%;
+  text-align:center;
+  display:block;
+  background-color:#FFBC00;
+  color:#fff;
+  border:1px solid #FFCB00;
+  padding:10px 0;
+  font-size:20px;
+  cursor:pointer;
+  border-radius:5px
+}
+span {
+  color:red;
+  font-weight:700
+}
+button#popup {
+  width:100%;
+  height:45px;
+  border-radius:3px;
+  background-color:#cd853f;
+  color:#fff;
+  font-family:'Raleway',sans-serif;
+  font-size:18px;
+  cursor:pointer
+}

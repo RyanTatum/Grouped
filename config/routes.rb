@@ -53,9 +53,8 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
-  resources :sprints do 
-    get :change_sprint, on: :collection
-  end
+  resources :features
+  resources :sprints 
   resources :login
   resources :home
   resources :sessions
