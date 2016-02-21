@@ -1,19 +1,19 @@
 <h1><%=session[:current_user]["email"]%></h1>
 <table id="mysched" style="width:100%">
   <tr>
-    <td style="background-color: white">Hour</td>
-    <td style="background-color: white">Sunday</td>
-    <td style="background-color: white">Monday</td>
-    <td style="background-color: white">Tuesday</td>
-    <td style="background-color: white">Wednesday</td>
-    <td style="background-color: white">Thursday</td>
-    <td style="background-color: white">Friday</td>
-    <td style="background-color: white">Saturday</td>
+    <td style="background-color: grey">Hour</td>
+    <td style="background-color: grey">Sunday</td>
+    <td style="background-color: grey">Monday</td>
+    <td style="background-color: grey">Tuesday</td>
+    <td style="background-color: grey">Wednesday</td>
+    <td style="background-color: grey">Thursday</td>
+    <td style="background-color: grey">Friday</td>
+    <td style="background-color: grey">Saturday</td>
   </tr>
   <% @i = 0 %>
   <% until @i == 24 %>
   <tr id="row">
-    <td style="background-color: rgb(255, 255, 255);"><%= @i %></td>
+    <td style="background-color: grey;"><%= @i %></td>
     <td style="background-color: rgb(255, 255, 255);" id="Sun<%= @i %>"><input type="hidden" value="0"></td>
     <td style="background-color: rgb(255, 255, 255);" id="Mon<%= @i %>"><input type="hidden" value="0"></td>
     <td style="background-color: rgb(255, 255, 255);" id="Tues<%= @i %>"><input type="hidden" value="0"></td>
@@ -60,7 +60,7 @@ $(document).ready(function(){
        $(this).css('backgroundColor', 'rgb(0, 0, 0);');
        $(this).find("input").attr("value", 1);
      }
-     else
+     else if($(this).attr("style") == "background-color: rgb(0, 0, 0);")
      {
        $(this).css('backgroundColor', 'rgb(255, 255, 255);');
        $(this).find("input").attr("value", 0);
