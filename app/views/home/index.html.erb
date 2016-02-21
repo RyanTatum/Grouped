@@ -29,20 +29,44 @@
 
 
 <script>
-  //$('td').live('click', function() {
-  $("#mysched").on('click','td', function() {
-   //alert($(this).find("input").attr("value"));
-   if($(this).attr("style") == "background-color: rgb(255, 255, 255);")
-   {
-     $(this).css('backgroundColor', 'rgb(0, 0, 0);');
-     $(this).find("input").attr("value", 1);
-   }
-   else
-   {
-     $(this).css('backgroundColor', 'rgb(255, 255, 255);');
-     $(this).find("input").attr("value", 0);
-   }
+$(document).ready(function(){
+
+  var isDown = false;   // Tracks status of mouse button
+
+  $(document).mousedown(function() {
+    isDown = true;      // When mouse goes down, set isDown to true
+  })
+  .mouseup(function() {
+    isDown = false;    // When mouse goes up, set isDown to false
   });
+
+  //$('td').live('click', function() {
+  $("#mysched").on('mouseover','td', function() {
+    if(isDown)
+    {
+       //alert($(this).find("input").attr("value"));
+       if($(this).attr("style") == "background-color: rgb(255, 255, 255);")
+       {
+         $(this).css('backgroundColor', 'rgb(0, 0, 0);');
+         $(this).find("input").attr("value", 1);
+       }
+    }
+  });
+  
+  $("#mysched").on('mousedown','td', function() {
+     //alert($(this).find("input").attr("value"));
+     if($(this).attr("style") == "background-color: rgb(255, 255, 255);")
+     {
+       $(this).css('backgroundColor', 'rgb(0, 0, 0);');
+       $(this).find("input").attr("value", 1);
+     }
+     else
+     {
+       $(this).css('backgroundColor', 'rgb(255, 255, 255);');
+       $(this).find("input").attr("value", 0);
+     }
+  });
+});
 </script>
 
 
