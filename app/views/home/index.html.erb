@@ -1,4 +1,64 @@
 <h1><%=session[:current_user]["email"]%></h1>
+<table id="mysched" style="width:100%">
+  <tr>
+    <td style="background-color: white">Hour</td>
+    <td style="background-color: white">Sunday</td>
+    <td style="background-color: white">Monday</td>
+    <td style="background-color: white">Tuesday</td>
+    <td style="background-color: white">Wednesday</td>
+    <td style="background-color: white">Thursday</td>
+    <td style="background-color: white">Friday</td>
+    <td style="background-color: white">Saturday</td>
+  </tr>
+  <% @i = 0 %>
+  <% until @i == 24 %>
+  <tr id="row">
+    <td style="background-color: rgb(255, 255, 255);"><%= @i %></td>
+    <td style="background-color: rgb(255, 255, 255);" id="Sun<%= @i %>"><input type="hidden" value="0"></td>
+    <td style="background-color: rgb(255, 255, 255);" id="Mon<%= @i %>"></td>
+    <td style="background-color: rgb(255, 255, 255);" id="Tues<%= @i %>"></td>
+    <td style="background-color: rgb(255, 255, 255);" id="Wed<%= @i %>"></td>
+    <td style="background-color: rgb(255, 255, 255);" id="Thurs<%= @i %>"></td>
+    <td style="background-color: rgb(255, 255, 255);" id="Fri<%= @i %>"></td>
+    <td style="background-color: rgb(255, 255, 255);" id="Sat<%= @i %>"></td>
+  </tr>
+  <% @i = @i + 1%>
+  <% end %>
+</table>
+
+
+
+<script>
+  //$('td').live('click', function() {
+  $("#mysched").on('click','td', function() {
+   //alert($(this).find("input").attr("value"));
+   if($(this).attr("style") == "background-color: rgb(255, 255, 255);")
+   {
+     $(this).css('backgroundColor', 'rgb(0, 0, 0);');
+     $(this).find("input").attr("value", 1);
+   }
+   else
+   {
+     $(this).css('backgroundColor', 'rgb(255, 255, 255);');
+     $(this).find("input").attr("value", 0);
+   }
+  });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <%
 #game_score_query = client.query("GameScore")
@@ -26,4 +86,3 @@ end.get
 end.get
 
 %>
-<div><%= @d[0]["user_info_ptr"]["email"] %> </div>

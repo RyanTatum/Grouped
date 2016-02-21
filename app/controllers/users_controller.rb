@@ -112,7 +112,7 @@ class UsersController < ApplicationController
                 @userinfo["user_objectId"] = @userquery["objectId"]
                 @userinfo["email"] = params["email"]
                 @userinfo["first_name"] = params["fname"]
-                @userinfo["last_name"] = params["fname"]
+                @userinfo["last_name"] = params["lname"]
                 begin
                   @userinfo.save
                 rescue Parse::ParseProtocolError
