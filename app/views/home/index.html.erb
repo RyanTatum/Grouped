@@ -1,4 +1,5 @@
 <h1><%=session[:current_user]["email"]%></h1>
+<form action="/calendars" method="post">
 <table id="mysched" style="width:100%">
   <tr>
     <td style="background-color: grey">Hour</td>
@@ -14,17 +15,19 @@
   <% until @i == 24 %>
   <tr id="row">
     <td style="background-color: grey;"><%= @i %></td>
-    <td style="background-color: rgb(255, 255, 255);" id="Sun<%= @i %>"><input type="hidden" value="0"></td>
-    <td style="background-color: rgb(255, 255, 255);" id="Mon<%= @i %>"><input type="hidden" value="0"></td>
-    <td style="background-color: rgb(255, 255, 255);" id="Tues<%= @i %>"><input type="hidden" value="0"></td>
-    <td style="background-color: rgb(255, 255, 255);" id="Wed<%= @i %>"><input type="hidden" value="0"></td>
-    <td style="background-color: rgb(255, 255, 255);" id="Thurs<%= @i %>"><input type="hidden" value="0"></td>
-    <td style="background-color: rgb(255, 255, 255);" id="Fri<%= @i %>"><input type="hidden" value="0"></td>
-    <td style="background-color: rgb(255, 255, 255);" id="Sat<%= @i %>"><input type="hidden" value="0"></td>
+    <td style="background-color: rgb(255, 255, 255);" id="Sun<%= @i %>"><input type="hidden" name="times[<%=@i*7%>]" value="0"></td>
+    <td style="background-color: rgb(255, 255, 255);" id="Mon<%= @i %>"><input type="hidden" name="times[<%=@i*7+1%>]" value="0"></td>
+    <td style="background-color: rgb(255, 255, 255);" id="Tues<%= @i %>"><input type="hidden" name="times[<%=@i*7+2%>]" value="0"></td>
+    <td style="background-color: rgb(255, 255, 255);" id="Wed<%= @i %>"><input type="hidden"name="times[<%=@i*7+3%>]" value="0"></td>
+    <td style="background-color: rgb(255, 255, 255);" id="Thurs<%= @i %>"><input type="hidden" name="times[<%=@i*7+4%>]" value="0"></td>
+    <td style="background-color: rgb(255, 255, 255);" id="Fri<%= @i %>"><input type="hidden" name="times[<%=@i*7+5%>]" value="0"></td>
+    <td style="background-color: rgb(255, 255, 255);" id="Sat<%= @i %>"><input type="hidden" name="times[<%=@i*7+6%>]" value="0"></td>
   </tr>
   <% @i = @i + 1%>
   <% end %>
 </table>
+<button type="submit" class="btn btn-success" style="float:right; margin-right: 20px; margin-top 10px;">Submit</button>
+</form>
 
 
 
