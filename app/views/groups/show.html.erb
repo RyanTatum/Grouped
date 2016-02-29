@@ -221,11 +221,18 @@
     <td style="background-color: grey">Friday</td>
     <td style="background-color: grey">Saturday</td>
   </tr>
-  <%= @users.length %>
   <% @i = 0 %>
   <% until @i == 252 %>
-      <% @available = 0 %>
-      
+    <% @available = 0 %>
+    <% @sum = 0 %>
+      <% @users.each do |user| %>
+        <% if user["user_info_ptr"]["times"][@i] == 1 %>
+          <% @sum = @sum + 1%>
+          <% if @sum == @users.length %>
+            <% @available = 1%>
+          <% end %>
+        <% end %>
+      <% end %>
       <% if @i % 7 == 0%>
         <% if @i % 14 == 0%>
           <tr id="row">
@@ -250,27 +257,27 @@
                am
              <% end %>
            </td>
-           <% if @users[0]["user_info_ptr"]["times"][@i] == 1 %>
+           <% if @available == 1 %>
              <td style="background-color: rgb(0, 0, 0);">
            <% else %>
              <td style="background-color: rgb(255, 255, 255);">
            <% end %>
-           <input type="hidden" name="times[<%=@i%>]" value="<%= @users[0]["user_info_ptr"]["times"][@i] %>"></td>
+           <input type="hidden" name="times[<%=@i%>]" value="<%= @available %>"></td>
         <% elsif ((@i+1) % 7) == 0 %>
            <% if @users[0]["user_info_ptr"]["times"][@i] == 1 %>
              <td style="background-color: rgb(0, 0, 0);">
            <% else %>
              <td style="background-color: rgb(255, 255, 255);">
            <% end %>
-           <input type="hidden" name="times[<%=@i%>]" value="<%= @users[0]["user_info_ptr"]["times"][@i] %>"></td>
+           <input type="hidden" name="times[<%=@i%>]" value="<%= @available %>"></td>
         </tr>
         <% else %>
-            <% if @users[0]["user_info_ptr"]["times"][@i] == 1 %>
+            <% if @available == 1 %>
              <td style="background-color: rgb(0, 0, 0);">
            <% else %>
              <td style="background-color: rgb(255, 255, 255);">
            <% end %>
-           <input type="hidden" name="times[<%=@i%>]" value="<%= @users[0]["user_info_ptr"]["times"][@i] %>"></td>
+           <input type="hidden" name="times[<%=@i%>]" value="<%= @available %>"></td>
         <% end %>
       <% @i = @i + 1%>
   <% end %>
