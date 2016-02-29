@@ -210,7 +210,7 @@
   <% end %>
 </div>
 
-<table id="mysched" style="width:100%">
+<table id="sched" style="width:100%">
   <tr>
     <td style="background-color: grey">Hour</td>
     <td style="background-color: grey">Sunday</td>
@@ -235,9 +235,9 @@
       <% end %>
       <% if @i % 7 == 0%>
         <% if @i % 14 == 0%>
-          <tr id="row">
+          <tr id="myrow">
         <% else %>
-          <tr id="row" style="border-bottom:1pt solid black;">
+          <tr id="myrow" style="border-bottom:1pt solid black;">
         <% end %>
            <td style="background-color: grey;">
              <% if (@i/14+6) == 12 && (@i % 14) == 0 %>
