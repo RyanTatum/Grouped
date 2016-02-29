@@ -14,7 +14,7 @@ class CalendarsController < ApplicationController
         @calendar.array_remove("times", 1)
         @calendar.save
         update(params["times"])
-        redirect_to "/calendars/#{session[:current_user]["objectId"]}"    
+        redirect_to "/users/#{session[:current_user]["objectId"]}"    
     end
     
     def update(values)

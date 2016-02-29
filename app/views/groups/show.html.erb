@@ -206,6 +206,74 @@
   </div>
   <% end %>
 </div>
+
+<table id="mysched" style="width:100%">
+  <tr>
+    <td style="background-color: grey">Hour</td>
+    <td style="background-color: grey">Sunday</td>
+    <td style="background-color: grey">Monday</td>
+    <td style="background-color: grey">Tuesday</td>
+    <td style="background-color: grey">Wednesday</td>
+    <td style="background-color: grey">Thursday</td>
+    <td style="background-color: grey">Friday</td>
+    <td style="background-color: grey">Saturday</td>
+  </tr>
+  <%= @users.length %>
+  <% @i = 0 %>
+  <% until @i == 252 %>
+      <% @available = 0 %>
+      
+      <% if @i % 7 == 0%>
+        <% if @i % 14 == 0%>
+          <tr id="row">
+        <% else %>
+          <tr id="row" style="border-bottom:1pt solid black;">
+        <% end %>
+           <td style="background-color: grey;">
+             <% if (@i/14+6) == 12 && (@i % 14) == 0 %>
+               <%= (@i/14+6) %>:00
+             <% elsif (@i/14+6) == 12 && (@i % 14) != 0 %>
+               <%= (@i/14+6)%>:30
+             <% else%>
+               <% if (@i % 14) != 0 %>
+                 <%= (@i/14+6) % 12 %>:30 
+               <% else%>
+                 <%= (@i/14+6) % 12%>:00 
+               <% end %>
+             <% end %>
+             <% if ((@i/14+6)) / 12 >= 1%>
+               pm
+             <% else %>
+               am
+             <% end %>
+           </td>
+           <% if @users[0]["user_info_ptr"]["times"][@i] == 1 %>
+             <td style="background-color: rgb(0, 0, 0);">
+           <% else %>
+             <td style="background-color: rgb(255, 255, 255);">
+           <% end %>
+           <input type="hidden" name="times[<%=@i%>]" value="<%= @users[0]["user_info_ptr"]["times"][@i] %>"></td>
+        <% elsif ((@i+1) % 7) == 0 %>
+           <% if @users[0]["user_info_ptr"]["times"][@i] == 1 %>
+             <td style="background-color: rgb(0, 0, 0);">
+           <% else %>
+             <td style="background-color: rgb(255, 255, 255);">
+           <% end %>
+           <input type="hidden" name="times[<%=@i%>]" value="<%= @users[0]["user_info_ptr"]["times"][@i] %>"></td>
+        </tr>
+        <% else %>
+            <% if @users[0]["user_info_ptr"]["times"][@i] == 1 %>
+             <td style="background-color: rgb(0, 0, 0);">
+           <% else %>
+             <td style="background-color: rgb(255, 255, 255);">
+           <% end %>
+           <input type="hidden" name="times[<%=@i%>]" value="<%= @users[0]["user_info_ptr"]["times"][@i] %>"></td>
+        <% end %>
+      <% @i = @i + 1%>
+  <% end %>
+</table>
+
+
 </body>
 
 

@@ -28,6 +28,7 @@ class GroupsController < ApplicationController
     end
     
     def show
+        @calendar = @client.query("User_Info").eq("user_objectId", session[:current_user]["objectId"]).get.first
         @group_id = params[:id]
         @group_record = @client.query("Group").eq("objectId", @group_id).get.first
         

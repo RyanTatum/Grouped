@@ -39,7 +39,7 @@ class ApplicationController < ActionController::Base
         session[:current_user]["last_name"]=@userinfoquery["last_name"]
         session[:current_user]["profile_picture"]=@userinfoquery["profile_picture"]
       rescue Parse::ParseProtocolError
-        #flash[:notice]="Error: " + e.error + "!"
+        #flash[:notice]="Error: Invalid Email/Password combination!"
         redirect_to users_path
       end
     end
