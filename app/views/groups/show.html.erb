@@ -203,6 +203,9 @@
       <% d = DateTime.new(user["updatedAt"][0..3].to_i, user["updatedAt"][5..6].to_i, user["updatedAt"][8..9].to_i) %>
       <p>Joined on <%= d.strftime("%B") %>  <%= user["updatedAt"][8..9].to_i.ordinalize %>, <%=d.strftime("%Y") %> </p>
     <%end%>
+    <%if @permissions && user["user_info_ptr"]["objectId"] != @user_info["objectId"]%>
+      <%= button_to 'Delete', group_path(@group_id, :delete_user_id => user["objectId"]), :id => "delete_btn", :class => 'btn btn-default', method: :delete%>
+    <%end%>
   </div>
   <% end %>
 </div>

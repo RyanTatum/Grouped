@@ -82,8 +82,10 @@ class GroupsController < ApplicationController
         @newMember = @client.query("User_Info").eq("email", email).get.first
         if @newMember != nil
             @addMember = @client.object("User_Group")
-            @addMember["group_id"] = @group_id
-            @addMember["user_id"] = @newMember["user_objectId"]
+            #@addMember["group_id"] = @group_id
+            #@addMember["user_id"] = @newMember["user_objectId"]
+            @addMember["group_ptr"] = Parse::Pointer.new({"className" => "Group","objectId"  =>  @group_id})
+            @addMember["user_info_ptr"] = Parse::Pointer.new({"className" => "User_Info","objectId"  =>  @newMember["objectId"]})
             @addMember["status"] = "pending"
             @addMember.save
         end
@@ -130,6 +132,8 @@ class GroupsController < ApplicationController
     end
     
     def destroy
+      puts '************************************'
+      @group_id = params[:id]
       @user_group_id = params[:delete_user_id]
       if @user_group_id
         delete_user = @client.query("User_Group").eq("objectId", @user_group_id).get.first
@@ -137,5 +141,6 @@ class GroupsController < ApplicationController
       if delete_user
         delete_user.parse_delete
       end
+      redirect_to group_path(@group_id)
     end
 end
