@@ -43,8 +43,9 @@ class ApplicationController < ActionController::Base
         redirect_to users_path
       end
     end
-   @groups = @client.query("User_Group").tap do |q|
-        q.eq("user_info_ptr", Parse::Pointer.new({"className" => "User_Info","objectId"  =>  session[:current_user]["objectId"]}))
+    @user_info = @client.query("User_Info").eq("user_objectId", session[:current_user]["objectId"]).get.first
+    @groups = @client.query("User_Group").tap do |q|
+        q.eq("user_info_ptr", Parse::Pointer.new({"className" => "User_Info","objectId"  =>  @user_info["objectId"]}))
         q.include = "group_ptr,user_info_ptr"
       end.get
   end

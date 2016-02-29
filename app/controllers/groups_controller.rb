@@ -3,7 +3,7 @@ class GroupsController < ApplicationController
     #before_filter :set_current_user
     before_filter :set_client
     before_filter :set_cache_headers
-    before_filter :set_current_user, :only => ['show', 'edit', 'update', 'delete']
+    before_filter :set_current_user
     
     def index
       redirect_to home_index_path
