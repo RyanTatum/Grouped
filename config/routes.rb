@@ -53,9 +53,8 @@ Rails.application.routes.draw do
   #     # (app/controllers/admin/products_controller.rb)
   #     resources :products
   #   end
-  resources :sprints do 
-    get :change_sprint, on: :collection
-  end
+  resources :features
+  resources :sprints 
   resources :login
   resources :home
   resources :sessions
@@ -63,6 +62,7 @@ Rails.application.routes.draw do
   resources :groups
   resources :poker
   match '/vote', to: 'poker#vote', via: :post
+  resources :calendars
   match '/status', to: 'users#status', via: :post
   match '/status', to: 'users#status', via: :get
   match '/password_reset/', to: 'users#password', via: :post

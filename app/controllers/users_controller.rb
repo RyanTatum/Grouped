@@ -14,13 +14,18 @@ class UsersController < ApplicationController
     end
     
     def show
-
+      @calendar = @client.query("User_Info").eq("user_objectId", session[:current_user]["objectId"]).get.first
+      
       @user_info = @client.query("User_Info").eq("user_objectId", session[:current_user]["objectId"]).get.first
 
       @groups = @client.query("User_Group").tap do |q|
         q.eq("user_info_ptr", Parse::Pointer.new({"className" => "User_Info","objectId"  =>  @user_info["objectId"]}))
         q.include = "group_ptr,user_info_ptr"
       end.get
+      
+      if @calendar["times"].class == NilClass
+        @calendar["times"] = Array.new(255, 0)
+      end
     end
 =begin 
       @user_group_query = @client.query("User_Group").tap do |q|
@@ -112,7 +117,7 @@ class UsersController < ApplicationController
                 @userinfo["user_objectId"] = @userquery["objectId"]
                 @userinfo["email"] = params["email"]
                 @userinfo["first_name"] = params["fname"]
-                @userinfo["last_name"] = params["fname"]
+                @userinfo["last_name"] = params["lname"]
                 begin
                   @userinfo.save
                 rescue Parse::ParseProtocolError
