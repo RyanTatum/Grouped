@@ -1,0 +1,137 @@
+<!--<div>
+    <div class="center_wrapper">
+        <select id = "sprint_dropdown">
+            <% @sprints.each do |i|%>
+                <option value= <%=i["objectId"] %>><%=i["name"]%></option>
+            <% end %>    
+        </select>
+    </div>
+    <br>
+    <div class="center_wrapper">
+    <select id = "feature_dropdown">
+        <option value="" class="default_select" disabled selected>Select a Feature</option>
+        <% @features.each do |i|%>
+            <option id=<%=i["objectId"] %>  value= <%=i["sprint_ptr"]["objectId"] %>><%=i["name"]%></option>
+        <% end %>    
+    </select>
+    </div>
+    </br>
+</div>-->
+<!--<div>
+    <div class='left_align'>
+        <left><%=select(:post, 'sprint_dropdown', @sprints.collect {|s| [s["name"]]}, :onchange => "this.form.submit()")%></left>
+        <right><%=select(:post, 'feature_dropdown', @features.collect {|s| [s["name"]]}, :onchange => "this.form.submit()")%></right>
+    </div>
+
+    <div class='right_align'>
+        <%=select(:post, 'feature_dropdown', @features.collect {|s| [s["name"]]}, :onchange => "this.form.submit()")%>
+    </div>
+</div>-->
+
+<div class= "center_wrapper">
+    <%=select(:post, 'sprint_dropdown', @sprints.collect {|s| [s["name"]]}, {:onchange => "this.form.submit()"}, {:class => 'dropdown-poker'})%>
+    <%=select(:post, 'feature_dropdown',  @features.collect {|s| [s["name"]]}, {:onchange => "this.form.submit()"}, {:class => 'dropdown-poker'})%>
+</div>
+
+<div class="center_wrapper">
+    <% if @user_info["profile_picture"]
+        tempStr = @user_info["profile_picture"].url
+        profile_picture = tempStr.gsub("http" , "https")
+    else
+        profile_picture = "profile_picture.png"
+    end
+    %>
+    <%= image_tag profile_picture, height: '200', width: '200' %>
+    <%= form_tag("/vote", method: "post") do %>
+    <fieldset class="rating">
+        <%5.downto(1) do |r|%>
+            <input type="radio" id="star<%=r%>" name="rating" value="<%=r%>" <%=checked="checked" if @stored_vote == r %>  /><label for="star<%=r%>" title="<%=r%>"><%=r%> stars</label>
+        <%end%>
+    </fieldset>
+        <div class='btn-file'><%= submit_tag("Vote") %></div>
+    <%end%>
+</div>
+
+
+
+
+<!--<div class="center_wrapper">
+    <fieldset class="rating">
+        <input type="radio" id="star5" name="rating" value="5" disabled /><label for="star5" title="Difficult">5 stars</label>
+        <input type="radio" id="star4" name="rating" value="4" disabled checked="checked"/><label for="star4" title="Relatively Difficult">4 stars</label>
+        <input type="radio" id="star3" name="rating" value="3" disabled /><label for="star3" title="Average">3 stars</label>
+        <input type="radio" id="star2" name="rating" value="2" disabled /><label for="star2" title="Relatively Easy">2 stars</label>
+        <input type="radio" id="star1" name="rating" value="1" disabled /><label for="star1" title="Easy">1 star</label>
+    </fieldset>
+</div>-->
+
+<div class= "center_wrapper">
+    <% @poker_users.each do |user| %>
+        <% if user["user_info_ptr"]["objectId"] != @user_info["objectId"] && @display_votes%>
+            <% if user["user_info_ptr"]["profile_picture"]
+                tempStr = user["user_info_ptr"]["profile_picture"].url
+                profile_picture = tempStr.gsub("http" , "https")
+            else
+                profile_picture = "profile_picture.png"
+            end
+            %>
+            <div id = <%=user["objectId"]%> class="member_vote">
+                <a><%= image_tag profile_picture, height: '100', width: '100' %></a>
+                <h2 style= "color: white"><%=user["user_info_ptr"]["first_name"]%> <%=user["user_info_ptr"]["last_name"]%></h2>
+                <fieldset class="mem_rating">
+                    <%5.downto(1) do |r|%>
+                        <input type="radio" id="mem_star<%=r%>" name="mem_rating" value="<%=r%>" <%=checked="checked" if user['vote'] == r %> disabled /><label title="<%=r%>"><%=r%> stars</label>
+                    <%end%>
+                </fieldset>
+              </div>
+            <% end %>
+        <% end %>
+</div>
+
+
+<div class="center_wrapper">
+    <div id="disc_brd">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<span class="glyphicon glyphicon-comment"></span> Poker Discusssion
+			</div>
+			<div class="panel-body">
+				<ul class="chat">
+					<%@feature_comments.each do |com| %>
+					<li class="left clearfix">
+						<span class="chat-img pull-left">
+							<% if com["user_info_ptr"]["profile_picture"]
+							  tempStr = com["user_info_ptr"]["profile_picture"].url
+							  prof_picture = tempStr.gsub("http" , "https")
+							else
+							  prof_picture = "project.png"
+							end 
+							%>
+							<%= image_tag prof_picture, height: '50', width: '50'%>
+						</span>
+						<div class="chat-body clearfix">
+							<div class="header">
+								<strong class="primary-font"><%= com['user_info_ptr']['first_name']%> <%= com['user_info_ptr']['last_name']%></strong> <small class="pull-right text-muted">
+									<% d = DateTime.new(com["createdAt"][0..3].to_i, com["createdAt"][5..6].to_i, com["createdAt"][8..9].to_i) %>
+									<span class="glyphicon glyphicon-time"></span><%= d.strftime("%B") %>  <%= com["createdAt"][8..9].to_i.ordinalize %>, <%=d.strftime("%Y") %></small>
+							</div>
+							<p>
+								<%=com['message']%>
+							</p>
+						</div>
+					</li>
+					<%end%>
+				</ul>
+			</div>
+			<div class="panel-footer">
+				<div class="input-group">
+					<input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." />
+					<span class="input-group-btn">
+						<button class="btn btn-warning btn-sm" id="btn-chat">
+							Send</button>
+					</span>
+				</div>
+			</div>
+		</div>
+    </div>
+</div>

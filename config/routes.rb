@@ -61,6 +61,8 @@ Rails.application.routes.draw do
   resources :sessions
   resources :users
   resources :groups
+  resources :poker
+  match '/vote', to: 'poker#vote', via: :post
   match '/status', to: 'users#status', via: :post
   match '/status', to: 'users#status', via: :get
   match '/password_reset/', to: 'users#password', via: :post
