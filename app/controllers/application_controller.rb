@@ -38,13 +38,16 @@ class ApplicationController < ActionController::Base
         session[:current_user]["first_name"]=@userinfoquery["first_name"]
         session[:current_user]["last_name"]=@userinfoquery["last_name"]
         session[:current_user]["profile_picture"]=@userinfoquery["profile_picture"]
-      rescue Parse::ParseProtocolError
-        #flash[:notice]="Error: " + e.error + "!"
+        rescue Parse::ParseProtocolError
+        #flash[:notice]="Error: Invalid Email/Password combination!"
         redirect_to users_path
       end
     end
-    @groups_query = @client.query("Project")
-    @groups = @groups_query.get
+    @user_info = @client.query("User_Info").eq("user_objectId", session[:current_user]["objectId"]).get.first
+    @groups = @client.query("User_Group").tap do |q|
+        q.eq("user_info_ptr", Parse::Pointer.new({"className" => "User_Info","objectId"  =>  @user_info["objectId"]}))
+        q.include = "group_ptr,user_info_ptr"
+      end.get
   end
   
   def logged_in?

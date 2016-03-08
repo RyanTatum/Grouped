@@ -203,9 +203,87 @@
       <% d = DateTime.new(user["updatedAt"][0..3].to_i, user["updatedAt"][5..6].to_i, user["updatedAt"][8..9].to_i) %>
       <p>Joined on <%= d.strftime("%B") %>  <%= user["updatedAt"][8..9].to_i.ordinalize %>, <%=d.strftime("%Y") %> </p>
     <%end%>
+    <%if @permissions && user["user_info_ptr"]["objectId"] != @user_info["objectId"]%>
+      <%= button_to 'Delete', group_path(@group_id, :delete_user_id => user["objectId"]), :id => "delete_btn", :class => 'btn btn-default', method: :delete%>
+    <%end%>
   </div>
   <% end %>
 </div>
+
+<table id="sched" style="width:100%">
+  <tr>
+    <td style="background-color: grey">Hour</td>
+    <td style="background-color: grey">Sunday</td>
+    <td style="background-color: grey">Monday</td>
+    <td style="background-color: grey">Tuesday</td>
+    <td style="background-color: grey">Wednesday</td>
+    <td style="background-color: grey">Thursday</td>
+    <td style="background-color: grey">Friday</td>
+    <td style="background-color: grey">Saturday</td>
+  </tr>
+  <% @i = 0 %>
+  <% until @i == 252 %>
+    <% @available = 0 %>
+    <% @sum = 0 %>
+      <% @users.each do |user| %>
+        <% if user["user_info_ptr"]["times"][@i] == 1 %>
+          <% @sum = @sum + 1%>
+          <% if @sum == @users.length %>
+            <% @available = 1%>
+          <% end %>
+        <% end %>
+      <% end %>
+      <% if @i % 7 == 0%>
+        <% if @i % 14 == 0%>
+          <tr id="myrow">
+        <% else %>
+          <tr id="myrow" style="border-bottom:1pt solid black;">
+        <% end %>
+           <td style="background-color: grey;">
+             <% if (@i/14+6) == 12 && (@i % 14) == 0 %>
+               <%= (@i/14+6) %>:00
+             <% elsif (@i/14+6) == 12 && (@i % 14) != 0 %>
+               <%= (@i/14+6)%>:30
+             <% else%>
+               <% if (@i % 14) != 0 %>
+                 <%= (@i/14+6) % 12 %>:30 
+               <% else%>
+                 <%= (@i/14+6) % 12%>:00 
+               <% end %>
+             <% end %>
+             <% if ((@i/14+6)) / 12 >= 1%>
+               pm
+             <% else %>
+               am
+             <% end %>
+           </td>
+           <% if @available == 1 %>
+             <td style="background-color: rgb(0, 0, 0);">
+           <% else %>
+             <td style="background-color: rgb(255, 255, 255);">
+           <% end %>
+           <input type="hidden" name="times[<%=@i%>]" value="<%= @available %>"></td>
+        <% elsif ((@i+1) % 7) == 0 %>
+           <% if @users[0]["user_info_ptr"]["times"][@i] == 1 %>
+             <td style="background-color: rgb(0, 0, 0);">
+           <% else %>
+             <td style="background-color: rgb(255, 255, 255);">
+           <% end %>
+           <input type="hidden" name="times[<%=@i%>]" value="<%= @available %>"></td>
+        </tr>
+        <% else %>
+            <% if @available == 1 %>
+             <td style="background-color: rgb(0, 0, 0);">
+           <% else %>
+             <td style="background-color: rgb(255, 255, 255);">
+           <% end %>
+           <input type="hidden" name="times[<%=@i%>]" value="<%= @available %>"></td>
+        <% end %>
+      <% @i = @i + 1%>
+  <% end %>
+</table>
+
+
 </body>
 
 
