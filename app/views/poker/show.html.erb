@@ -42,13 +42,13 @@
     end
     %>
     <%= image_tag profile_picture, height: '200', width: '200' %>
-    <%= form_tag("/vote", method: "post") do %>
+    <%= form_tag(vote_path(:feat_id => @feature_id), method: "post") do %>
     <fieldset class="rating">
         <%5.downto(1) do |r|%>
             <input type="radio" id="star<%=r%>" name="rating" value="<%=r%>" <%=checked="checked" if @stored_vote == r %>  /><label for="star<%=r%>" title="<%=r%>"><%=r%> stars</label>
         <%end%>
     </fieldset>
-        <div class='btn-file'><%= submit_tag("Vote") %></div>
+        <div class='btn-file'><%= submit_tag "Vote", :feat_id => @feature_id  %></div>
     <%end%>
 </div>
 
@@ -80,7 +80,13 @@
                 <h2 style= "color: white"><%=user["user_info_ptr"]["first_name"]%> <%=user["user_info_ptr"]["last_name"]%></h2>
                 <fieldset class="mem_rating">
                     <%5.downto(1) do |r|%>
-                        <input type="radio" id="mem_star<%=r%>" name="mem_rating" value="<%=r%>" <%=checked="checked" if user['vote'] == r %> disabled /><label title="<%=r%>"><%=r%> stars</label>
+                        <input type="radio" id="mem_star<%=r%>" name="mem_rating" value="<%=r%>" disabled 
+                        <%if user['vote'] <= r %>checked class="mem_rating_colored" <%end%>
+                        /><label 
+                        <%if user['vote'] >= r %>
+                            style = "color: #f70; text-shadow:1px 1px #c60, 2px 2px #940, .1em .1em .2em rgba(0,0,0,.5);"
+                        <%end%>
+                        title="<%=r%>"><%=r%> stars</label>
                     <%end%>
                 </fieldset>
               </div>
@@ -123,15 +129,16 @@
 					<%end%>
 				</ul>
 			</div>
+			<%= form_tag(comment_path(:feat_id => @feature_id), method: "post") do %>
 			<div class="panel-footer">
 				<div class="input-group">
-					<input id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." />
+					<input name = "comment" id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." />
 					<span class="input-group-btn">
-						<button class="btn btn-warning btn-sm" id="btn-chat">
-							Send</button>
+					    <%= submit_tag "Send", :class => "btn btn-warning btn-sm", :id => "btn-chat" %>
 					</span>
 				</div>
 			</div>
+			<%end%>
 		</div>
     </div>
 </div>

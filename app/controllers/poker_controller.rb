@@ -66,8 +66,8 @@ class PokerController < ApplicationController
     
     def vote
         @new_rating = params[:rating]
-        #@feature_id = params[:id]
-        @feature_id = "i1SOfr1P6N"
+        @feature_id = params[:feat_id]
+        #@feature_id = "i1SOfr1P6N"
         #@user_info_id = session[:current_user]["user_info_id"]
         @user_info = @client.query("User_Info").eq("user_objectId", session[:current_user]["objectId"]).get.first
         
@@ -86,8 +86,21 @@ class PokerController < ApplicationController
             @add_vote["vote"] = @new_rating.to_i
             @add_vote.save
         end
-        puts @user_vote
         
-        redirect_to poker_path("C7nugV0h2l")
+        redirect_to poker_path(@feature_id)
+    end
+    
+    def comment
+        @user_info = @client.query("User_Info").eq("user_objectId", session[:current_user]["objectId"]).get.first
+        @new_comment = params[:comment]
+        @feature_id = params[:feat_id]
+        
+        new_message = @client.object("Poker_Discussion")
+        new_message["user_info_ptr"] = Parse::Pointer.new({"className" => "User_Info","objectId"  =>  @user_info["objectId"]})
+        new_message["feature_ptr"] = Parse::Pointer.new({"className" => "Feature","objectId"  =>  @feature_id})
+        new_message["message"] = @new_comment
+        message_result = new_message.save
+        
+        redirect_to poker_path(@feature_id)
     end
 end    
