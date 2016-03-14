@@ -52,10 +52,12 @@ class PokerController < ApplicationController
         end
         
         @stored_vote = 0
+        @voted_hash = {}
         @poker_users.each do |i|
-           if @user_info["objectId"] == i["user_info_ptr"]["objectId"]
-               @stored_vote = i['vote']
-           end
+            @voted_hash[i["user_info_ptr"]["objectId"]] = true
+            if @user_info["objectId"] == i["user_info_ptr"]["objectId"]
+                @stored_vote = i['vote']
+            end
         end
         
         @feature_comments = @client.query("Poker_Discussion").tap do |i|
@@ -91,6 +93,7 @@ class PokerController < ApplicationController
     end
     
     def comment
+        puts "*******************"
         @user_info = @client.query("User_Info").eq("user_objectId", session[:current_user]["objectId"]).get.first
         @new_comment = params[:comment]
         @feature_id = params[:feat_id]
@@ -101,6 +104,6 @@ class PokerController < ApplicationController
         new_message["message"] = @new_comment
         message_result = new_message.save
         
-        redirect_to poker_path(@feature_id)
+        #redirect_to poker_path(@feature_id)
     end
 end    

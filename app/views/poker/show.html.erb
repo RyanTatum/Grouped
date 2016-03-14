@@ -27,6 +27,12 @@
         <%=select(:post, 'feature_dropdown', @features.collect {|s| [s["name"]]}, :onchange => "this.form.submit()")%>
     </div>
 </div>-->
+<div id= 'poker_page' hidden></div>
+<%= javascript_tag do %>
+  window.current_user_id = '<%= @user_info["objectId"] %>';
+  window.number_of_comments = <%= @feature_comments.length %>;
+  window.current_feature_id = '<%=@feature_id%>';
+<% end %>
 
 <div class= "center_wrapper">
     <%=select(:post, 'sprint_dropdown', @sprints.collect {|s| [s["name"]]}, {:onchange => "this.form.submit()"}, {:class => 'dropdown-poker'})%>
@@ -52,9 +58,6 @@
     <%end%>
 </div>
 
-
-
-
 <!--<div class="center_wrapper">
     <fieldset class="rating">
         <input type="radio" id="star5" name="rating" value="5" disabled /><label for="star5" title="Difficult">5 stars</label>
@@ -66,32 +69,51 @@
 </div>-->
 
 <div class= "center_wrapper">
-    <% @poker_users.each do |user| %>
-        <% if user["user_info_ptr"]["objectId"] != @user_info["objectId"] && @display_votes%>
-            <% if user["user_info_ptr"]["profile_picture"]
-                tempStr = user["user_info_ptr"]["profile_picture"].url
-                profile_picture = tempStr.gsub("http" , "https")
-            else
-                profile_picture = "profile_picture.png"
-            end
-            %>
-            <div id = <%=user["objectId"]%> class="member_vote">
-                <a><%= image_tag profile_picture, height: '100', width: '100' %></a>
-                <h2 style= "color: white"><%=user["user_info_ptr"]["first_name"]%> <%=user["user_info_ptr"]["last_name"]%></h2>
-                <fieldset class="mem_rating">
-                    <%5.downto(1) do |r|%>
-                        <input type="radio" id="mem_star<%=r%>" name="mem_rating" value="<%=r%>" disabled 
-                        <%if user['vote'] <= r %>checked class="mem_rating_colored" <%end%>
-                        /><label 
-                        <%if user['vote'] >= r %>
-                            style = "color: #f70; text-shadow:1px 1px #c60, 2px 2px #940, .1em .1em .2em rgba(0,0,0,.5);"
+    <% if @display_votes %>
+        <% @poker_users.each do |user| %>
+            <% if user["user_info_ptr"]["objectId"] != @user_info["objectId"]%>
+                <% if user["user_info_ptr"]["profile_picture"]
+                    tempStr = user["user_info_ptr"]["profile_picture"].url
+                    profile_picture = tempStr.gsub("http" , "https")
+                else
+                    profile_picture = "profile_picture.png"
+                end
+                %>
+                <div id = <%=user["objectId"]%> class="member_vote">
+                    <a><%= image_tag profile_picture, height: '100', width: '100' %></a>
+                    <h2 style= "color: white"><%=user["user_info_ptr"]["first_name"]%> <%=user["user_info_ptr"]["last_name"]%></h2>
+                    <fieldset class="mem_rating">
+                        <%5.downto(1) do |r|%>
+                            <input type="radio" id="mem_star<%=r%>" name="mem_rating" value="<%=r%>" disabled 
+                            <%if user['vote'] <= r %>checked class="mem_rating_colored" <%end%>
+                            /><label 
+                            <%if user['vote'] >= r %>
+                                style = "color: #f70; text-shadow:1px 1px #c60, 2px 2px #940, .1em .1em .2em rgba(0,0,0,.5);"
+                            <%end%>
+                            title="<%=r%>"><%=r%> stars</label>
                         <%end%>
-                        title="<%=r%>"><%=r%> stars</label>
-                    <%end%>
-                </fieldset>
-              </div>
+                    </fieldset>
+                </div>
             <% end %>
         <% end %>
+    <% else %>
+        <% @group_members.each do |user| %>
+            <% if user["user_info_ptr"]["objectId"] != @user_info["objectId"]%>
+                <% if user["user_info_ptr"]["profile_picture"]
+                    tempStr = user["user_info_ptr"]["profile_picture"].url
+                    profile_picture = tempStr.gsub("http" , "https")
+                else
+                    profile_picture = "profile_picture.png"
+                end
+                %>
+                <div id = <%=user["objectId"]%> class="member_vote">
+                    <a><%= image_tag profile_picture, height: '100', width: '100' %></a>
+                    <h2 style= "color: white"><%=user["user_info_ptr"]["first_name"]%> <%=user["user_info_ptr"]["last_name"]%></h2>
+                    <h2 style= "color: white"><%= @voted_hash[user["user_info_ptr"]["objectId"]] ? "voted" : "Needs to vote"%></h2>
+                </div>
+            <% end%>
+        <% end %>
+    <% end %>
 </div>
 
 
@@ -129,16 +151,16 @@
 					<%end%>
 				</ul>
 			</div>
-			<%= form_tag(comment_path(:feat_id => @feature_id), method: "post") do %>
+			<% #form_tag(comment_path(:feat_id => @feature_id), method: "post") do %>
 			<div class="panel-footer">
 				<div class="input-group">
 					<input name = "comment" id="btn-input" type="text" class="form-control input-sm" placeholder="Type your message here..." />
 					<span class="input-group-btn">
-					    <%= submit_tag "Send", :class => "btn btn-warning btn-sm", :id => "btn-chat" %>
+					    <button name = <%=@feature_id%> class="btn btn-warning btn-sm" id="btn-chat">Send</button>
 					</span>
 				</div>
 			</div>
-			<%end%>
+			<% #end%>
 		</div>
     </div>
 </div>
