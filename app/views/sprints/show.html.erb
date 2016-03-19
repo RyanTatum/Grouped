@@ -6,12 +6,20 @@
     <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <script type="text/javascript">
         
-        function div_show() {
+        function div_abc_show() {
           document.getElementById('abc').style.display = "block";
         }
         //Function to Hide Popup
-        function div_hide(){
+        function div_abc_hide(){
           document.getElementById('abc').style.display = "none";
+        }
+        
+        function div_sp_show() {
+          document.getElementById('sprintPopup').style.display = "block";
+        }
+        //Function to Hide Popup
+        function div_sp_hide(){
+          document.getElementById('sprintPopup').style.display = "none";
         }
         
         //Function to save a new feature
@@ -228,8 +236,8 @@
     <hr>
     <div class = "menu">
     <ul>
-      <li><button id="popup" onclick="div_show()">Add Feature</button></li>
-      <li>New Sprint</li> 
+      <li><button id="popup" onclick="div_abc_show()">Add Feature</button></li>
+      <li><button id="popup" onclick="div_sp_show()">New Sprint</button></li>
       <li><%= select_tag(:sprint_id, options_for_select(sprints_array), :onchange => 'changeTable()', :id => "sprint_field", :class => "form-control") %></li>
     </ul>
     </div>
@@ -238,20 +246,43 @@
       <div class="column" id="doing"></div>
       <div class="column" id="done"></div>
   </div>
-    <div id="abc">
+  <div id="abc">
     <!-- Popup Div Starts Here -->
     <div id="popupContact">
     <!-- Contact Us Form -->
-    <%=image_tag("closebutton.png", alt: "Example Image", :onclick => 'div_hide()', :id => 'close')%>
+    <%=image_tag("closebutton.png", alt: "Example Image", :onclick => 'div_abc_hide()', :id => 'close')%>
     <form id = "form">
+      Feature Name:<br>
       <input type="text" id = "name" name="name" placeholder="Feature Name"><br>
+      Feature Description:<br>
       <input type="text" id = "description" name="description" placeholder="Description">
       <!--<input type="submit" value="Submit" id="submit">-->
       <input type="button" name="submit" id="submit" value="submit" onclick="saveFeature();"/>
     </form>
     </div>
     <!-- Popup Div Ends Here -->
+  </div>
+  
+  <div id="sprintPopup">
+    <!-- Popup Div Starts Here -->
+    <div id="popupContact">
+    <!-- Contact Us Form -->
+    <%=image_tag("closebutton.png", alt: "Example Image", :onclick => 'div_sp_hide()', :id => 'close')%>
+    <form id = "form">
+      Sprint Name:<br>
+      <input type="text" id = "sprintName" name="name" placeholder="Sprint Name"><br>
+      Start Date:<br>
+      <input type="date" id = "startDate" name="startDate">
+      End Date:<br>
+      <input type="date" id = "endDate" name="endDate">
+      <!--<input type="submit" value="Submit" id="submit">-->
+      <input type="button" name="submit" id="submit" value="submit" onclick="saveFeature();"/>
+    </form>
     </div>
+    <!-- Popup Div Ends Here -->
+  </div>
+  
+  
 </div>
 </body>
 </html>
