@@ -48,6 +48,20 @@
     </select>
 </div>
 
+<div class= "center_wrapper">
+    <div class = "poker_info">
+        <!--<% if @selected_feat["difficulty"] %>
+        <div class = "poker_info_text">Difficulty: <%= @selected_feat["difficulty"]%></div>
+        <% end %>-->
+        <% if @selected_feat["description"] %> 
+        <div class = 'poker_info_header'>
+            <div class = "poker_info_title">Description: </div>
+        </div>
+        <div class = "poker_info_text"><%= @selected_feat["description"]%></div>
+        <% end%>
+    </div>
+</div>
+
 <!--<div class= "center_wrapper">
     <%=select(:post, 'sprint_dropdown', @sprints.collect {|s| [s["name"]]}, {:onchange => "this.form.submit()"}, {:class => 'dropdown-poker'})%>
     <%=select(:post, 'feature_dropdown',  @features.collect {|s| [s["name"]]}, {:onchange => "this.form.submit()"}, {:class => 'dropdown-poker'})%>
@@ -183,9 +197,9 @@
 <div class="center_wrapper">
     <% if @selected_feat["owner_ptr"] && @user_info["objectId"] == @selected_feat["owner_ptr"]["objectId"]%>
         <% if @sumbit_enable && @selected_feat["difficulty"] != @stored_vote %>
-            <%= button_to 'Submit Feature', submitVote_path(id: @feature_id, diff: @stored_vote), :class => 'btn btn-primary', method: :post%>
+            <%= button_to 'Submit Feature', submitVote_path(id: @feature_id, diff: @stored_vote), :class => 'btn btn-primary', :id => 'poker_submit', method: :post%>
         <% else %>
-            <%= button_to 'Submit Feature', submitVote_path(id: @feature_id), :class => 'btn btn-primary', method: :post, :disabled => true%>
+            <%= button_to 'Submit Feature', submitVote_path(id: @feature_id), :class => 'btn btn-primary', method: :post, :disabled => true, :id => 'poker_submit'%>
         <% end %>
     <% end %>
 </div>
