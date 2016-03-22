@@ -35,9 +35,23 @@
 <% end %>
 
 <div class= "center_wrapper">
+    <select class= "dropdown-poker">
+        <% @sprints.each do |s|%>
+            <optgroup id = <%= s["objectId"]%> label= <%=s["name"]%>>
+                <% @features.each do |f|%>
+                    <% if f["sprint_ptr"]["objectId"] == s["objectId"] %>
+                        <option id = <%= f["objectId"]%> value= <%= f["objectId"]%> <%=selected = "selected" if f["objectId"] == @feature_id%> ><%= f["name"]%></option>
+                    <%end%>
+                <% end %>
+            </optgroup>
+        <%end%>
+    </select>
+</div>
+
+<!--<div class= "center_wrapper">
     <%=select(:post, 'sprint_dropdown', @sprints.collect {|s| [s["name"]]}, {:onchange => "this.form.submit()"}, {:class => 'dropdown-poker'})%>
     <%=select(:post, 'feature_dropdown',  @features.collect {|s| [s["name"]]}, {:onchange => "this.form.submit()"}, {:class => 'dropdown-poker'})%>
-</div>
+</div>-->
 
 <div class="center_wrapper">
     <% if @user_info["profile_picture"]
@@ -140,8 +154,9 @@
 						<div class="chat-body clearfix">
 							<div class="header">
 								<strong class="primary-font"><%= com['user_info_ptr']['first_name']%> <%= com['user_info_ptr']['last_name']%></strong> <small class="pull-right text-muted">
-									<% d = DateTime.new(com["createdAt"][0..3].to_i, com["createdAt"][5..6].to_i, com["createdAt"][8..9].to_i) %>
-									<span class="glyphicon glyphicon-time"></span><%= d.strftime("%B") %>  <%= com["createdAt"][8..9].to_i.ordinalize %>, <%=d.strftime("%Y") %></small>
+									<% d = DateTime.iso8601(com["createdAt"][0..18] + "-05:00")
+									d = d.advance(:hours => -5)%>
+									<span class="glyphicon glyphicon-time"></span><%= d.strftime("%B") %>  <%= com["createdAt"][8..9].to_i.ordinalize %>, <%=d.strftime("%Y") %> at <%=d.strftime("%I:%M %p") %></small>
 							</div>
 							<p>
 								<%=com['message']%>
@@ -163,4 +178,14 @@
 			<% #end%>
 		</div>
     </div>
+</div>
+
+<div class="center_wrapper">
+    <% if @selected_feat["owner_ptr"] && @user_info["objectId"] == @selected_feat["owner_ptr"]["objectId"]%>
+        <% if @sumbit_enable && @selected_feat["difficulty"] != @stored_vote %>
+            <%= button_to 'Submit Feature', submitVote_path(id: @feature_id, diff: @stored_vote), :class => 'btn btn-primary', method: :post%>
+        <% else %>
+            <%= button_to 'Submit Feature', submitVote_path(id: @feature_id), :class => 'btn btn-primary', method: :post, :disabled => true%>
+        <% end %>
+    <% end %>
 </div>

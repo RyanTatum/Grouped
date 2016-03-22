@@ -63,6 +63,7 @@ Rails.application.routes.draw do
   resources :poker
   match '/vote', to: 'poker#vote', via: :post
   match '/comment', to: 'poker#comment', via: :post
+  match '/submitVote', to: 'poker#submitVote', via: :post
   resources :calendars
   match '/status', to: 'users#status', via: :post
   match '/status', to: 'users#status', via: :get
