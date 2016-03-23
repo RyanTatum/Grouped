@@ -26,11 +26,11 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-left">
         <% if session[:current_user] != nil %>
-          <li><a id = "nav_btns" class = "nav_tab" href = "#" style = "color: white">Overview</a></li>
-          <li><a id = "nav_btns" class = "nav_tab" href = "#" style = "color: white">Blakes</a></li>
-          <li><a id = "nav_btns" class = "nav_tab" href = "#" style = "color: white">Poker</a></li>
-          <li><a id = "nav_btns" class = "nav_tab" href = "#" style = "color: white">Chat</a></li>
-          <li><a id = "nav_btns" class = "nav_tab" href = "#" style = "color: white">Video Chat</a></li>
+          <li><a id = "nav_btns" class = "nav_tab <%='nav_tab_active' if request.fullpath.include? 'users' %>" href = "#" style = "color: white">Overview</a></li>
+          <li><a id = "nav_btns" class = "nav_tab <%='nav_tab_active' if request.fullpath.include? 'blake' %>" href = "#" style = "color: white">Blakes</a></li>
+          <li><a id = "nav_btns" class = "nav_tab <%='nav_tab_active' if request.fullpath.include? 'poker' %>" href = "#" style = "color: white">Poker</a></li>
+          <li><a id = "nav_btns" class = "nav_tab <%='nav_tab_active' if request.fullpath.include? 'chat' %>" href = "#" style = "color: white">Chat</a></li>
+          <li><a id = "nav_btns" class = "nav_tab <%='nav_tab_active' if request.fullpath.include? 'video' %>" href = "#" style = "color: white">Video Chat</a></li>
         <% end %>
       </ul>
       <ul class="nav navbar-nav navbar-right">
