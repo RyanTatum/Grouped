@@ -64,7 +64,7 @@ function dateChange(d)
     }
     else
     {
-        tmpTime = d.getHours() - 5;
+        tmpTime = d.getHours() - 12;
     }
     if(tmpTime < 10)
     {
@@ -74,14 +74,21 @@ function dateChange(d)
     {
         newDate = newDate + tmpTime.toString();
     }
-    newDate = newDate + ':' + d.getMinutes();
-    if( d.getHours() < 12)
+    if(d.getMinutes() < 10)
     {
-        newDate = newDate + 'AM';
+        newDate = newDate + ':' + '0' + d.getMinutes();
     }
     else
     {
-        newDate = newDate + 'PM';
+        newDate = newDate + ':' + d.getMinutes();
+    }
+    if( d.getHours() < 12)
+    {
+        newDate = newDate + ' AM';
+    }
+    else
+    {
+        newDate = newDate + ' PM';
     }
     return newDate;
 }
