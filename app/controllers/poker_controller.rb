@@ -46,7 +46,7 @@ class PokerController < ApplicationController
         end.get
         
         if @feature_id == "no_feat"
-            if @features
+            if @features && @features.first
                 @selected_feat = @features.first
                 @feature_id = @selected_feat["objectId"]
                 @selected_sprint = @selected_feat["sprint_ptr"]
