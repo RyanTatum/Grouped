@@ -52,7 +52,7 @@ class ApplicationController < ActionController::Base
     if !session[:current_user]["current_groupId"] || session[:current_user]["current_groupId"] == ""
       if @groups
         temp = @groups.first
-        session[:current_user]["current_groupId"] = temp["objectId"]
+        session[:current_user]["current_groupId"] = temp["group_ptr"]["objectId"]
       else
         session[:current_user]["current_groupId"] = ""
       end

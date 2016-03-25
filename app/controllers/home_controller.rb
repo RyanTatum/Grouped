@@ -11,9 +11,8 @@ class HomeController < ApplicationController
     end
       
     def group_change
-        @new_group = @client.query("User_Group").tap do |q|
+        @new_group = @client.query("Group").tap do |q|
             q.eq("objectId", params[:groupId])
-            q.include = "group_ptr,user_info_ptr"
         end.get.first
         if @new_group
             session[:current_user]["current_groupId"] = @new_group["objectId"]

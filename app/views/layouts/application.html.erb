@@ -8,7 +8,6 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
 <nav id = "grey_grad" class="navbar navbar-inverse">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -54,7 +53,7 @@
             <% if @groups %>
               <% @groups.each do |group| %>
               <li>
-                <a id= <%=group["objectId"]%> name= <%=request.fullpath%>  class = "group_selection" href="#"><%= group["group_ptr"]["name"] %><div id = <%="check#{group['objectId']}"%> class = "check_mark" style = 'float:right;<%= "display: none" if session[:current_user]["current_groupId"] != group["objectId"]%>'>&#10003</div></a>
+                <a id= <%=group["group_ptr"]["objectId"]%> name= <%=request.fullpath%>  class = "group_selection" href="#"><%= group["group_ptr"]["name"] %><div id = <%="check#{group['group_ptr']['objectId']}"%> class = "check_mark" style = 'float:right;<%= "display: none" if session[:current_user]["current_groupId"] != group["group_ptr"]["objectId"]%>'>&#10003</div></a>
               </li>
               <% end %>
             <% end %>

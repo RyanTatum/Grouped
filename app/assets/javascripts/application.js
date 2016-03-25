@@ -33,6 +33,30 @@ $(document).ready(function() {
             {
                 $(".check_mark").hide();
                 $("#check" + selected).show();
+                var newLocation = "";
+                //var newLocation = window.location.href.slice(0, window.location.href.indexOf(path));
+                if(path.indexOf("poker") >= 0)
+                {
+                    //newLocation = "/poker";
+                    newLocation = 'https://workspace1-aclendenen.c9.io/poker';
+                }
+                else if(path.indexOf("sprint") >= 0)
+                {
+                    newLocation = "/sprints";
+                }
+                else if(path.indexOf("chat") >= 0)
+                {
+                    newLocation = "/chat";
+                }
+                else if(path.indexOf("/video") >= 0)
+                {
+                    newLocation = "/video";
+                }
+                else
+                {
+                    newLocation = "/users";
+                }
+                window.location.replace(newLocation);
             },
             failure: function() 
             {

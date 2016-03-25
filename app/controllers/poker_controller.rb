@@ -9,7 +9,6 @@ class PokerController < ApplicationController
     end
     
     def submitVote
-        puts "*************kjkjlkjkl****************"
         @feature_id = params[:id]
         @diff = params[:diff]
         if @feature_id
@@ -28,13 +27,16 @@ class PokerController < ApplicationController
     end
     
     def show
-        puts "*************YAAAA****************"
-        puts params[:id]
         @user_info = @client.query("User_Info").eq("user_objectId", session[:current_user]["objectId"]).get.first
         @feature_id = params[:id]
         @selected_sprint = params[:sprint_id]
         #@feature_id = "i1SOfr1P6N"
-        @group_id = "QUxofxenGB" #session[:current_user]["group_id"]
+        #@group_id = "QUxofxenGB" 
+        @group_id =  session[:current_user]["current_groupId"]
+        
+        if !@group_id || @group_id == ""
+            redirect_to users_path
+        end
         
         @sprints = @client.query("Sprint").tap do |j|
             j.eq("group_ptr", Parse::Pointer.new({"className" => "Group","objectId"  =>  @group_id}))
@@ -44,6 +46,13 @@ class PokerController < ApplicationController
             q.eq("group_ptr", Parse::Pointer.new({"className" => "Group","objectId"  =>  @group_id}))
             q.include = "group_ptr,sprint_ptr,owner_ptr"  
         end.get
+        
+        puts "****************"
+        puts @features
+        
+        if !@features || @features == []
+           redirect_to sprint_path 
+        end
         
         if @feature_id == "no_feat"
             if @features && @features.first
@@ -127,7 +136,6 @@ class PokerController < ApplicationController
     end
     
     def comment
-        puts "*******************"
         @user_info = @client.query("User_Info").eq("user_objectId", session[:current_user]["objectId"]).get.first
         @new_comment = params[:comment]
         @feature_id = params[:feat_id]
