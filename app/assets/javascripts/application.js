@@ -38,23 +38,27 @@ $(document).ready(function() {
                 if(path.indexOf("poker") >= 0)
                 {
                     //newLocation = "/poker";
-                    newLocation = 'https://workspace1-aclendenen.c9.io/poker';
+                    newLocation = window.location.href.slice(0, window.location.href.indexOf("poker")) + "/poker";
                 }
                 else if(path.indexOf("sprint") >= 0)
                 {
-                    newLocation = "/sprints";
+                    newLocation = window.location.href.slice(0, window.location.href.indexOf("sprint")) + "/sprints";
                 }
                 else if(path.indexOf("chat") >= 0)
                 {
-                    newLocation = "/chat";
+                    newLocation = window.location.href.slice(0, window.location.href.indexOf("chat")) + "/chat";
                 }
-                else if(path.indexOf("/video") >= 0)
+                else if(path.indexOf("video") >= 0)
                 {
-                    newLocation = "/video";
+                    newLocation = window.location.href.slice(0, window.location.href.indexOf("video")) + "/video";
+                }
+                else if(path.indexOf("user") >= 0 || path.indexOf("group") >= 0)
+                {
+                    newLocation = window.location.href;
                 }
                 else
                 {
-                    newLocation = "/users";
+                    newLocation = window.location.href;
                 }
                 window.location.replace(newLocation);
             },

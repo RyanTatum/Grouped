@@ -36,6 +36,7 @@ class PokerController < ApplicationController
         
         if !@group_id || @group_id == ""
             redirect_to users_path
+            flash[:notice] = "You need be in a group in order to poker"
         end
         
         @sprints = @client.query("Sprint").tap do |j|
@@ -51,7 +52,8 @@ class PokerController < ApplicationController
         puts @features
         
         if !@features || @features == []
-           redirect_to sprint_path 
+            flash[:notice] = "The selected group has no features to poker"
+           redirect_to users_path 
         end
         
         if @feature_id == "no_feat"
