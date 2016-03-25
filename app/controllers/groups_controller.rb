@@ -132,7 +132,6 @@ class GroupsController < ApplicationController
     end
     
     def destroy
-      puts '************************************'
       @group_id = params[:id]
       @user_group_id = params[:delete_user_id]
       if @user_group_id

@@ -60,6 +60,10 @@ Rails.application.routes.draw do
   resources :sessions
   resources :users
   resources :groups
+  resources :poker
+  match '/vote', to: 'poker#vote', via: :post
+  match '/comment', to: 'poker#comment', via: :post
+  match '/submitVote', to: 'poker#submitVote', via: :post
   resources :calendars
   match '/group_change', to: 'home#group_change', via: :post
   match '/group_change', to: 'home#group_change', via: :get
