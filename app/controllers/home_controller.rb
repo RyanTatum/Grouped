@@ -16,11 +16,9 @@ class HomeController < ApplicationController
             q.include = "group_ptr,user_info_ptr"
         end.get.first
         if @new_group
-            session[:current_user]["current_groupId"] = @new_group
+            session[:current_user]["current_groupId"] = @new_group["objectId"]
         end
         @path = params[:cur_path]
-        puts "***************"
-        puts @path
         if @path
             if @path.include? "/poker"
                 redirect_to users_path
