@@ -61,6 +61,8 @@ Rails.application.routes.draw do
   resources :users
   resources :groups
   resources :calendars
+  match '/group_change', to: 'home#group_change', via: :post
+  match '/group_change', to: 'home#group_change', via: :get
   match '/status', to: 'users#status', via: :post
   match '/status', to: 'users#status', via: :get
   match '/password_reset/', to: 'users#password', via: :post

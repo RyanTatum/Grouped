@@ -20,3 +20,25 @@
 //= require bootstrap-sprockets
 
 //$('.dropdown-toggle').dropdown()
+
+$(document).ready(function() {
+    $(".group_selection").click(function(){
+        var selected = this.id;
+        var path = this.name;
+        $.ajax({
+            url: '/group_change',
+            data: {groupId: selected, cur_path: path},
+            type: 'post',
+            success: function(data) 
+            {
+                $(".check_mark").hide();
+                $("#check" + selected).show();
+            },
+            failure: function() 
+            {
+                
+            }
+        });
+    });
+    
+});

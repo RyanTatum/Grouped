@@ -47,7 +47,17 @@ class ApplicationController < ActionController::Base
     @groups = @client.query("User_Group").tap do |q|
         q.eq("user_info_ptr", Parse::Pointer.new({"className" => "User_Info","objectId"  =>  @user_info["objectId"]}))
         q.include = "group_ptr,user_info_ptr"
-      end.get
+    end.get
+    
+    if !session[:current_user]["current_groupId"] || session[:current_user]["current_groupId"] == ""
+      if @groups
+        temp = @groups.first
+        session[:current_user]["current_groupId"] = temp["objectId"]
+      else
+        session[:current_user]["current_groupId"] = ""
+      end
+    end
+    
   end
   
   def logged_in?

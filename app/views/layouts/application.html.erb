@@ -26,8 +26,8 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-left">
         <% if session[:current_user] != nil %>
-          <li><a id = "nav_btns" class = "nav_tab <%='nav_tab_active' if request.fullpath.include? 'users' %>" href = <%=user_path(session[:current_user]["objectId"])%> style = "color: white">Overview</a></li>
-          <li><a id = "nav_btns" class = "nav_tab <%='nav_tab_active' if request.fullpath.include? 'blake' %>" href = "#" style = "color: white">Blakes</a></li>
+          <li><a id = "nav_btns" class = "nav_tab <%='nav_tab_active' if request.fullpath.include? 'users/' %>" href = <%=user_path(session[:current_user]["objectId"])%> style = "color: white">Overview</a></li>
+          <li><a id = "nav_btns" class = "nav_tab <%='nav_tab_active' if request.fullpath.include? 'sprints' %>" href = <%=sprints_path%> style = "color: white">Breakdown</a></li>
           <li><a id = "nav_btns" class = "nav_tab <%='nav_tab_active' if request.fullpath.include? 'poker' %>" href = "#" style = "color: white">Poker</a></li>
           <li><a id = "nav_btns" class = "nav_tab <%='nav_tab_active' if request.fullpath.include? 'chat' %>" href = "#" style = "color: white">Chat</a></li>
           <li><a id = "nav_btns" class = "nav_tab <%='nav_tab_active' if request.fullpath.include? 'video' %>" href = "#" style = "color: white">Video Chat</a></li>
@@ -47,12 +47,16 @@
         <% else %>
           <!--<li><%= link_to "Profile", user_path(session[:current_user]["objectId"]), :id => "profile", :method => 'get', :style => "color: white" %></li>-->
           <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style = "color: white">My Groups<span class="caret"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style = "color: white">My Groups<span class="caret" style = "color: white"></span></a>
           <ul class="dropdown-menu">
             <li><a href= <%=new_group_path%>><%= image_tag "add.png", height: '20', width: '20', align: 'left' %>Create Group</a></li>
             <li role="separator" class="divider"></li>
-            <% @groups.each do |group| %>
-            <li><a href="<%=group_path(group["group_ptr"]["objectId"])%>"><%= group["group_ptr"]["name"] %></a></li>
+            <% if @groups %>
+              <% @groups.each do |group| %>
+              <li>
+                <a id= <%=group["objectId"]%> name= <%=request.fullpath%>  class = "group_selection" href="#"><%= group["group_ptr"]["name"] %><div id = <%="check#{group['objectId']}"%> class = "check_mark" style = 'float:right;<%= "display: none" if session[:current_user]["current_groupId"] != group["objectId"]%>'>&#10003</div></a>
+              </li>
+              <% end %>
             <% end %>
           </ul>
         </li>
