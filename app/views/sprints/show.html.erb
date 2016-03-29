@@ -22,8 +22,66 @@
           document.getElementById('sprintPopup').style.display = "none";
         }
         
+        function div_ef_show(id) {
+          document.getElementById('editFeaturePopup').style.display = "block";
+          var Feature = Parse.Object.extend("Feature");
+          var query = new Parse.Query(Feature);
+          query.equalTo("objectId", id);
+          query.find({
+            success:function(feature) {
+              document.getElementById('editfeaturename').value = feature[0].get('name');
+              document.getElementById('editfeaturedescription').value = feature[0].get('description');
+              document.getElementById('editfeatureworker').value = feature[0].get('current_worker');
+              document.getElementById('feature_dif').innerHTML = feature[0].get('difficulty');
+              document.getElementById('deletefeature').setAttribute('onclick', 'deleteFeature(' +'"'+id+'")');
+              document.getElementById('updatefeature').setAttribute('onclick', 'updateFeature(' +'"'+id+'")');
+            }
+          });
+        }
+        
+        //Function to Hide Popup
+        function div_ef_hide(){
+          document.getElementById('editFeaturePopup').style.display = "none";
+        }
+        
+        function deleteFeature(id) {
+          var Feature = Parse.Object.extend("Feature");
+          var query = new Parse.Query(Feature);
+          query.get(id, {
+            success: function(myObj) {
+              // The object was retrieved successfully.
+              myObj.destroy({
+                success:function() {
+                  changeTable();
+                  div_ef_hide();
+                }
+              });
+            }
+          });
+        }
+        
+        function updateFeature(id) { 
+          var Feature = Parse.Object.extend("Feature");
+          var query = new Parse.Query(Feature);
+          query.get(id, {
+            success: function(myObj) {
+              // The object was retrieved successfully.
+              myObj.set("name", $('#editfeaturename').val());
+              myObj.set("description", $('#editfeaturedescription').val());
+              myObj.set("current_worker", $('#editfeatureworker').val());
+              myObj.save({
+                success:function() {
+                  changeTable();
+                  div_ef_hide();
+                }
+              });
+            }
+          });
+          
+        }
+        
         //Function to save a new feature
-        function saveFeature() {
+        function newFeature() {
           var NewFeature = Parse.Object.extend("Feature");
           var newFeature = new NewFeature();
           newFeature.set("name", $('#name').val());
@@ -31,11 +89,13 @@
           newFeature.set("description", $('#description').val());
           $('#description').val("");
           newFeature.set("sprint_id", $('#sprint_field').val());
-          newFeature.set("status", "todo")
+          newFeature.set("current_worker", $('feature_worker').val());
+          newFeature.set("status", "todo");
+          //newFeature.set("owner_ptr", Parse.Pointer().id = $('.current_user_id').get(0).id)
           
           newFeature.save(null, {
             success: function(newFeature) {
-              div_hide();
+              div_abc_hide();
               changeTable();
               return true;
             },
@@ -46,15 +106,38 @@
               return false;
             }
           });
+        }
+                //Function to save a new feature
+        function newSprint() {
+          var NewFeature = Parse.Object.extend("Sprint");
+          var newFeature = new NewFeature();
+          newFeature.set("name", $('#name').val());
+          $('#name').val("");
+          newFeature.set("start_date", $('#startDate').val());
+          $('#startDate').val("");
+          newFeature.set("end_date", $('#endDate').val());
+          $('#endDate').val("");
           
+          newFeature.save(null, {
+            success: function(newFeature) {
+              div_sp_hide();
+              changeTable();
+              return true;
+            },
+            error: function(newFeature, error) {
+              // Execute any logic that should take place if the save fails.
+              // error is a Parse.Error with an error code and message.
+              alert('Failed to create new object, with error code: ' + error.message);
+              return false;
+            }
+          });
         }
         
         function changeTable() {
           Parse.initialize("Y25GZkeg7cc6dGRDBkhw8SgxmOwT3orM7O6SxSlD","lidAaWkyQwVQRgeMwKB3PCPt09Mzfwe0T02KK0Mg");
-          document.getElementById("todo").innerHTML = "<h2 class='title'>Todo</h2>";
-          document.getElementById("doing").innerHTML = "<h2 class='title'>Doing</h2>";
-          document.getElementById("done").innerHTML = "<h2 class='title'>Done</h2>";
-          
+          document.getElementById("todo").innerHTML = "";
+          document.getElementById("doing").innerHTML = "";
+          document.getElementById("done").innerHTML = "";
           var Feature = Parse.Object.extend("Feature");
           var query = new Parse.Query(Feature);
           var text = "";
@@ -66,8 +149,9 @@
                     var div = document.createElement('div');
                     div.setAttribute("id", object.id);
                     div.setAttribute('class', 'portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all');
+                    div.setAttribute('onclick', 'div_ef_show(' +'"'+object.id+'")')
                     document.body.appendChild(div);
-                    text = "<div class='portlet-header ui-sortable-handle ui-widget-header ui-corner-all'>" + "<span class='ui-icon ui-icon-minusthick portlet-toggle'></span>" + object.get('name') + "</div>" + "<div class='portlet-content'>" + object.get('description') + "</div>";
+                    text = "<div class='portlet-header ui-sortable ui-widget-header ui-corner-all'>"  + object.get('name') + "</div>" + "<div class='portlet-content'>" + object.get('description') + "</div>";
                     div.innerHTML = text;
                     var columnName = object.get("status")
                     
@@ -109,8 +193,6 @@
                 // error is a Parse.Error with an error code and message.
               }
             });
-            
-            
         }
         
         // Monitor tilt direction and switch between classes accordingly
@@ -132,8 +214,8 @@
         }
         
           $(function() {
-            $( ".column" ).sortable({
-              connectWith: ".column",
+            $( ".columnSort" ).sortable({
+              connectWith: ".columnSort",
               handle: ".portlet-header",
               cancel: ".portlet-toggle .title",
               placeholder: "portlet-placeholder ui-corner-all",
@@ -192,23 +274,10 @@
         <meta name="msapplication-TileImage" content="/mstile-144x144.png">
         <meta name="application-name" content="Parse">
 
-    <!--
-    <link href="/assets/main.css?ef16d0b" media="screen" rel="stylesheet" type="text/css">
-    <link href="/assets/print.css?ef16d0b" media="print" rel="stylesheet" type="text/css">
-    >
-    <!--[if lt IE 8]>
-        <link rel="stylesheet" type="text/css" href="/stylesheets/ie7.css" />
-    <![endif]-->
-    <!--[if IE 8]>
-        <link rel="stylesheet" type="text/css" href="/stylesheets/ie8.css" />
-    <![endif]-->
-    <!--[if lt IE 10]>
-        <link rel="stylesheet" type="text/css" href="/stylesheets/ie89.css" />
-    <![endif]-->
     <script>if(Function('/*@cc_on return document.documentMode===10@*/')()){document.documentElement.className+=' ie10';}</script>
 
     <meta name="csrf-param" content="authenticity_token">
-<meta name="csrf-token" content="uYGOKj06BBOqKKGdqZEXaFHgNN/1qJG/w+WJwP803q8=">
+    <meta name="csrf-token" content="uYGOKj06BBOqKKGdqZEXaFHgNN/1qJG/w+WJwP803q8=">
     <meta name="description" content="Focus on creating unique &amp; engaging apps on any platform. We take care of everything else your app needs, from the core of your app to analytics and push notifications.">
     <meta name="keywords" content="backend, mobile, development, server, code">
     <meta property="fb:app_id" content="361736430535656">
@@ -230,9 +299,11 @@
 %>
 
 <body onload="changeTable()">
-<div class="sprint_container" id="view">
+  <div id = <%= @user_info["objectId"] %> class= "current_user_id"></div>
+  <div class="sprint_container" id="view">
     <% sprints_array = @sprints.map { |sprint| [sprint["name"], sprint["objectId"]] } %>
-    <a class = 'title' href="https://icon.uiowa.edu" style="text-decoration: none"><h2>Sprint Board</h2></a>
+    <% users_array = @users.map { |user| [user["first_name"] + ' ' + user["last_name"], user["objectId"]] } %>
+    <h2 class = "title">Sprint Board</h2>
     <hr>
     <div class = "menu">
     <ul>
@@ -242,9 +313,18 @@
     </ul>
     </div>
   <div class= "center_wrapper">
-      <div class="column" id="todo"></div>
-      <div class="column" id="doing"></div>
-      <div class="column" id="done"></div>
+      <div class="column" id="todoSort">
+        <h2 class='title'>Todo</h2>
+        <div class="columnSort column" id="todo"></div>
+      </div>
+      <div class="column" id="doingSort">
+        <h2 class='title'>Doing</h2>
+        <div class="columnSort column" id="doing"></div>
+      </div>
+      <div class="column" id="doneSort">
+        <h2 class='title'>Done</h2>
+        <div class="columnSort column" id="done"></div>
+      </div>
   </div>
   <div id="abc">
     <!-- Popup Div Starts Here -->
@@ -256,8 +336,10 @@
       <input type="text" id = "name" name="name" placeholder="Feature Name"><br>
       Feature Description:<br>
       <input type="text" id = "description" name="description" placeholder="Description">
+      Assign Worker:<br>
+      <%= select_tag(:user_id, options_for_select(users_array), :id => "feature_worker", :class => "form-control") %>
       <!--<input type="submit" value="Submit" id="submit">-->
-      <input type="button" name="submit" id="submit" value="submit" onclick="saveFeature();"/>
+      <input type="button" name="submit" id="submit" value="submit" onclick="newFeature();"/>
     </form>
     </div>
     <!-- Popup Div Ends Here -->
@@ -276,13 +358,32 @@
       End Date:<br>
       <input type="date" id = "endDate" name="endDate">
       <!--<input type="submit" value="Submit" id="submit">-->
-      <input type="button" name="submit" id="submit" value="submit" onclick="saveFeature();"/>
+      <input type="button" name="submit" id="submit" value="submit" onclick="newSprint();"/>
     </form>
     </div>
     <!-- Popup Div Ends Here -->
   </div>
   
-  
+  <div id="editFeaturePopup">
+    <!-- Popup Div Starts Here -->
+    <div id="popupContact">
+    <!-- Contact Us Form -->
+    <%=image_tag("closebutton.png", alt: "Example Image", :onclick => 'div_ef_hide()', :id => 'close')%>
+    <form id = "form">
+      Feature Name:<br>
+      <input type="text" id ="editfeaturename" name="name"><br>
+      Feature Difficulty:<br>
+      <h4 id = "feature_dif"></h4>
+      Feature Description:<br>
+      <input type="text" id = "editfeaturedescription" name="description">
+      Assign Worker:<br>
+      <%= select_tag(:user_id, options_for_select(users_array), :id => "editfeatureworker", :class => "form-control") %>
+      <input type="button" name="submit" id="updatefeature" value="submit"/>
+      <input type="button" name="delete" id="deletefeature" value="delete"/>
+    </form>
+    </div>
+    <!-- Popup Div Ends Here -->
+  </div>
 </div>
 </body>
 </html>

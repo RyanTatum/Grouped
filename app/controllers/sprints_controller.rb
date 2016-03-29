@@ -16,5 +16,9 @@ class SprintsController < ApplicationController
     def show
         @sprints_query = @client.query("Sprint")
         @sprints = @sprints_query.get
+        @users_query = @client.query("User_Info")
+        @users = @users_query.get
+        #@user = session[:current_user]
+        #@user_info = @client.query("User_Info").eq("user_ptr", session[:current_user]["objectId"]).get
     end
 end
