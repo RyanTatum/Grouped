@@ -22,6 +22,7 @@
 //$('.dropdown-toggle').dropdown()
 
 $(document).ready(function() {
+    $('.loading').remove();
     $(".group_selection").click(function(){
         var selected = this.id;
         var path = this.name;
@@ -67,6 +68,12 @@ $(document).ready(function() {
                 
             }
         });
+    });
+    
+    $(".nav_tab").click(function(){
+        $(".nav_tab").removeClass("nav_tab_active");
+        $(this).addClass("nav_tab_active");
+        $(".navbar").after('<div class="loading">Loading&#8230;</div>');
     });
     
 });
