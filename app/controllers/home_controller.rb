@@ -1,6 +1,8 @@
 class HomeController < ApplicationController
-    before_filter :set_current_user
+    skip_before_action :verify_authenticity_token
     before_filter :set_client
+    before_filter :set_cache_headers
+    before_filter :set_current_user
     
     def index
        
@@ -17,21 +19,7 @@ class HomeController < ApplicationController
         if @new_group
             session[:current_user]["current_groupId"] = @new_group["objectId"]
         end
-        @path = params[:cur_path]
-        if @path
-            if @path.include? "/poker"
-                redirect_to users_path
-            elsif @path.include? "/sprints"
-                redirect_to sprint_path
-            elsif @path.include? "/chat"
-                redirect_to users_path
-            elsif @path.include? "/video"
-                redirect_to users_path
-            else
-                redirect_to users_path
-            end
-        else
-            redirect_to users_path
-        end
+
+        redirect_to users_path
     end
 end
