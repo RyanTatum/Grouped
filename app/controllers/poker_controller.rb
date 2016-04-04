@@ -35,7 +35,7 @@ class PokerController < ApplicationController
         @group_id =  session[:current_user]["current_groupId"]
         
         if !@group_id || @group_id == ""
-            redirect_to users_path
+            redirect_to user_path
             flash[:notice] = "You need be in a group in order to poker"
         end
         
@@ -48,12 +48,9 @@ class PokerController < ApplicationController
             q.include = "group_ptr,sprint_ptr,owner_ptr"  
         end.get
         
-        puts "****************"
-        puts @features
-        
         if !@features || @features == []
             flash[:notice] = "The selected group has no features to poker"
-           redirect_to users_path 
+           redirect_to user_path 
         end
         
         if @feature_id == "no_feat"
