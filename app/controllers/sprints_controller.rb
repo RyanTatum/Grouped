@@ -17,7 +17,10 @@ class SprintsController < ApplicationController
     end 
     def show
         @sprints_query = @client.query("Sprint")
-        @sprints = @sprints_query.get
+        @sprints = @client.query("Sprint").tap do |j|
+            j.eq("group_ptr", Parse::Pointer.new({"className" => "Group", "objectId" => session[:current_user]["current_groupId"]}))
+        end.get
+        #@sprints = @sprints_query.get
         @users_query = @client.query("User_Info")
         @users = @users_query.get
         #@user = session[:current_user]

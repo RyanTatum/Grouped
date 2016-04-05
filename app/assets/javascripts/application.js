@@ -23,9 +23,11 @@
 
 $(document).ready(function() {
     $('.loading').remove();
+    
     $(".group_selection").click(function(){
         var selected = this.id;
         var path = this.name;
+        $(".navbar").after('<div class="loading">Loading&#8230;</div>');
         $.ajax({
             url: '/group_change',
             data: {groupId: selected, cur_path: path},
@@ -56,6 +58,7 @@ $(document).ready(function() {
                 else if(path.indexOf("user") >= 0 || path.indexOf("group") >= 0)
                 {
                     newLocation = window.location.href;
+                    $('.loading').remove();
                 }
                 else
                 {
@@ -65,7 +68,7 @@ $(document).ready(function() {
             },
             failure: function() 
             {
-                
+                $('.loading').remove();
             }
         });
     });
