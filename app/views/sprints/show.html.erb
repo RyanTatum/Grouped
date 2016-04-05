@@ -94,6 +94,10 @@
           newFeature.set("sprint_id", $('#sprint_field').val());
           newFeature.set("current_worker", $('feature_worker').val());
           newFeature.set("status", "todo");
+          var Pointer = Parse.Object.extend("User_Info");
+          var pointer = new Pointer();
+          pointer.set("objectId", $('.current_user_id').get(0).id);
+          newFeature.set("owner_ptr", pointer);
           //newFeature.set("owner_ptr", Parse.Pointer().id = $('.current_user_id').get(0).id)
           
           newFeature.save(null, {
@@ -272,7 +276,7 @@
   <div id = <%= @user_info["objectId"] %> class= "current_user_id"></div>
   <div class="sprint_container" id="view">
     <% sprints_array = @sprints.map { |sprint| [sprint["name"], sprint["objectId"]] } %>
-    <% users_array = @users.map { |user| [user["first_name"] + ' ' + user["last_name"], user["objectId"]] } %>
+    <% users_array = @users.map { |user| [user["user_info_ptr"]["first_name"] + ' ' + user["user_info_ptr"]["last_name"], user["user_info_ptr"]["objectId"]] } %>
     <h2 class = "title">Sprint Board</h2>
     <hr>
     <div class = "menu">
@@ -307,7 +311,12 @@
       Feature Description:<br>
       <input type="text" id = "description" name="description" placeholder="Description">
       Assign Worker:<br>
-      <%= select_tag(:user_id, options_for_select(users_array), :id => "feature_worker", :class => "form-control") %>
+      <!--<%= select_tag(:user_id, options_for_select(users_array), :id => "feature_worker", :class => "form-control") %>-->
+      <select id = "feature_worker" class= "form-control">
+        <% @users.each_with_index do |u,i|%>
+          <option id = <%=u["user_info_ptr"]["objectId"]%> value= <%= u["user_info_ptr"]["objectId"]%> <%=selected = "selected" if i==0%>><%=u["user_info_ptr"]["first_name"]%> <%=u["user_info_ptr"]["last_name"]%></option>
+        <%end%>
+      </select>
       <!--<input type="submit" value="Submit" id="submit">-->
       <input type="button" name="submit" id="submit" value="submit" onclick="newFeature();"/>
     </form>
@@ -347,7 +356,12 @@
       Feature Description:<br>
       <input type="text" id = "editfeaturedescription" name="description">
       Assign Worker:<br>
-      <%= select_tag(:user_id, options_for_select(users_array), :id => "editfeatureworker", :class => "form-control") %>
+      <!--<%= select_tag(:user_id, options_for_select(users_array), :id => "editfeatureworker", :class => "form-control") %>-->
+      <select id = "editfeatureworker" class= "form-control">
+        <% @users.each_with_index do |u,i|%>
+          <option id = <%=u["user_info_ptr"]["objectId"]%> value= <%= u["user_info_ptr"]["objectId"]%>><%=u["user_info_ptr"]["first_name"]%> <%=u["user_info_ptr"]["last_name"]%></option>
+        <%end%>
+      </select>
       <input type="button" name="submit" id="updatefeature" value="submit"/>
       <input type="button" name="delete" id="deletefeature" value="delete"/>
     </form>
