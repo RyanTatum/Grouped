@@ -150,9 +150,9 @@
           var newFeature = new NewFeature();
           newFeature.set("name", $('#name').val());
           $('#name').val("");
-          newFeature.set("start_date", $('#startDate').val());
+          newFeature.set("start_date", $('#startDate').datepicker('getDate'));
           $('#startDate').val("");
-          newFeature.set("end_date", $('#endDate').val());
+          newFeature.set("end_date", $('#endDate').datepicker('getDate'));
           $('#endDate').val("");
           
           newFeature.save(null, {
