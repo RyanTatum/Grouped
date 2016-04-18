@@ -29,13 +29,29 @@
           document.getElementById('editFeaturePopup').style.display = "block";
           var Feature = Parse.Object.extend("Feature");
           var query = new Parse.Query(Feature);
+          query.include("owner_ptr")
           query.equalTo("objectId", id);
           query.find({
             success:function(feature) {
               document.getElementById('editfeaturename').value = feature[0].get('name');
               document.getElementById('editfeaturedescription').value = feature[0].get('description');
               document.getElementById('editfeatureworker').value = feature[0].get('current_worker');
-              document.getElementById('feature_dif').innerHTML = feature[0].get('difficulty');
+              
+              //document.getElementById('feature_difficulty').innerHTML = feature[0].get('owner_ptr').id;
+              
+              if ($('.current_user_id').get(0).id == feature[0].get('owner_ptr').id)
+              {
+                $('#edit_hidden_difficulty').show();
+                $('#edit_feature_dif').val(feature[0].get('difficulty'));
+                $('#display_difficulty').hide();
+              }
+              else
+              {
+                $('#display_difficulty').show();
+                $('#edit_hidden_difficulty').hide();
+                document.getElementById('display_difficulty').innerHTML = feature[0].get('difficulty');
+              }
+              
               document.getElementById('deletefeature').setAttribute('onclick', 'deleteFeature(' +'"'+id+'")');
               document.getElementById('updatefeature').setAttribute('onclick', 'updateFeature(' +'"'+id+'")');
             }
@@ -66,12 +82,18 @@
         function updateFeature(id) { 
           var Feature = Parse.Object.extend("Feature");
           var query = new Parse.Query(Feature);
+          query.include("owner_ptr")
           query.get(id, {
             success: function(myObj) {
               // The object was retrieved successfully.
               myObj.set("name", $('#editfeaturename').val());
               myObj.set("description", $('#editfeaturedescription').val());
               myObj.set("current_worker", $('#editfeatureworker').val());
+              if ($('.current_user_id').get(0).id == myObj.get('owner_ptr').id)
+              {
+                myObj.set("difficulty", $('#edit_feature_dif').val());
+              }
+
               myObj.save({
                 success:function() {
                   changeTable();
@@ -92,14 +114,21 @@
           newFeature.set("description", $('#description').val());
           $('#description').val("");
           newFeature.set("sprint_id", $('#sprint_field').val());
-          newFeature.set("current_worker", $('feature_worker').val());
+          newFeature.set("current_worker", $('#feature_worker').val());
           newFeature.set("status", "todo");
           var Pointer = Parse.Object.extend("User_Info");
           var pointer = new Pointer();
           pointer.set("objectId", $('.current_user_id').get(0).id);
           newFeature.set("owner_ptr", pointer);
-          //newFeature.set("owner_ptr", Parse.Pointer().id = $('.current_user_id').get(0).id)
           
+          if($('#usePoker').is(":checked"))   
+            newFeature.set("use_poker", true);
+          else
+          {
+            newFeature.set("use_poker", false);
+            newFeature.set("difficulty", $('#feature_dif').val());
+          }
+
           newFeature.save(null, {
             success: function(newFeature) {
               div_abc_hide();
@@ -114,7 +143,8 @@
             }
           });
         }
-                //Function to save a new feature
+        
+        //Function to save a new sprint
         function newSprint() {
           var NewFeature = Parse.Object.extend("Sprint");
           var newFeature = new NewFeature();
@@ -257,6 +287,16 @@
               icon.closest( ".portlet" ).find( ".portlet-content" ).toggle();
             });
           });
+          
+          function valueChanged()
+          {
+              if($('#usePoker').is(":checked"))   
+                  $("#hidden_difficulty").hide();
+              else
+                  $("#hidden_difficulty").show();
+          }
+            
+
     </script>
   <head>
     <script type="text/javascript" async="" src="//www.googleadservices.com/pagead/conversion_async.js"></script><script type="text/javascript" async="" src="//munchkin.marketo.net/151/munchkin.js"></script><script type="text/javascript" async="" src="//munchkin.marketo.net/151/munchkin.js"></script><script async="" src="//connect.facebook.net/en_US/fbds.js"></script><script async="" src="//www.googletagmanager.com/gtm.js?id=GTM-56BZ4D"></script><script type="text/javascript" async="" src="https://tag.perfectaudience.com/serve/52373e831aa4c02794000069.js"></script><script type="text/javascript" async="" src="https://ssl.google-analytics.com/ga.js"></script>
@@ -317,7 +357,15 @@
           <option id = <%=u["user_info_ptr"]["objectId"]%> value= <%= u["user_info_ptr"]["objectId"]%> <%=selected = "selected" if i==0%>><%=u["user_info_ptr"]["first_name"]%> <%=u["user_info_ptr"]["last_name"]%></option>
         <%end%>
       </select>
-      <!--<input type="submit" value="Submit" id="submit">-->
+      <fieldset class="poker_checkbox">
+      Use Poker: 
+      <input type="checkbox" id="usePoker" name="Use Poker" onchange="valueChanged()" checked>
+      </fieldset>
+      <fieldset id="hidden_difficulty">
+        Difficulty:<br>
+        <%= select_tag(:feature_dif, options_for_select([['1', 1], ['2', 2], ['3', 3], ['4', 4],['5', 5]]), :id => "feature_dif", :class => "form-control") %>
+      </fieldset>
+      
       <input type="button" name="submit" id="submit" value="submit" onclick="newFeature();"/>
     </form>
     </div>
@@ -352,7 +400,10 @@
       Feature Name:<br>
       <input type="text" id ="editfeaturename" name="name"><br>
       Feature Difficulty:<br>
-      <h4 id = "feature_dif"></h4>
+      <fieldset id="edit_hidden_difficulty">
+        <%= select_tag(:feature_dif, options_for_select([['1', 1], ['2', 2], ['3', 3], ['4', 4],['5', 5]]), :id => "edit_feature_dif", :class => "form-control") %>
+      </fieldset>
+      <h4 id="display_difficulty"></h4>
       Feature Description:<br>
       <input type="text" id = "editfeaturedescription" name="description">
       Assign Worker:<br>

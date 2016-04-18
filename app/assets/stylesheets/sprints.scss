@@ -4,6 +4,23 @@
 body {
   min-width: 520px;
 }
+.poker_checkbox {
+  padding-top: 15px;
+}
+#display_difficulty {
+  display: none;
+  margin-top: 0px;
+}
+
+#hidden_difficulty {
+  display: none;
+  padding-top: 15px;
+}
+
+#edit_hidden_difficulty {
+  display: none;
+  padding-bottom: 15px;
+}
 .column {
   width: 175px;
   display: inline-block;
