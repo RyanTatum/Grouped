@@ -146,28 +146,44 @@
         
         //Function to save a new sprint
         function newSprint() {
-          var NewFeature = Parse.Object.extend("Sprint");
-          var newFeature = new NewFeature();
-          newFeature.set("name", $('#name').val());
-          $('#name').val("");
-          newFeature.set("start_date", $('#startDate').datepicker('getDate'));
-          $('#startDate').val("");
-          newFeature.set("end_date", $('#endDate').datepicker('getDate'));
-          $('#endDate').val("");
+          name = $('#sprintName').get(0).value;
+          var start = "";
+          var end = "";
+          sTemp = $('#startDate').get(0).value;
+          eTemp = $('#endDate').get(0).value;
+          if(sTemp != null && sTemp != "")
+          {
+            start = new Date(sTemp);
+          }
+          if(sTemp != null && sTemp != "")
+          {
+            end = new Date(eTemp);
+          }
           
-          newFeature.save(null, {
-            success: function(newFeature) {
-              div_sp_hide();
-              changeTable();
-              return true;
-            },
-            error: function(newFeature, error) {
-              // Execute any logic that should take place if the save fails.
-              // error is a Parse.Error with an error code and message.
-              alert('Failed to create new object, with error code: ' + error.message);
-              return false;
-            }
-          });
+          if(name != "" && name != null && start != null && end != null)
+          {
+            var NewFeature = Parse.Object.extend("Sprint");
+            var newFeature = new NewFeature();
+            newFeature.set("name", name);
+            start = new Date($('#startDate').get(0).value);
+            end = new Date($('#endDate').get(0).value);
+            newFeature.set("start_date", start);
+            newFeature.set("end_date", end);
+            newFeature.set("group_ptr", {"__type":"Pointer","className":"Group","objectId":""+ selected_group_id +""})
+            newFeature.save(null, {
+              success: function(newFeature) {
+                div_sp_hide();
+                changeTable();
+                return true;
+              },
+              error: function(newFeature, error) {
+                // Execute any logic that should take place if the save fails.
+                // error is a Parse.Error with an error code and message.
+                alert('Failed to create new object, with error code: ' + error.message);
+                return false;
+              }
+            });
+          }
         }
         
         function changeTable() {
@@ -304,6 +320,9 @@
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:600italic,400,600,700" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Raleway:100" rel="stylesheet" type="text/css">
     <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
+    <%= javascript_tag do %>
+      window.selected_group_id = '<%= session[:current_user]["current_groupId"]%>';
+    <% end %>
 </head>
 <% if session[:current_user]["profile_picture"]["url"]
     profile_picture = session[:current_user]["profile_picture"]["url"]
@@ -379,13 +398,13 @@
     <%=image_tag("closebutton.png", alt: "Example Image", :onclick => 'div_sp_hide()', :id => 'close')%>
     <form id = "form">
       Sprint Name:<br>
-      <input type="text" id = "sprintName" name="name" placeholder="Sprint Name"><br>
+      <input type="text" id = "sprintName" name="name" placeholder="Sprint Name" required><br>
       Start Date:<br>
-      <input type="date" id = "startDate" name="startDate">
+      <input type="date" id = "startDate" name="startDate" required>
       End Date:<br>
-      <input type="date" id = "endDate" name="endDate">
+      <input type="date" id = "endDate" name="endDate" required>
       <!--<input type="submit" value="Submit" id="submit">-->
-      <input type="button" name="submit" id="submit" value="submit" onclick="newSprint();"/>
+      <input type="submit" name="submit" id="submit" value="submit" onclick="newSprint();"/>
     </form>
     </div>
     <!-- Popup Div Ends Here -->
