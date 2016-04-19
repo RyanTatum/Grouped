@@ -123,11 +123,6 @@
                     <tr>
                       <td>Star Count</td>
                       <td>
-                        <!--<select>
-                          <% for i in 2..10 %>
-                          <option <%=selected = "selected" if @group_record["star_count"] == i%> value = <%=i%> name = "starCount" id = "starCount"><%=i%></option>
-                          <% end %>
-                        </select>-->
                         <%=select_tag "starCount", options_for_select((2..10).step(1), @group_record["star_count"] )%>
                       </td>
                     </tr>

@@ -75,12 +75,19 @@
     %>
     <%= image_tag profile_picture, height: '200', width: '200' %>
     <%= form_tag(vote_path(:feat_id => @feature_id), method: "post") do %>
-    <fieldset class="rating">
-        <% if @group["star_count"]
-            @size = @group["star_count"]
-        else
-            @size = 5
-        end%>
+    <% if @group["star_count"]
+        @size = @group["star_count"]
+    else
+        @size = 5
+    end%>
+    <%@size_class = ""
+    if @size > 8
+        @size_class = "ten_rating"
+    elsif @size > 6
+        @size_class = "eight_rating"
+    end
+    %>
+    <fieldset class="rating <%=@size_class%>">
         <%@size.downto(1) do |r|%>
             <input type="radio" id="star<%=r%>" name="rating" value="<%=r%>" <%=checked="checked" if @stored_vote == r %>  /><label for="star<%=r%>" title="<%=r%>"><%=r%> stars</label>
         <%end%>
@@ -114,7 +121,7 @@
                     <a><%= image_tag profile_picture, height: '100', width: '100' %></a>
                     <h2 style= "color: white"><%=user["user_info_ptr"]["first_name"]%> <%=user["user_info_ptr"]["last_name"]%></h2>
                     <fieldset class="mem_rating">
-                        <%@size.downto(1) do |r|%>
+                        <%user['vote'].downto(1) do |r|%>
                             <input type="radio" id="mem_star<%=r%>" name="mem_rating" value="<%=r%>" disabled 
                             <%if user['vote'] <= r %>checked class="mem_rating_colored" <%end%>
                             /><label 
