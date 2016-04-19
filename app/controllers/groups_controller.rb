@@ -14,6 +14,7 @@ class GroupsController < ApplicationController
       
         new_group = @client.object("Group")
         new_group["name"] = "New Group"
+        new_group["group_count"] = 5
         group_result = new_group.save
         
         new_user_group = @client.object("User_Group")
@@ -99,6 +100,7 @@ class GroupsController < ApplicationController
     def update
         @group_id = params[:id]
         @updategroup = @client.query("Group").eq("objectId", @group_id).get.first
+        @starCount = params[:starCount]
         if params[:file]
           @photo = @client.file({
             :body => IO.read(params[:file].tempfile),
@@ -112,6 +114,7 @@ class GroupsController < ApplicationController
           end
           @updategroup["name"] = params[:new_name]
           @updategroup["group_icon"] = @photo
+          @updategroup["star_count"] = @starCount.to_i
           begin
             @group_record = @updategroup.save
           rescue Parse::ParseProtocolError
@@ -122,6 +125,7 @@ class GroupsController < ApplicationController
           redirect_to group_path(@group_record["objectId"])
         else 
           @updategroup["name"] = params[:new_name]
+          @updategroup["star_count"] = @starCount.to_i
           begin
             @group_record = @updategroup.save
           rescue Parse::ParseProtocolError

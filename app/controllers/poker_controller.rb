@@ -33,6 +33,7 @@ class PokerController < ApplicationController
         #@feature_id = "i1SOfr1P6N"
         #@group_id = "QUxofxenGB" 
         @group_id =  session[:current_user]["current_groupId"]
+        @group = @client.query("Group").eq("objectId", @group_id).get.first
         
         if !@group_id || @group_id == ""
             flash[:notice] = "You need be in a group in order to poker"
