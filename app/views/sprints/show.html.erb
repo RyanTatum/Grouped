@@ -336,111 +336,113 @@
 %>
 
 <body onload="changeTable()">
-  <div id = <%= @user_info["objectId"] %> class= "current_user_id"></div>
-  <div class="sprint_container" id="view">
-    <% sprints_array = @sprints.map { |sprint| [sprint["name"], sprint["objectId"]] } %>
-    <% users_array = @users.map { |user| [user["user_info_ptr"]["first_name"] + ' ' + user["user_info_ptr"]["last_name"], user["user_info_ptr"]["objectId"]] } %>
-    <h2 class = "title">Sprint Board</h2>
-    <hr>
-    <div class = "menu">
-    <ul>
-      <li><button id="popup" onclick="div_abc_show()">Add Feature</button></li>
-      <li><button id="popup" onclick="div_sp_show()">New Sprint</button></li>
-      <li><%= select_tag(:sprint_id, options_for_select(sprints_array), :onchange => 'changeTable()', :id => "sprint_field", :class => "form-control") %></li>
-    </ul>
-    </div>
-  <div class= "center_wrapper">
-      <div class="column" id="todoSort">
-        <h2 class='title'>Todo</h2>
-        <div class="columnSort column" id="todo"></div>
+  <div class = "main">
+    <div id = <%= @user_info["objectId"] %> class= "current_user_id"></div>
+    <div class="sprint_container" id="view">
+      <% sprints_array = @sprints.map { |sprint| [sprint["name"], sprint["objectId"]] } %>
+      <% users_array = @users.map { |user| [user["user_info_ptr"]["first_name"] + ' ' + user["user_info_ptr"]["last_name"], user["user_info_ptr"]["objectId"]] } %>
+      <h2 class = "title">Sprint Board</h2>
+      <hr>
+      <div class = "menu">
+      <ul>
+        <li><button id="popup" onclick="div_abc_show()">Add Feature</button></li>
+        <li><button id="popup" onclick="div_sp_show()">New Sprint</button></li>
+        <li><%= select_tag(:sprint_id, options_for_select(sprints_array), :onchange => 'changeTable()', :id => "sprint_field", :class => "form-control") %></li>
+      </ul>
       </div>
-      <div class="column" id="doingSort">
-        <h2 class='title'>Doing</h2>
-        <div class="columnSort column" id="doing"></div>
+    <div class= "center_wrapper">
+        <div class="column" id="todoSort">
+          <h2 class='title'>Todo</h2>
+          <div class="columnSort column" id="todo"></div>
+        </div>
+        <div class="column" id="doingSort">
+          <h2 class='title'>Doing</h2>
+          <div class="columnSort column" id="doing"></div>
+        </div>
+        <div class="column" id="doneSort">
+          <h2 class='title'>Done</h2>
+          <div class="columnSort column" id="done"></div>
+        </div>
+    </div>
+    <div id="abc">
+      <!-- Popup Div Starts Here -->
+      <div id="popupContact">
+      <!-- Contact Us Form -->
+      <%=image_tag("closebutton.png", alt: "Example Image", :onclick => 'div_abc_hide()', :id => 'close')%>
+      <form id = "form">
+        Feature Name:<br>
+        <input type="text" id = "name" name="name" placeholder="Feature Name"><br>
+        Feature Description:<br>
+        <input type="text" id = "description" name="description" placeholder="Description">
+        Assign Worker:<br>
+        <!--<%= select_tag(:user_id, options_for_select(users_array), :id => "feature_worker", :class => "form-control") %>-->
+        <select id = "feature_worker" class= "form-control">
+          <% @users.each_with_index do |u,i|%>
+            <option id = <%=u["user_info_ptr"]["objectId"]%> value= <%= u["user_info_ptr"]["objectId"]%> <%=selected = "selected" if i==0%>><%=u["user_info_ptr"]["first_name"]%> <%=u["user_info_ptr"]["last_name"]%></option>
+          <%end%>
+        </select>
+        <fieldset class="poker_checkbox">
+        Use Poker: 
+        <input type="checkbox" id="usePoker" name="Use Poker" onchange="valueChanged()" checked>
+        </fieldset>
+        <fieldset id="hidden_difficulty">
+          Difficulty:<br>
+          <%= select_tag(:feature_dif, options_for_select([['1', 1], ['2', 2], ['3', 3], ['4', 4],['5', 5]]), :id => "feature_dif", :class => "form-control") %>
+        </fieldset>
+        
+        <input type="button" name="submit" id="submit" value="submit" onclick="newFeature();"/>
+      </form>
       </div>
-      <div class="column" id="doneSort">
-        <h2 class='title'>Done</h2>
-        <div class="columnSort column" id="done"></div>
+      <!-- Popup Div Ends Here -->
+    </div>
+    
+    <div id="sprintPopup">
+      <!-- Popup Div Starts Here -->
+      <div id="popupContact">
+      <!-- Contact Us Form -->
+      <%=image_tag("closebutton.png", alt: "Example Image", :onclick => 'div_sp_hide()', :id => 'close')%>
+      <form id = "form">
+        Sprint Name:<br>
+        <input type="text" id = "sprintName" name="name" placeholder="Sprint Name" required><br>
+        Start Date:<br>
+        <input type="date" id = "startDate" name="startDate" required>
+        End Date:<br>
+        <input type="date" id = "endDate" name="endDate" required>
+        <!--<input type="submit" value="Submit" id="submit">-->
+        <input type="button" name="submit" id="submit" value="submit" onclick="newSprint();"/>
+      </form>
       </div>
-  </div>
-  <div id="abc">
-    <!-- Popup Div Starts Here -->
-    <div id="popupContact">
-    <!-- Contact Us Form -->
-    <%=image_tag("closebutton.png", alt: "Example Image", :onclick => 'div_abc_hide()', :id => 'close')%>
-    <form id = "form">
-      Feature Name:<br>
-      <input type="text" id = "name" name="name" placeholder="Feature Name"><br>
-      Feature Description:<br>
-      <input type="text" id = "description" name="description" placeholder="Description">
-      Assign Worker:<br>
-      <!--<%= select_tag(:user_id, options_for_select(users_array), :id => "feature_worker", :class => "form-control") %>-->
-      <select id = "feature_worker" class= "form-control">
-        <% @users.each_with_index do |u,i|%>
-          <option id = <%=u["user_info_ptr"]["objectId"]%> value= <%= u["user_info_ptr"]["objectId"]%> <%=selected = "selected" if i==0%>><%=u["user_info_ptr"]["first_name"]%> <%=u["user_info_ptr"]["last_name"]%></option>
-        <%end%>
-      </select>
-      <fieldset class="poker_checkbox">
-      Use Poker: 
-      <input type="checkbox" id="usePoker" name="Use Poker" onchange="valueChanged()" checked>
-      </fieldset>
-      <fieldset id="hidden_difficulty">
-        Difficulty:<br>
-        <%= select_tag(:feature_dif, options_for_select([['1', 1], ['2', 2], ['3', 3], ['4', 4],['5', 5]]), :id => "feature_dif", :class => "form-control") %>
-      </fieldset>
-      
-      <input type="button" name="submit" id="submit" value="submit" onclick="newFeature();"/>
-    </form>
+      <!-- Popup Div Ends Here -->
     </div>
-    <!-- Popup Div Ends Here -->
-  </div>
-  
-  <div id="sprintPopup">
-    <!-- Popup Div Starts Here -->
-    <div id="popupContact">
-    <!-- Contact Us Form -->
-    <%=image_tag("closebutton.png", alt: "Example Image", :onclick => 'div_sp_hide()', :id => 'close')%>
-    <form id = "form">
-      Sprint Name:<br>
-      <input type="text" id = "sprintName" name="name" placeholder="Sprint Name" required><br>
-      Start Date:<br>
-      <input type="date" id = "startDate" name="startDate" required>
-      End Date:<br>
-      <input type="date" id = "endDate" name="endDate" required>
-      <!--<input type="submit" value="Submit" id="submit">-->
-      <input type="button" name="submit" id="submit" value="submit" onclick="newSprint();"/>
-    </form>
+    
+    <div id="editFeaturePopup">
+      <!-- Popup Div Starts Here -->
+      <div id="popupContact">
+      <!-- Contact Us Form -->
+      <%=image_tag("closebutton.png", alt: "Example Image", :onclick => 'div_ef_hide()', :id => 'close')%>
+      <form id = "form">
+        Feature Name:<br>
+        <input type="text" id ="editfeaturename" name="name" required><br>
+        Feature Difficulty:<br>
+        <fieldset id="edit_hidden_difficulty">
+          <%= select_tag(:feature_dif, options_for_select([['1', 1], ['2', 2], ['3', 3], ['4', 4],['5', 5]]), :id => "edit_feature_dif", :class => "form-control") %>
+        </fieldset>
+        <h4 id="display_difficulty"></h4>
+        Feature Description:<br>
+        <input type="text" id = "editfeaturedescription" name="description">
+        Assign Worker:<br>
+        <!--<%= select_tag(:user_id, options_for_select(users_array), :id => "editfeatureworker", :class => "form-control") %>-->
+        <select id = "editfeatureworker" class= "form-control">
+          <% @users.each_with_index do |u,i|%>
+            <option id = <%=u["user_info_ptr"]["objectId"]%> value= <%= u["user_info_ptr"]["objectId"]%>><%=u["user_info_ptr"]["first_name"]%> <%=u["user_info_ptr"]["last_name"]%></option>
+          <%end%>
+        </select>
+        <input type="button" name="submit" id="updatefeature" value="submit"/>
+        <input type="button" name="delete" id="deletefeature" value="delete"/>
+      </form>
+      </div>
+      <!-- Popup Div Ends Here -->
     </div>
-    <!-- Popup Div Ends Here -->
-  </div>
-  
-  <div id="editFeaturePopup">
-    <!-- Popup Div Starts Here -->
-    <div id="popupContact">
-    <!-- Contact Us Form -->
-    <%=image_tag("closebutton.png", alt: "Example Image", :onclick => 'div_ef_hide()', :id => 'close')%>
-    <form id = "form">
-      Feature Name:<br>
-      <input type="text" id ="editfeaturename" name="name" required><br>
-      Feature Difficulty:<br>
-      <fieldset id="edit_hidden_difficulty">
-        <%= select_tag(:feature_dif, options_for_select([['1', 1], ['2', 2], ['3', 3], ['4', 4],['5', 5]]), :id => "edit_feature_dif", :class => "form-control") %>
-      </fieldset>
-      <h4 id="display_difficulty"></h4>
-      Feature Description:<br>
-      <input type="text" id = "editfeaturedescription" name="description">
-      Assign Worker:<br>
-      <!--<%= select_tag(:user_id, options_for_select(users_array), :id => "editfeatureworker", :class => "form-control") %>-->
-      <select id = "editfeatureworker" class= "form-control">
-        <% @users.each_with_index do |u,i|%>
-          <option id = <%=u["user_info_ptr"]["objectId"]%> value= <%= u["user_info_ptr"]["objectId"]%>><%=u["user_info_ptr"]["first_name"]%> <%=u["user_info_ptr"]["last_name"]%></option>
-        <%end%>
-      </select>
-      <input type="button" name="submit" id="updatefeature" value="submit"/>
-      <input type="button" name="delete" id="deletefeature" value="delete"/>
-    </form>
-    </div>
-    <!-- Popup Div Ends Here -->
   </div>
 </div>
 </body>

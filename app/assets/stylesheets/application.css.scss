@@ -24,6 +24,10 @@
     margin: 1em 0;
     padding-left: 10px;
 }
+body {
+  padding-left:6%;
+  padding-right:6%;
+}
 #white_color{
      color: white;
 }
@@ -36,6 +40,10 @@
     color: white;
     background-color: black;
     text-decoration: none;
+}
+
+.main{
+    background: rgba(249, 247, 244, 0.75);
 }
 
 .nav_tab:active{
@@ -55,7 +63,7 @@
 
 #blue_grad{
     background: linear-gradient(#000080,#0000CD, #000080);
-     border-radius: 0px;
+    border-radius: 0px;
 }
 
 #grey_grad{

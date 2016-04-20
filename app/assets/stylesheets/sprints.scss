@@ -7,6 +7,9 @@ body {
 .poker_checkbox {
   padding-top: 15px;
 }
+.main {
+  text-align: left;
+}
 #display_difficulty {
   display: none;
   margin-top: 0px;
@@ -256,7 +259,7 @@ span {
 }
 button#popup {
   width:100%;
-  height:45px;
+  height:55px;
   border-radius:3px;
   background-color:#cd853f;
   color:#fff;

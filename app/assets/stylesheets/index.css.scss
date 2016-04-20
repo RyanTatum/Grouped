@@ -37,7 +37,7 @@ nav.horizontal ul li{	display: inline-block;}/* horizontal menu */
 img{max-width:100%;}
 /*end reset*/
 body{
-	background: image-url('background.jpg') no-repeat center fixed;  //url("http://www.zenoss.org/sites/default/files/Careers-Banner-background-fixed_0.jpg")  no-repeat center fixed;
+	background: image-url('blurry.jpg') no-repeat center fixed;  //url("http://www.zenoss.org/sites/default/files/Careers-Banner-background-fixed_0.jpg")  no-repeat center fixed;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -46,8 +46,8 @@ body{
 }
 .main {
 	text-align: center;
-	margin-top:2% ;
-	margin-bottom:3%;
+	padding-top:2% ;
+	padding-bottom:3%;
 }
 /*--start-wrap--*/
 .content {
@@ -111,13 +111,14 @@ body{
 	width: 34%;
 	text-align:center;
 	margin: 0 auto;
-	background:#20252D;
+	background:#F9F7F4;
 	border-radius:7px;
 	-webkit-border-radius:7px;
 	-moz-border-radius:7px;
 	-o-border-radius:7px;
 	padding-bottom: 3px;
 }
+
 .Regisration-head {
 	 border-top-left-radius:7px;
 	-webkit-border-top-left-radius:7px;
@@ -172,7 +173,7 @@ body{
 	-webkit-border-radius:7px;
 	-moz-border-radius:7px;
 	-o-border-radius:7px;
-	background: #13161B;
+	background: white;
 	box-shadow: inset 0px 3px 0px 0px rgba(5, 5, 5, 0.15);
 	-webkit-box-shadow: inset 0px 3px 0px 0px rgba(5, 5, 5, 0.15);
 	-o-box-shadow: inset 0px 3px 0px 0px rgba(5, 5, 5, 0.15);
@@ -184,10 +185,10 @@ body{
 	position:relative;
 }
 .Regisration form input[type="text"]:hover,.Regisration form input[type="password"]:hover{
-	box-shadow: 0 0 1em white;
-	-webkit-box-shadow: 0 0 1em white;
-	-o-box-shadow: 0 0 1em #white;
-	-moz-box-shadow: 0 0 1em #white;
+	box-shadow: 0 0 1em #007ac7;
+	-webkit-box-shadow: 0 0 1em #007ac7;
+	-o-box-shadow: 0 0 1em #007ac7;
+	-moz-box-shadow: 0 0 1em #007ac7;
 }
 form span{
 	position: absolute;
@@ -202,7 +203,7 @@ form span{
 	margin: 2px 0;
 }
 .submit input[type="submit"]{
-	color: black;
+	color: white;
 	cursor: pointer;
 	border: none;
 	font-weight: 900;
@@ -220,10 +221,10 @@ form span{
     -webkit-border-radius: 4px;
     -o-border-radius: 4px;
     -moz-border-radius: 4px;
-	background: white;
+	background: #007ac7;
 }
 .submit-button input[type="submit"]{
-	color: black;
+	color: white;
 	cursor: pointer;
 	border: none;
 	font-weight: 900;
@@ -241,11 +242,11 @@ form span{
 	-ms-transition: border-color 0.3s;
 	-moz-transition: border-color 0.3s;
 	-webkit-transition: border-color 0.3s;
-	background: white;
+	background: #007ac7;
 }
 
 .submit input[type="submit"]:hover,.submit-button input[type="submit"]:hover{
-	box-shadow: 0 0 1em white;
+	box-shadow: 0 0 1em black;
 	-webkit-box-shadow: 0 0 1em white;
 	-o-box-shadow: 0 0 1em #white;
 	-moz-box-shadow: 0 0 1em #white;
