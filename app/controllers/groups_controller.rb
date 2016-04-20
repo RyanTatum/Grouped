@@ -25,6 +25,12 @@ class GroupsController < ApplicationController
         new_user_group["status"] = "active"
         new_user_group["permissions"] = "group_admin"
         new_user_group.save
+        
+        new_sprint = @client.object("Sprint")
+        new_sprint["name"] = "Backlog"
+        new_sprint["group_ptr"] = Parse::Pointer.new({"className" => "Group","objectId"  =>  group_result["objectId"]})
+        new_sprint.save
+        
         redirect_to group_path(group_result["objectId"])
     end
     
