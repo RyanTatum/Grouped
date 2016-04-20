@@ -110,14 +110,15 @@
           var NewFeature = Parse.Object.extend("Feature");
           var newFeature = new NewFeature();
           newFeature.set("name", $('#name').val());
-          $('#name').val("");
+          //$('#name').val("");
           newFeature.set("description", $('#description').val());
-          $('#description').val("");
+          //$('#description').val("");
           newFeature.set("sprint_id", $('#sprint_field').val());
           newFeature.set("current_worker", $('#feature_worker').val());
           newFeature.set("status", "todo");
           newFeature.set("group_ptr", {"__type":"Pointer","className":"Group","objectId":""+ selected_group_id +""})
           newFeature.set("sprint_ptr", {"__type":"Pointer","className":"Sprint","objectId":""+ $('#sprint_field').val() +""})
+          //newFeature.set("owner_ptr", {"__type":"Pointer","className":"User_Info","objectId":""+ current_user_id +""})
           var Pointer = Parse.Object.extend("User_Info");
           var pointer = new Pointer();
           pointer.set("objectId", $('.current_user_id').get(0).id);
@@ -324,6 +325,7 @@
     <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
     <%= javascript_tag do %>
       window.selected_group_id = '<%= session[:current_user]["current_groupId"]%>';
+      window.current_user_id = '<%= @user_info["objectId"] %>';
     <% end %>
 </head>
 <% if session[:current_user]["profile_picture"]["url"]
