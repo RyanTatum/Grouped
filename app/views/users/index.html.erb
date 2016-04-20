@@ -10,10 +10,21 @@
 		webfonts-->
 		<link href="http://fonts.googleapis.com/css?family=Corben:bold" rel="stylesheet" type="text/css">
  		<link href="http://fonts.googleapis.com/css?family=Nobile" rel="stylesheet" type="text/css">
+ 		<script type="text/javascript">
+ 			function showRegistration() {
+ 				$(".Regisration").show("slow");
+ 				$("#signupbutton").hide();
+ 			}
+ 		</script>
 	</head>
 <body>
 	<container class="container-narrow">
 		<div class="main">
+			<div style="background:transparent !important" class="jumbotron">
+				<h1>Group Projects Made Easy!</h1>
+        		<p class="lead">We take all of the work out of group projects by providing the tools necessary to manage your team, organize your objectives, and communicate with group members.</p>
+        		<a id ="signupbutton" class="btn btn-large btn-success" onclick="showRegistration()">Sign up today</a>
+			</div>
 			<div  class="wrap">
 	   		    <div class="Regisration">
 				  	<div class="Regisration-head">
@@ -33,6 +44,33 @@
 						</div>
 					</form>
 				</div>
+				<hr>
+				<div class="row-fluid marketing">
+        		  <div class="col-md-6">
+		            <h4 class="sub">Subheading</h4>
+		            <p style="color:black">Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
+		
+		            <h4 class="sub">Subheading</h4>
+		            <p style="color:black">Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
+		
+	  	            <h4 class="sub">Subheading</h4>
+		            <p style="color:black">Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+		          </div>
+		
+		          <div class="col-md-6">
+		            <h4 class="sub">Subheading</h4>
+		            <p style="color:black">Donec id elit non mi porta gravida at eget metus. Maecenas faucibus mollis interdum.</p>
+		
+		            <h4 class="sub">Subheading</h4>
+		            <p style="color:black">Morbi leo risus, porta ac consectetur ac, vestibulum at eros. Cras mattis consectetur purus sit amet fermentum.</p>
+		
+		            <h4 class="sub">Subheading</h4>
+		            <p style="color:black">Maecenas sed diam eget risus varius blandit sit amet non magna.</p>
+		          </div>
+		        </div>
+		          <div class="footer">
+       				<p style="color:black">&copy; Company 2016</p>
+      			  </div>
 			</div>
 		</div>
 	</container>
