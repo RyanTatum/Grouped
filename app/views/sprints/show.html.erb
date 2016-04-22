@@ -1,118 +1,4 @@
-<!--<head>
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
-    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-    <script type="text/javascript" async="" src="//www.googleadservices.com/pagead/conversion_async.js"></script><script type="text/javascript" async="" src="//munchkin.marketo.net/151/munchkin.js"></script><script type="text/javascript" async="" src="//munchkin.marketo.net/151/munchkin.js"></script><script async="" src="//connect.facebook.net/en_US/fbds.js"></script><script async="" src="//www.googletagmanager.com/gtm.js?id=GTM-56BZ4D"></script><script type="text/javascript" async="" src="https://tag.perfectaudience.com/serve/52373e831aa4c02794000069.js"></script><script type="text/javascript" async="" src="https://ssl.google-analytics.com/ga.js"></script>
-    <title>Home | Parse</title>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:600italic,400,600,700" rel="stylesheet" type="text/css">
-    <link href="https://fonts.googleapis.com/css?family=Raleway:100" rel="stylesheet" type="text/css">
-</head>-->
-    <!--<%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>-->
-<!--<body onload="changeTable()">
-  <div id = <%= @user_info["objectId"] %> class= "current_user_id"></div>
-  <div class="sprint_container" id="view">
-    <% sprints_array = @sprints.map { |sprint| [sprint["name"], sprint["objectId"]] } %>
-    <% users_array = @users.map { |user| [user["user_info_ptr"]["first_name"] + ' ' + user["user_info_ptr"]["last_name"], user["user_info_ptr"]["objectId"]] } %>
-    <h2 class = "title">Sprint Board</h2>
-    <hr>
-    <div class = "menu">
-    <ul>
-      <li><button id="popup" onclick="div_abc_show()">Add Feature</button></li>
-      <li><button id="popup" onclick="div_sp_show()">New Sprint</button></li>
-      <li><%= select_tag(:sprint_id, options_for_select(sprints_array), :onchange => 'changeTable()', :id => "sprint_field", :class => "form-control") %></li>
-    </ul>
-    </div>
-  <div class= "center_wrapper">
-      <div class="column" id="todoSort">
-        <h2 class='title'>Todo</h2>
-        <div class="columnSort column" id="todo"></div>
-      </div>
-      <div class="column" id="doingSort">
-        <h2 class='title'>Doing</h2>
-        <div class="columnSort column" id="doing"></div>
-      </div>
-      <div class="column" id="doneSort">
-        <h2 class='title'>Done</h2>
-        <div class="columnSort column" id="done"></div>
-      </div>
-  </div>
-  <div id="abc">
-    <div id="popupContact">
-    <%=image_tag("closebutton.png", alt: "Example Image", :onclick => 'div_abc_hide()', :id => 'close')%>
-    <form id = "form">
-      Feature Name:<br>
-      <input type="text" id = "name" name="name" placeholder="Feature Name"><br>
-      Feature Description:<br>
-      <input type="text" id = "description" name="description" placeholder="Description">
-      Assign Worker:<br>
-      <!--<%= select_tag(:user_id, options_for_select(users_array), :id => "feature_worker", :class => "form-control") %>-->
-<!--  <select id = "feature_worker" class= "form-control">
-        <% @users.each_with_index do |u,i|%>
-          <option id = <%=u["user_info_ptr"]["objectId"]%> value= <%= u["user_info_ptr"]["objectId"]%> <%=selected = "selected" if i==0%>><%=u["user_info_ptr"]["first_name"]%> <%=u["user_info_ptr"]["last_name"]%></option>
-        <%end%>
-      </select>
-      <fieldset class="poker_checkbox">
-      Use Poker: 
-      <input type="checkbox" id="usePoker" name="Use Poker" onchange="valueChanged()" checked>
-      </fieldset>
-      <fieldset id="hidden_difficulty">
-        Difficulty:<br>
-        <%= select_tag(:feature_dif, options_for_select([['1', 1], ['2', 2], ['3', 3], ['4', 4],['5', 5]]), :id => "feature_dif", :class => "form-control") %>
-      </fieldset>
-      
-      <input type="button" name="submit" id="submit" value="submit" onclick="newFeature();"/>
-    </form>
-    </div>
-  </div>
-  
-  <div id="sprintPopup">
-    <div id="popupContact">
-    <%=image_tag("closebutton.png", alt: "Example Image", :onclick => 'div_sp_hide()', :id => 'close')%>
-    <form id = "form">
-      Sprint Name:<br>
-      <input type="text" id = "sprintName" name="name" placeholder="Sprint Name" required><br>
-      Start Date:<br>
-      <input type="date" id = "startDate" name="startDate" required>
-      End Date:<br>
-      <input type="date" id = "endDate" name="endDate" required>
-      <!--<input type="submit" value="Submit" id="submit">-->
-<!--
-      <input type="button" name="submit" id="submit" value="submit" onclick="newSprint();"/>
-    </form>
-    </div>
-  </div>
-  
-  <div id="editFeaturePopup">
-    <div id="popupContact">
-    <%=image_tag("closebutton.png", alt: "Example Image", :onclick => 'div_ef_hide()', :id => 'close')%>
-    <form id = "form">
-      Feature Name:<br>
-      <input type="text" id ="editfeaturename" name="name" required><br>
-      Feature Difficulty:<br>
-      <fieldset id="edit_hidden_difficulty">
-        <%= select_tag(:feature_dif, options_for_select([['1', 1], ['2', 2], ['3', 3], ['4', 4],['5', 5]]), :id => "edit_feature_dif", :class => "form-control") %>
-      </fieldset>
-      <h4 id="display_difficulty"></h4>
-      Feature Description:<br>
-      <input type="text" id = "editfeaturedescription" name="description">
-      Assign Worker:<br>
-      <!--<%= select_tag(:user_id, options_for_select(users_array), :id => "editfeatureworker", :class => "form-control") %>-->
-<!--
-      <select id = "editfeatureworker" class= "form-control">
-        <% @users.each_with_index do |u,i|%>
-          <option id = <%=u["user_info_ptr"]["objectId"]%> value= <%= u["user_info_ptr"]["objectId"]%>><%=u["user_info_ptr"]["first_name"]%> <%=u["user_info_ptr"]["last_name"]%></option>
-        <%end%>
-      </select>
-      <input type="button" name="submit" id="updatefeature" value="submit"/>
-      <input type="button" name="delete" id="deletefeature" value="delete"/>
-    </form>
-    </div>
-  </div>
-</div>
-</body> -->
-
-<!--<html class = "hundredPercent">-->
-  <body class = "hundredPercent">
+<body class = "hundredPercent">
     <div id= 'sprints_page' hidden></div>
     <%= javascript_tag do %>
         window.selected_group_id = '<%= session[:current_user]["current_groupId"]%>';
@@ -123,7 +9,7 @@
       <div class = "my_sprint_container">
         <h2 class = "title">Sprint Board</h2>
         <hr>
-        <%@colWidth = 100 / 3%>
+        <%@colWidth = 100 / @columns.length%>
           <div class= "board_header">
             <%@columns.each do |col| %>
                 <div class= "my_col_header" style = "width: <%=@colWidth%>%">
@@ -132,18 +18,49 @@
             <%end %>
           </div>
           <div class= "board">
-            <!--<%@sprints.each do |i|%>
-              <div class = "sprintBar"></div>
-              <div class = "featureBar"></div>
-                <div class= "my_column" id= "column<%=i%>Sort" style = "width: <%=@colWidth%>%">
-                  <div class="my_columnSort my_column" id= "column<%=i%>Sort"></div>
-                  <div class = "portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">
-                    <div class='portlet-header ui-sortable ui-widget-header ui-corner-all'>Name</div>
-                    <div class='portlet-content'>Description</div>
-                  </div>
-                </div>
-            <%end%>-->
           </div>
     </div>
   </body>
 <!--</html>-->
+
+<!--<body>
+ 
+<div class="column">
+ 
+  <div class="portlet">
+    <div class="portlet-header">Feeds</div>
+    <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+  </div>
+ 
+  <div class="portlet">
+    <div class="portlet-header">News</div>
+    <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+  </div>
+ 
+</div>
+ 
+<div class="column">
+ 
+  <div class="portlet">
+    <div class="portlet-header">Shopping</div>
+    <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+  </div>
+ 
+</div>
+ 
+<div class="column">
+ 
+  <div class="portlet">
+    <div class="portlet-header">Links</div>
+    <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+  </div>
+ 
+  <div class="portlet">
+    <div class="portlet-header">Images</div>
+    <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+  </div>
+ 
+</div>
+ 
+ 
+</body>-->

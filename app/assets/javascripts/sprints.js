@@ -1,4 +1,4 @@
-        $(document).ready(function() {
+/*        $(document).ready(function() {
           //changeTable();
         });
         function div_abc_show() {
@@ -306,3 +306,5 @@
               else
                   $("#hidden_difficulty").show();
           }
+          
+*/

@@ -1,5 +1,5 @@
 $(document).ready(function() {
-if(document.getElementById("sprints_page"))
+    if(document.getElementById("sprints_page"))
     {
         //sprints = {};   
         //features = {};  
@@ -7,15 +7,14 @@ if(document.getElementById("sprints_page"))
         //members = {};
         //colums = {};
         getSprints(loadSprints);
-        getFeatures(loadFeatures);
-        getTasks(loadTasks);
+        //getFeatures(loadFeatures);
+        //getTasks(loadTasks);
         
         /*if(!getSprints(loadSprints) || !getFeatures(loadFeatures) || !getTasks(loadTasks) || !getGroupMembers())
         {
           throwError("Sorry, Page was not properly loaded"); 
           //maybe do a redirect
         }*/
-        
     }
 });
 
@@ -504,7 +503,9 @@ function loadSprints()
     {
         for(var i = 0; i < window.sprints.length; i++)
         {
-            var sprint_html = '<div class = "sprintBar" id=' + window.sprints[i].id + '>'+ window.sprints[i].get("name") +'</div>';
+            var sprint_html = '<div class = "sprintBar" id=' + window.sprints[i].id + '>\
+                                    <div class= "bar_title">' + window.sprints[i].get("name") + '\
+                              </div>';
             if($('.board').children() == [])
             {
                 $('.board div:last-child').append(sprint_html);
@@ -514,6 +515,7 @@ function loadSprints()
                 $('.board').append(sprint_html);
             }
         }
+        getFeatures(loadFeatures);
     }
 }
 function loadFeatures()
@@ -522,7 +524,9 @@ function loadFeatures()
     {
         for(var i = 0; i < window.features.length; i++)
         {
-            var feature_html = '<div class = "featureBar" id="'+ window.features[i].id + '">'+ window.features[i].get("name") +'</div>';
+            var feature_html = '<div class = "featureBar" id="'+ window.features[i].id + '">\
+                                    <div class= "bar_title">' + window.features[i].get("name") + '\
+                                </div>';
             $(feature_html).insertAfter('#' + window.features[i].get("sprint_ptr").id);
             /*var child = $('#' + window.features[i].get("sprint_ptr").id);
             if($('#' + window.features[i].get("sprint_ptr").id).children() == [])
@@ -533,16 +537,21 @@ function loadFeatures()
             {
                $('#' + window.features[i].get("sprint_ptr").id).append(feature_html);
             }*/
+            //var feature_num = "feature" + i;
+            //var column_container = '<div class="my_column_container" id=' + feature_num +'></div>';
+            //$(column_container).insertAfter('#' + window.features[i].id);
             var column_width = Math.floor(100 / number_of_columns);
-            var style_string = " width: " + column_width + "% ";
-            for(var j = 1; j <= number_of_columns; j++)
+            var style_string = " width:" + String(column_width) + "% ";
+            for(var j = number_of_columns; j > 0; j--)
             {
                 var id_string = "column" + j + "feature" + window.features[i].id;
-                var column_html = '<div style = ' + style_string + 'class= "my_column" id= ' + id_string + '></div>';
+                var column_html = '<div style = ' + style_string + 'class= "my_column columnSort" id= ' + id_string + '></div>';
                 $(column_html).insertAfter('#' + window.features[i].id);
+                //$('#feature' + i).append(column_html);
             }
             
         }
+        getTasks(loadTasks);
     }
 }
 function loadTasks()
@@ -553,12 +562,107 @@ function loadTasks()
         {
             var id = "" + window.tasks[i].id;
             var name = window.tasks[i].get("Title");
-            var task_html = '<div class = "portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">\
-                                <div class="portlet-header ui-sortable ui-widget-header ui-corner-all">' + name +'</div>\
-                                <div class="portlet-content">Description</div>\
+            var description = window.tasks[i].get("description");
+            if(description == undefined || description == null || description == "")
+            {
+                description = "No description to display"
+            }
+            if(window.tasks[i].get("current_worker") != undefined)
+            {
+                var worker = window.tasks[i].get("current_worker").get("first_name") + " " + window.tasks[i].get("current_worker").get("last_name");
+            }
+            else
+            {
+                var worker = "--"
+            }
+            
+            var hours = window.tasks[i].get("total_hours");
+            if(hours == undefined || hours == null)
+            {
+                hours = "--"
+            }
+            var task_html = '<div id=' + id + ' class="task_container">\
+                                <div class ="task_header handler">' + name + '</div>\
+                                <div class ="task_description handler">' + description + '</div>\
+                                <div class ="task_footer handler">\
+                                    <div class = "task_worker">' + worker + '</div>\
+                                    <div class = "task_hours">Hrs: ' + hours + '</div>\
+                                </div>\
                             </div>';
+            /*var task_html = '<div class ="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">\
+                                <div class="portlet-header">' + name +'</div>\
+                                <div class="portlet-content">Description</div>\
+                            </div>';*/
             $('#column' + window.tasks[i].get("current_column") + 'feature' + window.tasks[i].get("feature_ptr").id).append(task_html);
             //$(task_html).insertAfter('#' + window.features[i].get("sprint_ptr").id);
+            
         }
+        activateSort();
     }   
+}
+
+function activateSort()
+{
+    $(function() {
+        $( ".my_column" ).sortable({
+            connectWith: ".my_column",
+            handle: ".handler",
+            //cancel: ".portlet-toggle",
+            placeholder: "portlet-placeholder ui-corner-all",
+            start: function (event, ui) {
+                ui.item.addClass('tilt');
+                // Start monitoring tilt direction
+                tilt_direction(ui.item);
+            },
+            update: function (event, ui) {
+                save_status(ui.item);
+            },
+            stop: function (event, ui) {
+                ui.item.removeClass("tilt");
+                // Unbind temporary handlers and excess data
+                $("html").unbind('mousemove', ui.item.data("move_handler"));
+                ui.item.removeData("move_handler");
+             }
+        });
+     
+       /* $( ".task_container" ) //.addClass( "ui-widget ui-widget-content ui-helper-clearfix" )
+          .find( ".task_header" )
+            .addClass( "ui-widget-header ui-corner-all" )
+            .prepend( "<span class='ui-icon ui-icon-minusthick portlet-toggle'></span>");*/
+            
+       /* $(".task_header").prepend( "<span class='ui-icon ui-icon-minusthick portlet-toggle'></span>");
+     
+        $( ".portlet-toggle" ).click(function() {
+          var icon = $( this );
+          icon.toggleClass( "ui-icon-minusthick ui-icon-plusthick" );
+          icon.closest( ".task_container" ).find( ".task_description" ).toggle();
+          icon.closest( ".task_container" ).find( ".task_footer" ).toggle();
+        });*/
+    });
+}
+
+function tilt_direction(item) 
+{
+    var left_pos = item.position().left,
+    move_handler = function (e) {
+        if (e.pageX >= left_pos) 
+        {
+            item.addClass("right");
+            item.removeClass("left");
+        } 
+        else 
+        {
+            item.addClass("left");
+            item.removeClass("right");
+        }
+        left_pos = e.pageX;
+    };
+            
+    $("html").bind("mousemove", move_handler);
+    item.data("move_handler", move_handler);
+}
+
+function save_status(item)
+{
+    
 }
