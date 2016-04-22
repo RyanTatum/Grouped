@@ -24,6 +24,10 @@ class SprintsController < ApplicationController
             j.eq("group_ptr", Parse::Pointer.new({"className" => "Group", "objectId" => session[:current_user]["current_groupId"]}))
             j.include = "user_info_ptr"
         end.get
+        
+        @columns = @client.query("Sprint_Columns").tap do |j|
+            j.eq("group_ptr", Parse::Pointer.new({"className" => "Group", "objectId" => session[:current_user]["current_groupId"]}))
+        end.get
         #@sprints = @sprints_query.get
         #@users_query = @client.query("User_Info")
         #@users = @users_query.get

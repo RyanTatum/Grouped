@@ -264,3 +264,75 @@ button#popup {
   font-size:18px;
   cursor:pointer
 }
+
+//***********************************************************
+.my_sprint_container{
+  display: inline-block;
+  width: 90%;
+  background-color: #e3e3e3;
+  margin: auto;
+  height: 92%;
+  
+}
+
+.hundredPercent{
+  width: 100%;
+  height: 100%;
+  clip: auto;
+  position: absolute;
+  overflow: hidden;
+}
+
+.my_col_header {
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+  height: 100%;
+  overflow: auto;
+}
+
+.my_column {
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+  //height: 100%;
+  //background-color: yellow;
+}
+
+.board {
+  position:relative;
+  width: 99%;
+  height: 78%;
+  margin: auto;
+  background-color: #ADA7A7;
+  bottom: 0;
+  overflow: auto;
+}
+
+.board_header {
+  position:relative;
+  width: 99%;
+  margin: auto;
+  height: 7%;
+  background: linear-gradient(#BF0000, #DA0303, #BF0000);
+  board: solid black
+}
+
+.my_title {
+  font-size: 30px;
+  color: white;
+  height: 100%;
+}
+
+.sprintBar{
+  width:100%;
+  height:40px;
+  background-color:black;
+}
+
+.featureBar{
+  width:100%;
+  height:40px;
+  background-color: green; 
+}
+
