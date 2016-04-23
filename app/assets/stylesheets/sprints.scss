@@ -359,6 +359,7 @@ button#popup {
   font-size: 1em;
   color: white;
   margin-left: 1em;
+  cursor:pointer;
 }
 
 .toggle_sprint{
@@ -367,6 +368,7 @@ button#popup {
     color: white;
     margin-left: 1em;
     font-size: 2em;
+    cursor:pointer;
 }
 
 .toggle_feature{
@@ -375,6 +377,7 @@ button#popup {
     color: white;
     margin-left: 1em;
     font-size: 2em;
+    cursor:pointer;
 }
 
 .task_container{
@@ -437,5 +440,20 @@ button#popup {
   font-weight: bold;
   float:left;
   margin-left: 1em;
+}
+
+#tname {
+  width:100%;
+  margin-bottom: 1em;
+  padding:10px;
+  font-size:16px;
+  font-family:raleway
+}
+#tdescription{
+  width:100%;
+  margin-bottom: 1em;
+  padding:10px;
+  font-size:16px;
+  font-family:raleway
 }
 

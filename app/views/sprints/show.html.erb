@@ -3,6 +3,8 @@
     <%= javascript_tag do %>
         window.selected_group_id = '<%= session[:current_user]["current_groupId"]%>';
         window.current_user_id = '<%= @user_info["objectId"] %>';
+        window.current_user_fname = '<%= @user_info["first_name"] %>';
+        window.current_user_lname = '<%= @user_info["last_name"] %>';
         window.number_of_columns = <%= @columns.length %>;
     <% end %>
     <div class= "center_wrapper hundredPercent">
@@ -54,9 +56,9 @@
               <%=image_tag("closebutton.png", alt: "Example Image", :onclick => 'div_newTask_hide()', :id => 'close')%>
               <form id = "form">
                 Task Name:<br>
-                <input type="text" id = "name" name="name" placeholder="Task Name"><br>
+                <input type="text" id = "tname" name="name" placeholder="Task Name"><br>
                 Task Description:<br>
-                <input type="text" id = "description" name="description" placeholder="Description">
+                <input type="text" id = "tdescription" name="description" placeholder="Description">
                 Assign Worker:<br>
                 <select id = "feature_worker" class= "form-control">
                   <% @users.each_with_index do |u,i|%>
@@ -98,17 +100,13 @@
                 <input type="text" id ="editfeaturename" name="name" required><br>
                 Feature Difficulty:<br>
                 <fieldset id="edit_hidden_difficulty">
-                <%= select_tag(:feature_dif, options_for_select([['1', 1], ['2', 2], ['3', 3], ['4', 4],['5', 5]]), :id => "edit_feature_dif", :class => "form-control") %>
+                <!--<%= select_tag(:feature_dif, options_for_select([['1', 1], ['2', 2], ['3', 3], ['4', 4],['5', 5]]), :id => "edit_feature_dif", :class => "form-control") %>-->
+                <%= select_tag(:feature_dif, options_for_select(1..7), :id => "edit_feature_dif", :class => "form-control") %>
                 </fieldset>
                 <h4 id="display_difficulty"></h4>
                 Feature Description:<br>
                 <input type="text" id = "editfeaturedescription" name="description">
                 Assign Worker:<br>
-                <select id = "editfeatureworker" class= "form-control">
-                  <% @users.each_with_index do |u,i|%>
-                    <option id = <%=u["user_info_ptr"]["objectId"]%> value= <%= u["user_info_ptr"]["objectId"]%>><%=u["user_info_ptr"]["first_name"]%> <%=u["user_info_ptr"]["last_name"]%></option>
-                  <%end%>
-                </select>
                 <input type="button" name="submit" id="updatefeature" value="submit"/>
                 <input type="button" name="delete" id="deletefeature" value="delete"/>
               </form>

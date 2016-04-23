@@ -1,15 +1,8 @@
 $(document).ready(function() {
     if(document.getElementById("sprints_page"))
     {
-        //sprints = {};   
-        //features = {};  
-        //tasks = {};     
-        //members = {};
-        //colums = {};
         div_newTask_hide();
         getSprints(loadSprints);
-        //getFeatures(loadFeatures);
-        //getTasks(loadTasks);
         
         /*if(!getSprints(loadSprints) || !getFeatures(loadFeatures) || !getTasks(loadTasks) || !getGroupMembers())
         {
@@ -40,13 +33,17 @@ $(document).ready(function() {
         $('.newTaskSubmit').click(function() {
             var feature_ptr = window.new_task_feature_id;
             var creator_ptr = window.current_user_id;
-            var title = $('#name').val();
-            var description = $('#description').val();
+            var title = $('#tname').val();
+            var description = $('#tdescription').val();
             var totalHours;
             var type;
             createTask(feature_ptr, creator_ptr, title, description, totalHours, type, loadNewTask);
             div_newTask_hide();
         });
+        
+        /*$('.featureBar > .bar_title').click(function(){
+            var h = this; 
+        });*/
     }
 });
 
@@ -63,6 +60,27 @@ function getSprints(callback)
             if(typeof callback === 'function')
             {
                 callback();
+            }
+            return true;
+        },
+        error: function(error) {
+            return false;
+        }
+    });
+}
+function getSprint(id,callback)
+{
+    var sprintObject = Parse.Object.extend("Sprint");
+    var query = new Parse.Query(sprintObject);
+    query.equalTo("group_ptr", {"__type":"Pointer","className":"Group","objectId":""+ selected_group_id +""});
+    query.equalTo("objectId", id);
+    query.include("group_ptr");
+    query.ascending("start_date");
+    query.find({
+        success: function(sprint) {
+            if(typeof callback === 'function')
+            {
+                callback(sprint);
             }
             return true;
         },
@@ -158,6 +176,29 @@ function getFeatures(callback)
             if(typeof callback === 'function')
             {
                 callback();
+            }
+            return true;
+        },
+        error: function(error) {
+            return false;
+        }
+    });  
+}
+function getFeature(id,callback)
+{
+    var featureObject = Parse.Object.extend("Feature");
+    var query = new Parse.Query(featureObject);
+    //query.equalTo("group_ptr", {"__type":"Pointer","className":"Group","objectId":""+ selected_group_id +""});
+    //query.equalTo("objectId", id);
+    query.include("group_ptr");
+    query.include("sprint_ptr");
+    query.include("owner_ptr");
+    //query.ascending("createdAt");
+    query.get(id,{
+        success: function(feature) {
+            if(typeof callback === 'function')
+            {
+                callback(feature);
             }
             return true;
         },
@@ -293,6 +334,27 @@ function getTasks(callback)
         }
     });   
 }
+function getTask(id,callback)
+{
+    var taskObject = Parse.Object.extend("Task");
+    var query = new Parse.Query(taskObject);
+    query.equalTo("group_ptr", {"__type":"Pointer","className":"Group","objectId":""+ selected_group_id +""});
+    query.equalTo("objectId", id);
+    query.include("feature_ptr");
+    query.include("creator_ptr");
+    query.find({
+        success: function(task) {
+            if(typeof callback === 'function')
+            {
+                callback(task);
+            }
+            return true;
+        },
+        error: function(error) {
+            return false;
+        }
+    });   
+}
 function getTasksInFeature(feature_id)
 {
     var taskObject = Parse.Object.extend("Task");
@@ -316,7 +378,8 @@ function createTask(feature_ptr, creator_ptr, title, description, totalHours, ty
     var newTask = new taskObject();
     newTask.set("feature_ptr", {"__type":"Pointer","className":"Feature","objectId":""+ feature_ptr +""});
     newTask.set("creator_ptr", {"__type":"Pointer","className":"User_Info","objectId":""+ creator_ptr +""});
-    newTask.set("title", title);
+    newTask.set("group_ptr", {"__type":"Pointer","className":"Group","objectId":""+ window.selected_group_id +""});
+    newTask.set("Title", title);
     newTask.set("description", description);
     newTask.set("total_hours", totalHours);
     newTask.set("type", type);
@@ -518,7 +581,7 @@ function loadFeatures()
             var sprintId = "" + window.features[i].get("sprint_ptr").id;
             var feature_html = '<div name=' + sprintId + ' class = "featureBar" id="'+ window.features[i].id + '">\
                                     <div name=' + sprintId + ' id=' + window.features[i].id + ' class= "toggle_feature" onclick="toggleFeature(this.id)">-</div>\
-                                    <div class= "bar_title">' + name +'</div>\
+                                    <div id=' + window.features[i].id +' class="bar_title">' + name +'</div>\
                                     <div id=' + window.features[i].id + ' class= "bar_add_button" onclick="div_newTask_show(this.id);">Add</div>\
                                 </div>';
             $(feature_html).insertAfter('#' + window.features[i].get("sprint_ptr").id);
@@ -567,7 +630,7 @@ function loadTasks()
                 hours = "--"
             }
             var task_html = '<div id=' + id + ' class="task_container">\
-                                <div class ="task_header handler">' + name + '</div>\
+                                <div id=' + window.tasks[i].id +' class ="task_header handler">' + name + '</div>\
                                 <div class ="task_description handler">' + description + '</div>\
                                 <div class ="task_footer handler">\
                                     <div class = "task_worker">' + worker + '</div>\
@@ -714,6 +777,7 @@ function get_new_status(item)
     var colAndId = $(item).parent().get(0).id;
     var col = parseInt(colAndId[6]);
     var featId = colAndId.slice(14, colAndId.length);
+    item.children(".task_footer").children(".task_worker").text(window.current_user_fname + " " + window.current_user_lname);
     taskMoved(id,featId,col);
     
 }
@@ -786,4 +850,41 @@ function div_newTask_show(id) {
 
 function div_newTask_hide() {
     document.getElementById('newTask').style.display = "none";
+}
+
+function div_ef_show(item) {
+    document.getElementById('editFeaturePopup').style.display = "block";
+        /*var Feature = Parse.Object.extend("Feature");
+        var query = new Parse.Query(Feature);
+        query.include("owner_ptr")
+        query.equalTo("objectId", id);
+        query.find({
+        success:function(feature) {
+            document.getElementById('editfeaturename').value = feature[0].get('name');
+            document.getElementById('editfeaturedescription').value = feature[0].get('description');
+            document.getElementById('editfeatureworker').value = feature[0].get('current_worker');
+              
+            //document.getElementById('feature_difficulty').innerHTML = feature[0].get('owner_ptr').id;
+            if ($('.current_user_id').get(0).id == feature[0].get('owner_ptr').id)
+            {
+                $('#edit_hidden_difficulty').show();
+                $('#edit_feature_dif').val(feature[0].get('difficulty'));
+                $('#display_difficulty').hide();
+            }
+              else
+              {
+                $('#display_difficulty').show();
+                $('#edit_hidden_difficulty').hide();
+                document.getElementById('display_difficulty').innerHTML = feature[0].get('difficulty');
+              }
+              
+              document.getElementById('deletefeature').setAttribute('onclick', 'deleteFeature(' +'"'+id+'")');
+              document.getElementById('updatefeature').setAttribute('onclick', 'updateFeature(' +'"'+id+'")');
+            }
+          });*/
+}
+        
+        //Function to Hide Popup
+function div_ef_hide(){
+    document.getElementById('editFeaturePopup').style.display = "none";
 }
