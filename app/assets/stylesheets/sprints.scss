@@ -337,6 +337,7 @@ button#popup {
   line-height: 3em;
   //background-color:black;
   background: linear-gradient(#474747, #8C8C8C, #474747);
+  text-align:left;
 }
 
 .featureBar{
@@ -344,13 +345,36 @@ button#popup {
   height: 3em;
   line-height: 3em;
   background-color: green; 
+  text-align:left;
 }
 
 .bar_title{
+  display: inline-block;
   font-size: 2.2em;
   color: white;
-  text-align: left;
   margin-left: 10px;
+}
+.bar_add_button{
+  display: inline-block;
+  font-size: 1em;
+  color: white;
+  margin-left: 1em;
+}
+
+.toggle_sprint{
+    display: inline-block;
+    font-weight: bold;
+    color: white;
+    margin-left: 1em;
+    font-size: 2em;
+}
+
+.toggle_feature{
+    display: inline-block;
+    font-weight: bold;
+    color: white;
+    margin-left: 1em;
+    font-size: 2em;
 }
 
 .task_container{
@@ -414,3 +438,4 @@ button#popup {
   float:left;
   margin-left: 1em;
 }
+

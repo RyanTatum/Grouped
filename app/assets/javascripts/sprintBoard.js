@@ -6,6 +6,7 @@ $(document).ready(function() {
         //tasks = {};     
         //members = {};
         //colums = {};
+        div_newTask_hide();
         getSprints(loadSprints);
         //getFeatures(loadFeatures);
         //getTasks(loadTasks);
@@ -15,6 +16,37 @@ $(document).ready(function() {
           throwError("Sorry, Page was not properly loaded"); 
           //maybe do a redirect
         }*/
+        
+        $('.newFeatureSubmit').click(function() {
+            var sprint_ptr = window.new_feature_sprint_id;
+            var owner_ptr = window.current_user_id;
+            var name = $('#name').val();
+            var description = $('#description').val();
+            if($('#usePoker').is(":checked")) 
+            {
+                var poker = true;
+                var difficulty = "";
+            }
+            else
+            {
+                var poker = false;
+                var difficulty = $('#feature_dif').val();
+            }
+            createFeature(sprint_ptr, owner_ptr, name, description, difficulty, poker, loadNewFeature);
+            div_abc_hide();
+            //getSprints(loadSprints);
+        });
+        
+        $('.newTaskSubmit').click(function() {
+            var feature_ptr = window.new_task_feature_id;
+            var creator_ptr = window.current_user_id;
+            var title = $('#name').val();
+            var description = $('#description').val();
+            var totalHours;
+            var type;
+            createTask(feature_ptr, creator_ptr, title, description, totalHours, type, loadNewTask);
+            div_newTask_hide();
+        });
     }
 });
 
@@ -151,7 +183,7 @@ function getFeaturesInSprint(sprint_id)
         }
     });
 }
-function createFeature(sprint_ptr, owner_ptr, name, description, difficulty, poker)
+function createFeature(sprint_ptr, owner_ptr, name, description, difficulty, poker, callback)
 {
     var featureObject = Parse.Object.extend("Feature");
     var newFeature = new featureObject();
@@ -160,10 +192,17 @@ function createFeature(sprint_ptr, owner_ptr, name, description, difficulty, pok
     newFeature.set("owner_ptr", {"__type":"Pointer","className":"User_Info","objectId":""+ owner_ptr +""});
     newFeature.set("name", name);
     newFeature.set("description", description);
-    newFeature.set("difficulty", difficulty);
+    if(difficulty != "")
+    {
+        newFeature.set("difficulty", difficulty);
+    }
     newFeature.set("use_poker", poker);
     newFeature.save(null, {
         success: function(myObj) {
+                if(typeof callback === 'function')
+                {
+                    callback(myObj);
+                }
                 return "true";
         },
         error: function(myObj, error) {
@@ -271,7 +310,7 @@ function getTasksInFeature(feature_id)
         }
     });   
 }
-function createTask(feature_ptr, creator_ptr, title, description, totalHours, type)
+function createTask(feature_ptr, creator_ptr, title, description, totalHours, type,callback)
 {
     var taskObject = Parse.Object.extend("Task");
     var newTask = new taskObject();
@@ -284,6 +323,10 @@ function createTask(feature_ptr, creator_ptr, title, description, totalHours, ty
     newTask.set("current_column", 1);
     newTask.save(null, {
         success: function(myObj) {
+                if(typeof callback === 'function')
+                {
+                    callback(myObj);
+                }
                 return "true";
         },
         error: function(myObj, error) {
@@ -320,7 +363,7 @@ function editTask(id, feature_ptr, current_worker, column, title, description, t
         }
     });
 }
-function taskMoved(id, feature_ptr)
+function taskMoved(id, feature_ptr, column)
 {
     var taskObject = Parse.Object.extend("Task");
     var query = new Parse.Query(taskObject);
@@ -330,6 +373,7 @@ function taskMoved(id, feature_ptr)
         success: function(updateTask) {
             updateTask.set("feature_ptr", {"__type":"Pointer","className":"Feature","objectId":""+ feature_ptr +""});
             updateTask.set("current_worker", {"__type":"Pointer","className":"User_Info","objectId":""+ current_user_id +""});
+            updateTask.set("current_column", column);
             updateTask.save({
                 success:function() {
                     return "true";
@@ -436,67 +480,6 @@ function throwError(errorMessage)
 {
   
 }
-
-function loadBoard()
-{
-  //for every sprint
-  //  add sprint bar
-  //  for every feature in sprint
-  //    add feature bar
-  //    for every column
-  //      create column
-  //      for every task in column
-  //        add task
-  if(window.sprints != [] && window.features != undefined)
-  {
-      return false;
-  }
-  for(var i = 0; i < window.sprints.length; i++)
-  {
-    var sprint_html = '<div class = "sprintBar" id=' + window.sprints[i].id + '>'+ window.sprints[i].get("name") +'</div>';
-    if($('.board').children() == [])
-    {
-        $('.board div:last-child').append(sprint_html);
-    }
-    else
-    {
-        $('.board').append(sprint_html);
-    }
-    if(window.features != [] && window.features != undefined)
-    {
-        for(var j = 0; j < window.features.length; j++)
-        {
-            var feature_htlm = '<div class = "featureBar" id="'+ window.features[j].id + '">'+ window.features[j].get("name") +'</div>';
-            if($('#' + window.sprints[i].id).children() == [])
-            {
-                $('#' + window.sprints[i].id).append(feature_html);
-            }
-            else
-            {
-               $('#' + window.sprints[i].id).append(feature_html);
-            }
-        }
-    }
-    
-  }
-  
-  /*var chat_html = '<li class="left clearfix">\
-    						  <span class="chat-img pull-left">\
-    						        <img height= "50", width= "50", src = '+ img_src +'>\
-    						    </span>\
-    						    <div class="chat-body clearfix">\
-    							    <div class="header">\
-    								    <strong class="primary-font">' + user_name + '</strong> <small class="pull-right text-muted">\
-    									   <span class="glyphicon glyphicon-time"></span>'+ time_stamp +'</small>\
-    							    </div>\
-    							    <p>\
-    								    '+ comment + '\
-    							    </p>\
-    						    </div>\
-    					    </li>';
-    			        $('.chat').append(chat_html);*/
-}
-
 function loadSprints()
 {
     if(window.sprints != [] && window.sprints != undefined)
@@ -504,7 +487,9 @@ function loadSprints()
         for(var i = 0; i < window.sprints.length; i++)
         {
             var sprint_html = '<div class = "sprintBar" id=' + window.sprints[i].id + '>\
-                                    <div class= "bar_title">' + window.sprints[i].get("name") + '\
+                                    <div id=' + window.sprints[i].id + ' class= "toggle_sprint" onclick="toggleSprint(this.id)">-</div>\
+                                    <div class= "bar_title">' + window.sprints[i].get("name") + '</div>\
+                                    <div id=' + window.sprints[i].id + ' class= "bar_add_button" onclick="div_abc_show(this.id);">Add</div>\
                               </div>';
             if($('.board').children() == [])
             {
@@ -523,20 +508,20 @@ function loadFeatures()
     if(window.features != [] && window.features != undefined)
     {
         for(var i = 0; i < window.features.length; i++)
-        {
-            var feature_html = '<div class = "featureBar" id="'+ window.features[i].id + '">\
-                                    <div class= "bar_title">' + window.features[i].get("name") + '\
+        {  
+            var name = window.features[i].get("name");
+            var difficulty = "" + window.features[i].get("difficulty")
+            if(difficulty == null || difficulty == "" || difficulty == 'undefined')
+            {
+                difficulty = "--"
+            }
+            var sprintId = "" + window.features[i].get("sprint_ptr").id;
+            var feature_html = '<div name=' + sprintId + ' class = "featureBar" id="'+ window.features[i].id + '">\
+                                    <div name=' + sprintId + ' id=' + window.features[i].id + ' class= "toggle_feature" onclick="toggleFeature(this.id)">-</div>\
+                                    <div class= "bar_title">' + name +'</div>\
+                                    <div id=' + window.features[i].id + ' class= "bar_add_button" onclick="div_newTask_show(this.id);">Add</div>\
                                 </div>';
             $(feature_html).insertAfter('#' + window.features[i].get("sprint_ptr").id);
-            /*var child = $('#' + window.features[i].get("sprint_ptr").id);
-            if($('#' + window.features[i].get("sprint_ptr").id).children() == [])
-            {
-                $('#' + window.features[i].get("sprint_ptr").id + " div:last-child").append(feature_html);
-            }
-            else
-            {
-               $('#' + window.features[i].get("sprint_ptr").id).append(feature_html);
-            }*/
             //var feature_num = "feature" + i;
             //var column_container = '<div class="my_column_container" id=' + feature_num +'></div>';
             //$(column_container).insertAfter('#' + window.features[i].id);
@@ -545,7 +530,7 @@ function loadFeatures()
             for(var j = number_of_columns; j > 0; j--)
             {
                 var id_string = "column" + j + "feature" + window.features[i].id;
-                var column_html = '<div style = ' + style_string + 'class= "my_column columnSort" id= ' + id_string + '></div>';
+                var column_html = '<div style= ' + style_string + 'class= "my_column columnSort" id= ' + id_string + ' name=' + sprintId + '></div>';
                 $(column_html).insertAfter('#' + window.features[i].id);
                 //$('#feature' + i).append(column_html);
             }
@@ -589,16 +574,76 @@ function loadTasks()
                                     <div class = "task_hours">Hrs: ' + hours + '</div>\
                                 </div>\
                             </div>';
-            /*var task_html = '<div class ="portlet ui-widget ui-widget-content ui-helper-clearfix ui-corner-all">\
-                                <div class="portlet-header">' + name +'</div>\
-                                <div class="portlet-content">Description</div>\
-                            </div>';*/
             $('#column' + window.tasks[i].get("current_column") + 'feature' + window.tasks[i].get("feature_ptr").id).append(task_html);
             //$(task_html).insertAfter('#' + window.features[i].get("sprint_ptr").id);
             
         }
         activateSort();
     }   
+}
+
+function loadNewFeature(addfeat)
+{
+            var name = addfeat.get("name");
+            var difficulty = "" + addfeat.get("difficulty")
+            if(difficulty == null || difficulty == "" || difficulty == 'undefined')
+            {
+                difficulty = "--"
+            }
+            var sprintId = "" + addfeat.get("sprint_ptr").objectId;
+            var feature_html = '<div name=' + sprintId + ' class = "featureBar" id="'+ addfeat.id + '">\
+                                    <div name=' + sprintId + ' id=' + addfeat.id + ' class= "toggle_feature" onclick="toggleFeature(this.id)">-</div>\
+                                    <div class= "bar_title">' + name +'</div>\
+                                    <div id=' + addfeat.id + ' class= "bar_add_button" onclick="div_newTask_show(this.id);">Add</div>\
+                                </div>';
+            $(feature_html).insertAfter('#' + addfeat.get("sprint_ptr").objectId);
+            //var feature_num = "feature" + i;
+            //var column_container = '<div class="my_column_container" id=' + feature_num +'></div>';
+            //$(column_container).insertAfter('#' + window.features[i].id);
+            var column_width = Math.floor(100 / number_of_columns);
+            var style_string = " width:" + String(column_width) + "% ";
+            for(var j = number_of_columns; j > 0; j--)
+            {
+                var id_string = "column" + j + "feature" + addfeat.id;
+                var column_html = '<div style= ' + style_string + 'class= "my_column columnSort" id= ' + id_string + ' name=' + sprintId + '></div>';
+                $(column_html).insertAfter('#' + addfeat.id);
+                //$('#feature' + i).append(column_html);
+            }
+}
+
+function loadNewTask(addtask)
+{
+            var id = "" + addtask.id;
+            var name = addtask.get("Title");
+            var description = addtask.get("description");
+            if(description == undefined || description == null || description == "")
+            {
+                description = "No description to display"
+            }
+            if(addtask.get("current_worker") != undefined)
+            {
+                var worker = addtask.get("current_worker").get("first_name") + " " + addtask.get("current_worker").get("last_name");
+            }
+            else
+            {
+                var worker = "--"
+            }
+            
+            var hours = addtask.get("total_hours");
+            if(hours == undefined || hours == null)
+            {
+                hours = "--"
+            }
+            var task_html = '<div id=' + id + ' class="task_container">\
+                                <div class ="task_header handler">' + name + '</div>\
+                                <div class ="task_description handler">' + description + '</div>\
+                                <div class ="task_footer handler">\
+                                    <div class = "task_worker">' + worker + '</div>\
+                                    <div class = "task_hours">Hrs: ' + hours + '</div>\
+                                </div>\
+                            </div>';
+            $('#column' + addtask.get("current_column") + 'feature' + addtask.get("feature_ptr").objectId).append(task_html);
+            activateSort();
 }
 
 function activateSort()
@@ -615,7 +660,8 @@ function activateSort()
                 tilt_direction(ui.item);
             },
             update: function (event, ui) {
-                save_status(ui.item);
+                //save_status(ui.item);
+                get_new_status(ui.item);
             },
             stop: function (event, ui) {
                 ui.item.removeClass("tilt");
@@ -662,7 +708,82 @@ function tilt_direction(item)
     item.data("move_handler", move_handler);
 }
 
-function save_status(item)
+function get_new_status(item)
 {
+    var id = item.get(0).id;
+    var colAndId = $(item).parent().get(0).id;
+    var col = parseInt(colAndId[6]);
+    var featId = colAndId.slice(14, colAndId.length);
+    taskMoved(id,featId,col);
     
+}
+
+function toggleSprint(id)
+{
+    //$('[name=' + id + ']').toggle();
+    var item = $('#' + id + ' .toggle_sprint');
+    var feats = $('.toggle_feature[name=' + id + ']').text("-");
+    if(item.text() == '-')
+    {
+        $('[name=' + id + ']').hide();
+        item.text("+");
+        
+    }
+    else
+    {
+        $('[name=' + id + ']').show();
+        item.text("-");
+    }
+}
+
+function toggleFeature(id)
+{
+    /*for(var i = 1 ; i <= number_of_columns; i++)
+    {
+        $('#column' + i + 'feature' + id).show();
+    }*/
+    var item = $('#' + id + ' .toggle_feature');
+    if(item.text() == '-')
+    {
+        for(var i = 1 ; i <= number_of_columns; i++)
+        {
+            $('#column' + i + 'feature' + id).hide();
+        }
+        item.text("+");
+        
+    }
+    else
+    {
+        for(var i = 1 ; i <= number_of_columns; i++)
+        {
+            $('#column' + i + 'feature' + id).show();
+        }
+        item.text("-");
+    }
+}
+
+function div_sp_show() {
+    document.getElementById('sprintPopup').style.display = "block";
+}
+        //Function to Hide Popup
+function div_sp_hide(){
+    document.getElementById('sprintPopup').style.display = "none";
+}
+
+function div_abc_show(id) {
+    document.getElementById('abc').style.display = "block";
+    window.new_feature_sprint_id = id;
+}
+        //Function to Hide Popup
+function div_abc_hide(){
+    document.getElementById('abc').style.display = "none";
+}
+
+function div_newTask_show(id) {
+    document.getElementById('newTask').style.display = "block";
+    window.new_task_feature_id = id;
+}
+
+function div_newTask_hide() {
+    document.getElementById('newTask').style.display = "none";
 }

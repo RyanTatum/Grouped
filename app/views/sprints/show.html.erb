@@ -9,6 +9,7 @@
       <div class = "my_sprint_container">
         <h2 class = "title">Sprint Board</h2>
         <hr>
+        
         <%@colWidth = 100 / @columns.length%>
           <div class= "board_header">
             <%@columns.each do |col| %>
@@ -19,48 +20,100 @@
           </div>
           <div class= "board">
           </div>
-    </div>
-  </body>
-<!--</html>-->
-
-<!--<body>
- 
-<div class="column">
- 
-  <div class="portlet">
-    <div class="portlet-header">Feeds</div>
-    <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+          
+          
+          <div id="abc">
+          <!-- Popup Div Starts Here -->
+            <div id="popupContact">
+              <!-- Contact Us Form -->
+              <%=image_tag("closebutton.png", alt: "Example Image", :onclick => 'div_abc_hide()', :id => 'close')%>
+              <form id = "form">
+                Feature Name:<br>
+                <input type="text" id = "name" name="name" placeholder="Feature Name"><br>
+                Feature Description:<br>
+                <input type="text" id = "description" name="description" placeholder="Description">
+                <fieldset class="poker_checkbox">
+                  Use Poker: 
+                  <input type="checkbox" id="usePoker" name="Use Poker" onchange="valueChanged()" checked>
+                </fieldset>
+                <fieldset id="hidden_difficulty">
+                  Difficulty:<br>
+                  <%= select_tag(:feature_dif, options_for_select([['1', 1], ['2', 2], ['3', 3], ['4', 4],['5', 5]]), :id => "feature_dif", :class => "form-control") %>
+                </fieldset>
+        
+                <input class="newFeatureSubmit" type="button" name="submit" id="submit" value="submit"/>
+              </form>
+            </div>
+          <!-- Popup Div Ends Here -->
+          </div>
+          
+          <div id="newTask">
+          <!-- Popup Div Starts Here -->
+            <div id="popupContact">
+              <!-- Contact Us Form -->
+              <%=image_tag("closebutton.png", alt: "Example Image", :onclick => 'div_newTask_hide()', :id => 'close')%>
+              <form id = "form">
+                Task Name:<br>
+                <input type="text" id = "name" name="name" placeholder="Task Name"><br>
+                Task Description:<br>
+                <input type="text" id = "description" name="description" placeholder="Description">
+                Assign Worker:<br>
+                <select id = "feature_worker" class= "form-control">
+                  <% @users.each_with_index do |u,i|%>
+                    <option id = <%=u["user_info_ptr"]["objectId"]%> value= <%= u["user_info_ptr"]["objectId"]%> <%=selected = "selected" if i==0%>><%=u["user_info_ptr"]["first_name"]%> <%=u["user_info_ptr"]["last_name"]%></option>
+                  <%end%>
+                </select>
+                <input class="newTaskSubmit" type="button" name="submit" id="submit" value="submit"/>
+              </form>
+            </div>
+          <!-- Popup Div Ends Here -->
+          </div>
+    
+          <div id="sprintPopup">
+          <!-- Popup Div Starts Here -->
+            <div id="popupContact">
+            <!-- Contact Us Form -->
+            <%=image_tag("closebutton.png", alt: "Example Image", :onclick => 'div_sp_hide()', :id => 'close')%>
+              <form id = "form">
+                Sprint Name:<br>
+                <input type="text" id = "sprintName" name="name" placeholder="Sprint Name" required><br>
+                Start Date:<br>
+                <input type="date" id = "startDate" name="startDate" required>
+                End Date:<br>
+                <input type="date" id = "endDate" name="endDate" required>
+                <!--<input type="submit" value="Submit" id="submit">-->
+                <input type="button" name="submit" id="submit" value="submit" onclick="newSprint();"/>
+              </form>
+            </div>
+          <!-- Popup Div Ends Here -->
+          </div>
+    
+          <div id="editFeaturePopup">
+          <!-- Popup Div Starts Here -->
+            <div id="popupContact">
+            <!-- Contact Us Form -->
+              <%=image_tag("closebutton.png", alt: "Example Image", :onclick => 'div_ef_hide()', :id => 'close')%>
+              <form id = "form">
+                Feature Name:<br>
+                <input type="text" id ="editfeaturename" name="name" required><br>
+                Feature Difficulty:<br>
+                <fieldset id="edit_hidden_difficulty">
+                <%= select_tag(:feature_dif, options_for_select([['1', 1], ['2', 2], ['3', 3], ['4', 4],['5', 5]]), :id => "edit_feature_dif", :class => "form-control") %>
+                </fieldset>
+                <h4 id="display_difficulty"></h4>
+                Feature Description:<br>
+                <input type="text" id = "editfeaturedescription" name="description">
+                Assign Worker:<br>
+                <select id = "editfeatureworker" class= "form-control">
+                  <% @users.each_with_index do |u,i|%>
+                    <option id = <%=u["user_info_ptr"]["objectId"]%> value= <%= u["user_info_ptr"]["objectId"]%>><%=u["user_info_ptr"]["first_name"]%> <%=u["user_info_ptr"]["last_name"]%></option>
+                  <%end%>
+                </select>
+                <input type="button" name="submit" id="updatefeature" value="submit"/>
+                <input type="button" name="delete" id="deletefeature" value="delete"/>
+              </form>
+            </div>
+          </div>
+      </div>
   </div>
- 
-  <div class="portlet">
-    <div class="portlet-header">News</div>
-    <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-  </div>
- 
-</div>
- 
-<div class="column">
- 
-  <div class="portlet">
-    <div class="portlet-header">Shopping</div>
-    <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-  </div>
- 
-</div>
- 
-<div class="column">
- 
-  <div class="portlet">
-    <div class="portlet-header">Links</div>
-    <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-  </div>
- 
-  <div class="portlet">
-    <div class="portlet-header">Images</div>
-    <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-  </div>
- 
-</div>
- 
- 
-</body>-->
+</body>
