@@ -40,10 +40,6 @@ $(document).ready(function() {
             createTask(feature_ptr, creator_ptr, title, description, totalHours, type, loadNewTask);
             div_newTask_hide();
         });
-        
-        /*$('.featureBar > .bar_title').click(function(){
-            var h = this; 
-        });*/
     }
 });
 
@@ -338,11 +334,11 @@ function getTask(id,callback)
 {
     var taskObject = Parse.Object.extend("Task");
     var query = new Parse.Query(taskObject);
-    query.equalTo("group_ptr", {"__type":"Pointer","className":"Group","objectId":""+ selected_group_id +""});
-    query.equalTo("objectId", id);
+    //query.equalTo("group_ptr", {"__type":"Pointer","className":"Group","objectId":""+ selected_group_id +""});
+    //query.equalTo("objectId", id);
     query.include("feature_ptr");
     query.include("creator_ptr");
-    query.find({
+    query.get(id,{
         success: function(task) {
             if(typeof callback === 'function')
             {
@@ -581,7 +577,7 @@ function loadFeatures()
             var sprintId = "" + window.features[i].get("sprint_ptr").id;
             var feature_html = '<div name=' + sprintId + ' class = "featureBar" id="'+ window.features[i].id + '">\
                                     <div name=' + sprintId + ' id=' + window.features[i].id + ' class= "toggle_feature" onclick="toggleFeature(this.id)">-</div>\
-                                    <div id=' + window.features[i].id +' class="bar_title">' + name +'</div>\
+                                    <div id=' + window.features[i].id +' class="bar_title" onclick="featTitleClick(this.id)">' + name +'</div>\
                                     <div id=' + window.features[i].id + ' class= "bar_add_button" onclick="div_newTask_show(this.id);">Add</div>\
                                 </div>';
             $(feature_html).insertAfter('#' + window.features[i].get("sprint_ptr").id);
@@ -630,7 +626,7 @@ function loadTasks()
                 hours = "--"
             }
             var task_html = '<div id=' + id + ' class="task_container">\
-                                <div id=' + window.tasks[i].id +' class ="task_header handler">' + name + '</div>\
+                                <div id=' + window.tasks[i].id +' class ="task_header handler" onclick="taskTitleClick(this.id)">' + name + '</div>\
                                 <div class ="task_description handler">' + description + '</div>\
                                 <div class ="task_footer handler">\
                                     <div class = "task_worker">' + worker + '</div>\
@@ -642,6 +638,7 @@ function loadTasks()
             
         }
         activateSort();
+        minimizeAll();
     }   
 }
 
@@ -656,7 +653,7 @@ function loadNewFeature(addfeat)
             var sprintId = "" + addfeat.get("sprint_ptr").objectId;
             var feature_html = '<div name=' + sprintId + ' class = "featureBar" id="'+ addfeat.id + '">\
                                     <div name=' + sprintId + ' id=' + addfeat.id + ' class= "toggle_feature" onclick="toggleFeature(this.id)">-</div>\
-                                    <div class= "bar_title">' + name +'</div>\
+                                    <div id=' + addfeat.id +' class="bar_title" onclick="featTitleClick(this.id)">' + name +'</div>\
                                     <div id=' + addfeat.id + ' class= "bar_add_button" onclick="div_newTask_show(this.id);">Add</div>\
                                 </div>';
             $(feature_html).insertAfter('#' + addfeat.get("sprint_ptr").objectId);
@@ -781,7 +778,16 @@ function get_new_status(item)
     taskMoved(id,featId,col);
     
 }
-
+function minimizeAll()
+{
+    if(window.sprints != [] && window.sprints != undefined)
+    {
+        for(var i = 0; i < window.sprints.length; i++)
+        {
+           toggleSprint(window.sprints[i].id);
+        }
+    }
+}
 function toggleSprint(id)
 {
     //$('[name=' + id + ']').toggle();
@@ -854,37 +860,59 @@ function div_newTask_hide() {
 
 function div_ef_show(item) {
     document.getElementById('editFeaturePopup').style.display = "block";
-        /*var Feature = Parse.Object.extend("Feature");
-        var query = new Parse.Query(Feature);
-        query.include("owner_ptr")
-        query.equalTo("objectId", id);
-        query.find({
-        success:function(feature) {
-            document.getElementById('editfeaturename').value = feature[0].get('name');
-            document.getElementById('editfeaturedescription').value = feature[0].get('description');
-            document.getElementById('editfeatureworker').value = feature[0].get('current_worker');
+    $('#editfeaturename').val(item.get("name"));
+    $('#editfeaturedescription').val(item.get('description'));
+    if (item.get('owner_ptr') != undefined && window.current_user_id == item.get('owner_ptr').id)
+    {
+        $('#edit_hidden_difficulty').show();
+        $('#edit_feature_dif').val(item.get('difficulty'));
+        $('#display_difficulty').hide();
+    }
+    else
+    {
+        $('#display_difficulty').show();
+        $('#edit_hidden_difficulty').hide();
+        var diff = item.get('difficulty');
+        if(diff == null || diff == undefined || diff == "undefined" || diff == "")
+        {
+            document.getElementById('display_difficulty').innerHTML = "--";
+        }
+        else
+        {
+            document.getElementById('display_difficulty').innerHTML = diff;
+        }
+    }
               
-            //document.getElementById('feature_difficulty').innerHTML = feature[0].get('owner_ptr').id;
-            if ($('.current_user_id').get(0).id == feature[0].get('owner_ptr').id)
-            {
-                $('#edit_hidden_difficulty').show();
-                $('#edit_feature_dif').val(feature[0].get('difficulty'));
-                $('#display_difficulty').hide();
-            }
-              else
-              {
-                $('#display_difficulty').show();
-                $('#edit_hidden_difficulty').hide();
-                document.getElementById('display_difficulty').innerHTML = feature[0].get('difficulty');
-              }
-              
-              document.getElementById('deletefeature').setAttribute('onclick', 'deleteFeature(' +'"'+id+'")');
-              document.getElementById('updatefeature').setAttribute('onclick', 'updateFeature(' +'"'+id+'")');
-            }
-          });*/
+    //document.getElementById('deletefeature').setAttribute('onclick', 'deleteFeature(' +'"'+id+'")');
+    //document.getElementById('updatefeature').setAttribute('onclick', 'updateFeature(' +'"'+id+'")');
 }
         
         //Function to Hide Popup
 function div_ef_hide(){
     document.getElementById('editFeaturePopup').style.display = "none";
+}
+
+function div_et_show(item) {
+    document.getElementById('editTaskPopup').style.display = "block";
+    $('#edittaskname').val(item.get("Title"));
+    $('#edittaskdescription').val(item.get('description'));
+    //$('#edittaskworker').val(item.get('current_worker').get(""))
+              
+    //document.getElementById('deletefeature').setAttribute('onclick', 'deleteFeature(' +'"'+id+'")');
+    //document.getElementById('updatefeature').setAttribute('onclick', 'updateFeature(' +'"'+id+'")');
+}
+        
+        //Function to Hide Popup
+function div_et_hide(){
+    document.getElementById('editTaskPopup').style.display = "none";
+}
+
+function featTitleClick(id)
+{
+    getFeature(id,div_ef_show);
+}
+
+function taskTitleClick(id)
+{
+    getTask(id,div_et_show);
 }

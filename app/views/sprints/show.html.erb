@@ -40,7 +40,8 @@
                 </fieldset>
                 <fieldset id="hidden_difficulty">
                   Difficulty:<br>
-                  <%= select_tag(:feature_dif, options_for_select([['1', 1], ['2', 2], ['3', 3], ['4', 4],['5', 5]]), :id => "feature_dif", :class => "form-control") %>
+                  <!--<%= select_tag(:feature_dif, options_for_select([['1', 1], ['2', 2], ['3', 3], ['4', 4],['5', 5]]), :id => "feature_dif", :class => "form-control") %>-->
+                  <%= select_tag(:feature_dif, options_for_select(1..@diff_size), :id => "feature_dif", :class => "form-control") %>
                 </fieldset>
         
                 <input class="newFeatureSubmit" type="button" name="submit" id="submit" value="submit"/>
@@ -89,6 +90,21 @@
             </div>
           <!-- Popup Div Ends Here -->
           </div>
+          
+          <!--<div id="editPopup">
+            <div id="popupContact">
+            <%=image_tag("closebutton.png", alt: "Example Image", :onclick => 'div_sp_hide()', :id => 'close')%>
+              <form id = "form">
+                Sprint Name:<br>
+                <input type="text" id = "editsprintName" name="name" placeholder="Sprint Name" required><br>
+                Start Date:<br>
+                <input type="date" id = "editstartDate" name="startDate" required>
+                End Date:<br>
+                <input type="date" id = "editendDate" name="endDate" required>
+                <input type="button" name="submit" id="submit" value="submit"/>
+              </form>
+            </div>
+          </div>-->
     
           <div id="editFeaturePopup">
           <!-- Popup Div Starts Here -->
@@ -101,17 +117,42 @@
                 Feature Difficulty:<br>
                 <fieldset id="edit_hidden_difficulty">
                 <!--<%= select_tag(:feature_dif, options_for_select([['1', 1], ['2', 2], ['3', 3], ['4', 4],['5', 5]]), :id => "edit_feature_dif", :class => "form-control") %>-->
-                <%= select_tag(:feature_dif, options_for_select(1..7), :id => "edit_feature_dif", :class => "form-control") %>
+                <%= select_tag(:feature_dif, options_for_select(1..@diff_size), :id => "edit_feature_dif", :class => "form-control") %>
                 </fieldset>
                 <h4 id="display_difficulty"></h4>
                 Feature Description:<br>
                 <input type="text" id = "editfeaturedescription" name="description">
-                Assign Worker:<br>
                 <input type="button" name="submit" id="updatefeature" value="submit"/>
                 <input type="button" name="delete" id="deletefeature" value="delete"/>
               </form>
             </div>
           </div>
+          
+          <div id="editTaskPopup">
+          <!-- Popup Div Starts Here -->
+            <div id="popupContact">
+            <!-- Contact Us Form -->
+              <%=image_tag("closebutton.png", alt: "Example Image", :onclick => 'div_et_hide()', :id => 'close')%>
+              <form id = "form">
+                Feature Name:<br>
+                <input type="text" id ="edittaskname" name="name" required><br>
+                <h4 id="display_difficulty"></h4>
+                Feature Description:<br>
+                <input type="text" id = "edittaskdescription" name="description">
+                Change Worker:<br>
+                <select id = "edittaskworker" class= "form-control">
+                  <% @users.each_with_index do |u,i|%>
+                    <option id = <%=u["user_info_ptr"]["objectId"]%> value= <%= u["user_info_ptr"]["objectId"]%>><%=u["user_info_ptr"]["first_name"]%> <%=u["user_info_ptr"]["last_name"]%></option>
+                  <%end%>
+                </select>
+                <input type="button" name="submit" id="updatetask" value="submit"/>
+                <input type="button" name="delete" id="deletetask" value="delete"/>
+              </form>
+            </div>
+          <!-- Popup Div Ends Here -->
+          </div>
+    
+    
       </div>
   </div>
 </body>

@@ -20,6 +20,12 @@ class SprintsController < ApplicationController
         @sprints = @client.query("Sprint").tap do |j|
             j.eq("group_ptr", Parse::Pointer.new({"className" => "Group", "objectId" => session[:current_user]["current_groupId"]}))
         end.get
+        @group = @client.query("Group").tap do |j|
+            j.eq("objectId", session[:current_user]["current_groupId"])
+        end.get.first
+        @diff_size = @group["star_count"];
+        #@columns = @group["sprint_names"];
+        #@column_size = @columns.length;
         @users = @client.query("User_Group").tap do |j|
             j.eq("group_ptr", Parse::Pointer.new({"className" => "Group", "objectId" => session[:current_user]["current_groupId"]}))
             j.include = "user_info_ptr"

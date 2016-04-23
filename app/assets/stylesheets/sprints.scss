@@ -353,6 +353,7 @@ button#popup {
   font-size: 2.2em;
   color: white;
   margin-left: 10px;
+  cursor:pointer;
 }
 .bar_add_button{
   display: inline-block;
@@ -401,6 +402,7 @@ button#popup {
   text-align: center;
   font-weight: bold;
   font-size: 1.3em;
+  cursor:pointer;
   background-color:red;
   
 }
@@ -456,4 +458,56 @@ button#popup {
   font-size:16px;
   font-family:raleway
 }
-
+#editTaskPopup {
+  width:100%;
+  height:100%;
+  opacity:.95;
+  top:0;
+  left:0;
+  display:none;
+  position:fixed;
+  background-color:#313131;
+  overflow:auto
+}
+#edittaskname{
+  width:100%;
+  margin-bottom: 1em;
+  padding:10px;
+  font-size:16px;
+  font-family:raleway
+}
+#edittaskdescription{
+  width:100%;
+  margin-bottom: 1em;
+  padding:10px;
+  font-size:16px;
+  font-family:raleway
+}
+#updatetask{
+  text-decoration:none;
+  width:100%;
+  text-align:center;
+  display:block;
+  background-color:#FFBC00;
+  color:#fff;
+  border:1px solid #FFCB00;
+  padding:10px 0;
+  font-size:20px;
+  cursor:pointer;
+  margin-top: 1em;
+  border-radius:5px
+}
+#deletetask {
+  text-decoration:none;
+  width:100%;
+  text-align:center;
+  display:block;
+  background-color:#FFBC00;
+  color:#fff;
+  border:1px solid #FFCB00;
+  padding:10px 0;
+  font-size:20px;
+  cursor:pointer;
+  border-radius:5px;
+  margin-top: 1em;
+}
