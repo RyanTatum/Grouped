@@ -60,10 +60,11 @@
                 <input type="text" id = "tname" name="name" placeholder="Task Name"><br>
                 Task Description:<br>
                 <input type="text" id = "tdescription" name="description" placeholder="Description">
-                Assign Worker:<br>
-                <select id = "feature_worker" class= "form-control">
+                Set Worker:<br>
+                <select id = "task_worker" class= "form-control">
+                    <option id = "" value = "" selected>Select a User</option>
                   <% @users.each_with_index do |u,i|%>
-                    <option id = <%=u["user_info_ptr"]["objectId"]%> value= <%= u["user_info_ptr"]["objectId"]%> <%=selected = "selected" if i==0%>><%=u["user_info_ptr"]["first_name"]%> <%=u["user_info_ptr"]["last_name"]%></option>
+                    <option id = <%=u["user_info_ptr"]["objectId"]%> value= <%= u["user_info_ptr"]["objectId"]%>><%=u["user_info_ptr"]["first_name"]%> <%=u["user_info_ptr"]["last_name"]%></option>
                   <%end%>
                 </select>
                 <input class="newTaskSubmit" type="button" name="submit" id="submit" value="submit"/>
@@ -117,7 +118,13 @@
                 Feature Difficulty:<br>
                 <fieldset id="edit_hidden_difficulty">
                 <!--<%= select_tag(:feature_dif, options_for_select([['1', 1], ['2', 2], ['3', 3], ['4', 4],['5', 5]]), :id => "edit_feature_dif", :class => "form-control") %>-->
-                <%= select_tag(:feature_dif, options_for_select(1..@diff_size), :id => "edit_feature_dif", :class => "form-control") %>
+                <!--<%= select_tag(:feature_dif, options_for_select(1..@diff_size), :id => "edit_feature_dif", :class => "form-control") %>-->
+                <select name="feature_dif" id="edit_feature_dif" class="form-control">  
+                  <option value= "">Select a Difficulty</option>
+                  <% for i in 1..@diff_size%>
+                    <option value= '<%= i%>'><%=i%></option>
+                  <%end%>
+                </select>
                 </fieldset>
                 <h4 id="display_difficulty"></h4>
                 Feature Description:<br>
@@ -134,15 +141,16 @@
             <!-- Contact Us Form -->
               <%=image_tag("closebutton.png", alt: "Example Image", :onclick => 'div_et_hide()', :id => 'close')%>
               <form id = "form">
-                Feature Name:<br>
+                Task Name:<br>
                 <input type="text" id ="edittaskname" name="name" required><br>
                 <h4 id="display_difficulty"></h4>
-                Feature Description:<br>
+                Task Description:<br>
                 <input type="text" id = "edittaskdescription" name="description">
                 Change Worker:<br>
                 <select id = "edittaskworker" class= "form-control">
+                  <option id = "" value = "" selected>Select a User</option>
                   <% @users.each_with_index do |u,i|%>
-                    <option id = <%=u["user_info_ptr"]["objectId"]%> value= <%= u["user_info_ptr"]["objectId"]%>><%=u["user_info_ptr"]["first_name"]%> <%=u["user_info_ptr"]["last_name"]%></option>
+                    <option id = <%=u["user_info_ptr"]["objectId"]%> value= <%= u["user_info_ptr"]["objectId"]%>><%=u["user_info_ptr"]["first_name"]%> <%=u["user_info_ptr"]["last_name"]%></option>>
                   <%end%>
                 </select>
                 <input type="button" name="submit" id="updatetask" value="submit"/>

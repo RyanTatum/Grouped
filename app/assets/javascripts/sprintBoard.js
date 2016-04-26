@@ -29,16 +29,48 @@ $(document).ready(function() {
             div_abc_hide();
             //getSprints(loadSprints);
         });
+        $('#updatefeature').click(function() {
+            var id = window.current_edit_item.id;
+            var owner_ptr = window.current_edit_item.get("owner_ptr").id;
+            var sprint_ptr = window.current_edit_item.get("sprint_ptr").id;
+            var name = $('#editfeaturename').val();
+            var description = $('#editfeaturedescription').val();
+            var difficulty = $('#edit_feature_dif').val();
+            var poker;
+            editFeature(id, sprint_ptr, owner_ptr, name, description, difficulty, poker, reloadFeature);
+            div_ef_hide();
+        });
+        $('#deletefeature').click(function() {
+            getTasksInFeature(window.current_edit_item.id, deleteFeature);
+            div_ef_hide();
+        });
         
         $('.newTaskSubmit').click(function() {
             var feature_ptr = window.new_task_feature_id;
             var creator_ptr = window.current_user_id;
             var title = $('#tname').val();
             var description = $('#tdescription').val();
+            var current_worker = $('#task_worker').val();
             var totalHours;
             var type;
-            createTask(feature_ptr, creator_ptr, title, description, totalHours, type, loadNewTask);
+            createTask(feature_ptr, creator_ptr, title, description, current_worker, totalHours, type, getTask);
             div_newTask_hide();
+        });
+        $('#updatetask').click(function() {
+            var id = window.current_edit_item.id;
+            var feature_ptr = window.current_edit_item.get("feature_ptr").id;
+            var current_worker= $('#edittaskworker').val();
+            var column = window.current_edit_item.get("current_column");
+            var title = $('#edittaskname').val();
+            var description = $('#edittaskdescription').val();
+            var totalHours;
+            var type;
+            editTask(id, feature_ptr, current_worker, column, title, description, totalHours, type, getTask);
+            div_et_hide();
+        });
+        $('#deletetask').click(function() {
+            deleteTask(window.current_edit_item.id);
+            div_et_hide();
         });
     }
 });
@@ -128,9 +160,9 @@ function editSprint(id, name, startDate, endDate)
         }
     });
 }
-function deleteSprint(id)
+function deleteSprint(id, featuresToDelete)
 {
-    var featuresToDelete = getFeaturesInSprint(id);
+    //var featuresToDelete = getFeaturesInSprint(id);
     for(var i = 0; i< featuresToDelete.length; i++)
     {
         var result = deleteFeature(featuresToDelete[i].get("objectId"));
@@ -144,7 +176,7 @@ function deleteSprint(id)
         success: function(myObj) {
             myObj.destroy({
                 success:function() {
-
+                    removeItem(myObj.id);
                     return "true";
                 },
                 error: function(error) {
@@ -203,7 +235,7 @@ function getFeature(id,callback)
         }
     });  
 }
-function getFeaturesInSprint(sprint_id)
+function getFeaturesInSprint(sprint_id, callback)
 {
     var featureObject = Parse.Object.extend("Feature");
     var query = new Parse.Query(featureObject);
@@ -213,7 +245,12 @@ function getFeaturesInSprint(sprint_id)
     query.include("owner_ptr");
     query.find({
         success: function(feature_list) {
-            return feature_list;
+            if(typeof callback === 'function')
+            {
+                callback(sprint_id, feature_list);
+            }
+            
+            //return feature_list;
         },
         error: function(error) {
             return false;
@@ -247,7 +284,7 @@ function createFeature(sprint_ptr, owner_ptr, name, description, difficulty, pok
         }
     });
 }
-function editFeature(id, sprint_ptr, owner_ptr, name, description, difficulty, poker)
+function editFeature(id, sprint_ptr, owner_ptr, name, description, difficulty, poker, callback)
 {
     var featureObject = Parse.Object.extend("Feature");
     var query = new Parse.Query(featureObject);
@@ -259,13 +296,17 @@ function editFeature(id, sprint_ptr, owner_ptr, name, description, difficulty, p
             updateFeature.set("owner_ptr", {"__type":"Pointer","className":"User_Info","objectId":""+ owner_ptr +""});
             updateFeature.set("name", name);
             updateFeature.set("description", description);
-            updateFeature.set("use_poker", poker);
-            if(current_user_id == myObj.get('owner_ptr').id)
+            //updateFeature.set("use_poker", poker);
+            if(window.current_user_id == updateFeature.get('owner_ptr').objectId)
             {
                 updateFeature.set("difficulty", difficulty);
             }
             updateFeature.save({
-                success:function() {
+                success:function(myObj) {
+                    if(typeof callback === 'function')
+                    {
+                        callback(myObj);
+                    }
                     return "true";
                 },
                 error: function() {
@@ -278,9 +319,9 @@ function editFeature(id, sprint_ptr, owner_ptr, name, description, difficulty, p
         }
     });
 }
-function deleteFeature(id)
+function deleteFeature(id, tasksToDelete)
 {
-    var tasksToDelete = getTasksInFeature(id);
+    //var tasksToDelete = getTasksInFeature(id);
     for(var i = 0; i< tasksToDelete.length; i++)
     {
         var result = deleteTask(tasksToDelete[i].get("objectId"));
@@ -295,7 +336,8 @@ function deleteFeature(id)
         success: function(myObj) {
             myObj.destroy({
                 success:function() {
-
+                    removeItem(myObj.id);
+                    removeColumns(myObj.id);
                     return "true";
                 },
                 error: function(error) {
@@ -316,6 +358,7 @@ function getTasks(callback)
     query.equalTo("group_ptr", {"__type":"Pointer","className":"Group","objectId":""+ selected_group_id +""});
     query.include("feature_ptr");
     query.include("creator_ptr");
+    query.include("current_worker");
     query.find({
         success: function(task_list) {
             window.tasks = task_list;
@@ -338,6 +381,7 @@ function getTask(id,callback)
     //query.equalTo("objectId", id);
     query.include("feature_ptr");
     query.include("creator_ptr");
+    query.include("current_worker");
     query.get(id,{
         success: function(task) {
             if(typeof callback === 'function')
@@ -351,30 +395,38 @@ function getTask(id,callback)
         }
     });   
 }
-function getTasksInFeature(feature_id)
+function getTasksInFeature(feature_id, callback)
 {
     var taskObject = Parse.Object.extend("Task");
     var query = new Parse.Query(taskObject);
     query.equalTo("feature_ptr", {"__type":"Pointer","className":"Feature","objectId":""+ feature_id +""});
     query.include("feature_ptr");
     query.include("creator_ptr");
+    query.include("current_worker");
     query.ascending("updatedAt");
     query.find({
         success: function(task_list) {
-            return task_list;
+            if(typeof callback === 'function')
+            {
+                callback(feature_id, task_list);
+            }
         },
         error: function(error) {
             return false;
         }
     });   
 }
-function createTask(feature_ptr, creator_ptr, title, description, totalHours, type,callback)
+function createTask(feature_ptr, creator_ptr, title, description, current_worker, totalHours, type,callback)
 {
     var taskObject = Parse.Object.extend("Task");
     var newTask = new taskObject();
     newTask.set("feature_ptr", {"__type":"Pointer","className":"Feature","objectId":""+ feature_ptr +""});
     newTask.set("creator_ptr", {"__type":"Pointer","className":"User_Info","objectId":""+ creator_ptr +""});
     newTask.set("group_ptr", {"__type":"Pointer","className":"Group","objectId":""+ window.selected_group_id +""});
+    if(current_worker != null && current_worker != "")
+    {
+        newTask.set("current_worker", {"__type":"Pointer","className":"User_Info","objectId":""+ current_worker +""});
+    }
     newTask.set("Title", title);
     newTask.set("description", description);
     newTask.set("total_hours", totalHours);
@@ -384,7 +436,7 @@ function createTask(feature_ptr, creator_ptr, title, description, totalHours, ty
         success: function(myObj) {
                 if(typeof callback === 'function')
                 {
-                    callback(myObj);
+                    callback(myObj.id,loadNewTask);
                 }
                 return "true";
         },
@@ -393,23 +445,31 @@ function createTask(feature_ptr, creator_ptr, title, description, totalHours, ty
         }
     });
 }
-function editTask(id, feature_ptr, current_worker, column, title, description, totalHours, type)
+function editTask(id, feature_ptr, current_worker, column, title, description, totalHours, type, callback)
 {
     var taskObject = Parse.Object.extend("Task");
     var query = new Parse.Query(taskObject);
     query.include("feature_ptr");
+    query.include("creator_ptr");
     query.include("current_worker");
     query.get(id, {
         success: function(updateTask) {
             updateTask.set("feature_ptr", {"__type":"Pointer","className":"Feature","objectId":""+ feature_ptr +""});
-            updateTask.set("current_worker", {"__type":"Pointer","className":"User_Info","objectId":""+ current_worker +""});
-            updateTask.set("title", title);
+            if(current_worker != null && current_worker != "")
+            {
+                updateTask.set("current_worker", {"__type":"Pointer","className":"User_Info","objectId":""+ current_worker +""});
+            }
+            updateTask.set("Title", title);
             updateTask.set("description", description);
             updateTask.set("total_hours", totalHours);
             updateTask.set("type", type);
             updateTask.set("current_column", column);
             updateTask.save({
-                success:function() {
+                success:function(myObj) {
+                    if(typeof callback === 'function')
+                    {
+                        callback(myObj.id,reloadTask);
+                    }
                     return "true";
                 },
                 error: function() {
@@ -455,6 +515,7 @@ function deleteTask(id)
         success: function(myObj) {
             myObj.destroy({
                 success:function() {
+                    removeItem(myObj.id);
                     return "true";
                 },
                 error: function(error) {
@@ -644,66 +705,111 @@ function loadTasks()
 
 function loadNewFeature(addfeat)
 {
-            var name = addfeat.get("name");
-            var difficulty = "" + addfeat.get("difficulty")
-            if(difficulty == null || difficulty == "" || difficulty == 'undefined')
-            {
-                difficulty = "--"
-            }
-            var sprintId = "" + addfeat.get("sprint_ptr").objectId;
-            var feature_html = '<div name=' + sprintId + ' class = "featureBar" id="'+ addfeat.id + '">\
-                                    <div name=' + sprintId + ' id=' + addfeat.id + ' class= "toggle_feature" onclick="toggleFeature(this.id)">-</div>\
-                                    <div id=' + addfeat.id +' class="bar_title" onclick="featTitleClick(this.id)">' + name +'</div>\
-                                    <div id=' + addfeat.id + ' class= "bar_add_button" onclick="div_newTask_show(this.id);">Add</div>\
-                                </div>';
-            $(feature_html).insertAfter('#' + addfeat.get("sprint_ptr").objectId);
-            //var feature_num = "feature" + i;
-            //var column_container = '<div class="my_column_container" id=' + feature_num +'></div>';
-            //$(column_container).insertAfter('#' + window.features[i].id);
-            var column_width = Math.floor(100 / number_of_columns);
-            var style_string = " width:" + String(column_width) + "% ";
-            for(var j = number_of_columns; j > 0; j--)
-            {
-                var id_string = "column" + j + "feature" + addfeat.id;
-                var column_html = '<div style= ' + style_string + 'class= "my_column columnSort" id= ' + id_string + ' name=' + sprintId + '></div>';
-                $(column_html).insertAfter('#' + addfeat.id);
-                //$('#feature' + i).append(column_html);
-            }
+    var name = addfeat.get("name");
+    var difficulty = "" + addfeat.get("difficulty")
+    if(difficulty == null || difficulty == "" || difficulty == 'undefined')
+    {
+        difficulty = "--"
+    }
+    var sprintId = "" + addfeat.get("sprint_ptr").objectId;
+    var feature_html = '<div name=' + sprintId + ' class = "featureBar" id="'+ addfeat.id + '">\
+                            <div name=' + sprintId + ' id=' + addfeat.id + ' class= "toggle_feature" onclick="toggleFeature(this.id)">-</div>\
+                            <div id=' + addfeat.id +' class="bar_title" onclick="featTitleClick(this.id)">' + name +'</div>\
+                            <div id=' + addfeat.id + ' class= "bar_add_button" onclick="div_newTask_show(this.id);">Add</div>\
+                        </div>';
+    $(feature_html).insertAfter('#' + addfeat.get("sprint_ptr").objectId);
+    //var feature_num = "feature" + i;
+    //var column_container = '<div class="my_column_container" id=' + feature_num +'></div>';
+    //$(column_container).insertAfter('#' + window.features[i].id);
+    var column_width = Math.floor(100 / number_of_columns);
+    var style_string = " width:" + String(column_width) + "% ";
+    for(var j = number_of_columns; j > 0; j--)
+    {
+        var id_string = "column" + j + "feature" + addfeat.id;
+        var column_html = '<div style= ' + style_string + 'class= "my_column columnSort" id= ' + id_string + ' name=' + sprintId + '></div>';
+        $(column_html).insertAfter('#' + addfeat.id);
+        //$('#feature' + i).append(column_html);
+    }
 }
 
 function loadNewTask(addtask)
 {
-            var id = "" + addtask.id;
-            var name = addtask.get("Title");
-            var description = addtask.get("description");
-            if(description == undefined || description == null || description == "")
-            {
-                description = "No description to display"
-            }
-            if(addtask.get("current_worker") != undefined)
-            {
-                var worker = addtask.get("current_worker").get("first_name") + " " + addtask.get("current_worker").get("last_name");
-            }
-            else
-            {
-                var worker = "--"
-            }
-            
-            var hours = addtask.get("total_hours");
-            if(hours == undefined || hours == null)
-            {
-                hours = "--"
-            }
-            var task_html = '<div id=' + id + ' class="task_container">\
-                                <div class ="task_header handler">' + name + '</div>\
-                                <div class ="task_description handler">' + description + '</div>\
-                                <div class ="task_footer handler">\
-                                    <div class = "task_worker">' + worker + '</div>\
-                                    <div class = "task_hours">Hrs: ' + hours + '</div>\
-                                </div>\
-                            </div>';
-            $('#column' + addtask.get("current_column") + 'feature' + addtask.get("feature_ptr").objectId).append(task_html);
-            activateSort();
+    var id = "" + addtask.id;
+    var name = addtask.get("Title");
+    var description = addtask.get("description");
+    if(description == undefined || description == null || description == "")
+    {
+        description = "No description to display"
+    }
+    if(addtask.get("current_worker") != undefined && addtask.get("current_worker") != "")
+    {
+        var worker = addtask.get("current_worker").get("first_name") + " " + addtask.get("current_worker").get("last_name");
+    }
+    else
+    {
+        var worker = "--"
+    }
+    
+    var hours = addtask.get("total_hours");
+    if(hours == undefined || hours == null)
+    {
+        hours = "--"
+    }
+    var task_html = '<div id=' + id + ' class="task_container">\
+                        <div id=' + id +' class ="task_header handler" onclick="taskTitleClick(this.id)">' + name + '</div>\
+                        <div id=' + id +' class ="task_description handler">' + description + '</div>\
+                        <div class ="task_footer handler">\
+                            <div id=' + id +' class = "task_worker">' + worker + '</div>\
+                            <div id=' + id +' class = "task_hours">Hrs: ' + hours + '</div>\
+                        </div>\
+                    </div>';
+    $('#column' + addtask.get("current_column") + 'feature' + addtask.get("feature_ptr").id).append(task_html);
+    activateSort();
+}
+
+function reloadFeature(item)
+{
+    $('#' + item.id + '.bar_title').text(item.get("name"));
+}
+function reloadTask(item)
+{
+    var name = item.get("Title");
+    var description = item.get("description");
+    if(description == undefined || description == null || description == "")
+    {
+        description = "No description to display"
+    }
+    if(item.get("current_worker") != undefined && item.get("current_worker") != "")
+    {
+        var worker = item.get("current_worker").get("first_name") + " " + item.get("current_worker").get("last_name");
+    }
+    else
+    {
+        var worker = "--"
+    }
+    
+    var hours = item.get("total_hours");
+    if(hours == undefined || hours == null)
+    {
+        hours = "--"
+    }
+    $('#' + item.id + '.task_header').text(name);
+    $('#' + item.id + '.task_description').text(description);
+    $('#' + item.id + '.task_worker').text(hours);
+    $('#' + item.id + '.task_hours').text("Hrs: " + worker);
+}
+
+function removeItem(id)
+{
+    $('#' + id).remove();
+}
+
+function removeColumns(id)
+{
+    for(var i = 1; i <= window.number_of_columns; i++)
+    {
+        $('#column' + i + "feature" + id).remove();
+    }
 }
 
 function activateSort()
@@ -841,6 +947,11 @@ function div_sp_hide(){
 }
 
 function div_abc_show(id) {
+    $('#name').val("");
+    $('#description').val("");
+    $('#feature_dif').val(1);
+    $('#usePoker').prop('checked', true);
+    $("#hidden_difficulty").hide();
     document.getElementById('abc').style.display = "block";
     window.new_feature_sprint_id = id;
 }
@@ -850,6 +961,9 @@ function div_abc_hide(){
 }
 
 function div_newTask_show(id) {
+    $('#tname').val("");
+    $('#tdescription').val("");
+    $('#task_worker').val("");
     document.getElementById('newTask').style.display = "block";
     window.new_task_feature_id = id;
 }
@@ -860,6 +974,7 @@ function div_newTask_hide() {
 
 function div_ef_show(item) {
     document.getElementById('editFeaturePopup').style.display = "block";
+    window.current_edit_item = item;
     $('#editfeaturename').val(item.get("name"));
     $('#editfeaturedescription').val(item.get('description'));
     if (item.get('owner_ptr') != undefined && window.current_user_id == item.get('owner_ptr').id)
@@ -893,9 +1008,18 @@ function div_ef_hide(){
 }
 
 function div_et_show(item) {
-    document.getElementById('editTaskPopup').style.display = "block";
     $('#edittaskname').val(item.get("Title"));
     $('#edittaskdescription').val(item.get('description'));
+    if(item.get("current_worker") != undefined)
+    {
+        $('#edittaskworker').val(item.get("current_worker").id);
+    }
+    else
+    {
+        $('#edittaskworker').val("");
+    }
+    document.getElementById('editTaskPopup').style.display = "block";
+    window.current_edit_item = item;
     //$('#edittaskworker').val(item.get('current_worker').get(""))
               
     //document.getElementById('deletefeature').setAttribute('onclick', 'deleteFeature(' +'"'+id+'")');
@@ -915,4 +1039,12 @@ function featTitleClick(id)
 function taskTitleClick(id)
 {
     getTask(id,div_et_show);
+}
+
+function valueChanged()
+{
+  if($('#usePoker').is(":checked"))   
+      $("#hidden_difficulty").hide();
+  else
+      $("#hidden_difficulty").show();
 }
