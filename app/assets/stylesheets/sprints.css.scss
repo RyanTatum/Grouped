@@ -322,12 +322,15 @@ button#popup {
 
 .board_header {
   position:relative;
-  width: 99%;
+  width:100%;
+  //width: 99%;
   margin: auto;
-  height: 7%;
+  //height: 7%;
+  height: 3em;
   background: linear-gradient(#BF0000, #DA0303, #BF0000);
-  overflow:auto;
-  board: solid black;
+  //overflow:auto;
+  min-width:1035px;
+  //board: solid black;
 }
 
 .my_title {

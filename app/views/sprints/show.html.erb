@@ -13,6 +13,15 @@
         <hr>
         <div id="createSprint" onclick= "div_sp_show()">New Sprint</div>
         <%@colWidth = (100 / @columns.length) - 1%>
+          <!--<div class= "board_header">
+            <%@columns.each do |col| %>
+                <div class= "my_col_header" style = "min-width: 200px;width:<%=@colWidth%>%;">
+                  <div class='my_title'><%=col%></div>
+                </div>
+            <%end %>
+          </div>-->
+          <div class= "board">
+            
           <div class= "board_header">
             <%@columns.each do |col| %>
                 <div class= "my_col_header" style = "min-width: 200px;width:<%=@colWidth%>%;">
@@ -20,7 +29,7 @@
                 </div>
             <%end %>
           </div>
-          <div class= "board">
+            
           </div>
           
           
