@@ -9,6 +9,18 @@ $(document).ready(function() {
           throwError("Sorry, Page was not properly loaded"); 
           //maybe do a redirect
         }*/
+        $('.newSprintSubmit').click(function() {
+            var name = $('#sprintName').val();
+            var start = makeDate($('#startDate').val());
+            var end = makeDate($('#endDate').val());
+            var dateCheck = dateCompare(start, end);
+            if(dateCheck)
+            {
+                createSprint(name, start, end, loadNewSprint);
+            }
+            div_sp_hide()
+            //getSprints(loadSprints);
+        });
         
         $('.newFeatureSubmit').click(function() {
             var sprint_ptr = window.new_feature_sprint_id;
@@ -117,23 +129,24 @@ function getSprint(id,callback)
         }
     });
 }
-function createSprint(name, start, end)
+function createSprint(name, start, end, callback)
 {
     var sprintObject = Parse.Object.extend("Sprint");
     var newSprint = new sprintObject();
     newSprint.set("name", name);
     newSprint.set("start_date", start);
     newSprint.set("end_date", end);
-    query.equalTo("sprint_ptr", {"__type":"Pointer","className":"Sprint","objectId":""+ sprint_id +""});
-    query.include("group_ptr");
-    query.include("sprint_ptr");
-    query.include("owner_ptr");
-    query.find({
+    newSprint.set("group_ptr", {"__type":"Pointer","className":"Group","objectId":""+ selected_group_id +""});
+    newSprint.save(null, {
         success: function(myObj) {
-            return myObj;
+                if(typeof callback === 'function')
+                {
+                    callback(myObj);
+                }
+                return "true";
         },
-        error: function(error) {
-            return false;
+        error: function(myObj, error) {
+              return "Sorry, an error occurred with the database";
         }
     });
 }
@@ -324,11 +337,11 @@ function deleteFeature(id, tasksToDelete)
     //var tasksToDelete = getTasksInFeature(id);
     for(var i = 0; i< tasksToDelete.length; i++)
     {
-        var result = deleteTask(tasksToDelete[i].get("objectId"));
-        if(result != "true")
+        var result = deleteTask(tasksToDelete[i].id);
+        /*if(result != "true")
         {
             return "Unable to delete the feature";
-        }
+        }*/
     }
     var Feature = Parse.Object.extend("Feature");
     var query = new Parse.Query(Feature);
@@ -549,7 +562,7 @@ function getGroupMembers(callback)
         }
     });
 }
-function getColumns(callback)
+/*function getColumns(callback)
 {
     var sprintColumnObject = Parse.Object.extend("Sprint_Columns");
     var query = new Parse.Query(sprintColumnObject);
@@ -568,7 +581,7 @@ function getColumns(callback)
             return false;
         }
     });
-}
+}*/
 function makeDate(dateString)
 {
   if(dateString != null && dateString != "")
@@ -587,6 +600,10 @@ function makeDate(dateString)
 }
 function dateCompare(start, end)
 {
+   if(start == false || end == false || start == undefined || end == undefined)
+   {
+       return false;
+   }
   if(start >= end)
   {
     return false;
@@ -609,7 +626,7 @@ function loadSprints()
             var sprint_html = '<div class = "sprintBar" id=' + window.sprints[i].id + '>\
                                     <div id=' + window.sprints[i].id + ' class= "toggle_sprint" onclick="toggleSprint(this.id)">-</div>\
                                     <div class= "bar_title">' + window.sprints[i].get("name") + '</div>\
-                                    <div id=' + window.sprints[i].id + ' class= "bar_add_button" onclick="div_abc_show(this.id);">Add</div>\
+                                    <div id=' + window.sprints[i].id + ' class= "bar_add_button" onclick="div_abc_show(this.id);">Add Feature</div>\
                               </div>';
             if($('.board').children() == [])
             {
@@ -639,7 +656,7 @@ function loadFeatures()
             var feature_html = '<div name=' + sprintId + ' class = "featureBar" id="'+ window.features[i].id + '">\
                                     <div name=' + sprintId + ' id=' + window.features[i].id + ' class= "toggle_feature" onclick="toggleFeature(this.id)">-</div>\
                                     <div id=' + window.features[i].id +' class="bar_title" onclick="featTitleClick(this.id)">' + name +'</div>\
-                                    <div id=' + window.features[i].id + ' class= "bar_add_button" onclick="div_newTask_show(this.id);">Add</div>\
+                                    <div id=' + window.features[i].id + ' class= "bar_add_button" onclick="div_newTask_show(this.id);">Add Task</div>\
                                 </div>';
             $(feature_html).insertAfter('#' + window.features[i].get("sprint_ptr").id);
             //var feature_num = "feature" + i;
@@ -703,6 +720,39 @@ function loadTasks()
     }   
 }
 
+function loadNewSprint(addSprint)
+{
+    if(window.sprints != [] && window.sprints != undefined)
+    {
+        for(var i = 0; i < window.sprints.length; i++)
+        {
+            if(window.sprints[i].get("start_date") > addSprint.get("start_date") || (i == window.sprints.length - 1))
+            {
+                var sprint_html = '<div class = "sprintBar" id=' + addSprint.id + '>\
+                                        <div id=' + addSprint.id + ' class= "toggle_sprint" onclick="toggleSprint(this.id)">-</div>\
+                                        <div class= "bar_title">' + addSprint.get("name") + '</div>\
+                                        <div id=' + addSprint.id + ' class= "bar_add_button" onclick="div_abc_show(this.id);">Add Feature</div>\
+                                  </div>';
+                if(i == 0)
+                {
+                    $('.board div:first-child').append(sprint_html);
+                    return;
+                }
+                else if(i == window.sprints.length - 1 && !(window.sprints[i].get("start_date") > addSprint.get("start_date")))
+                {
+                    $('.board div:last-child').append(sprint_html);
+                    return;
+                }
+                else
+                {
+                    $(sprint_html).insertBefore('#' + window.sprints[i].id + '.sprintBar');
+                    return;
+                }
+            }
+        }
+    }
+}
+
 function loadNewFeature(addfeat)
 {
     var name = addfeat.get("name");
@@ -715,7 +765,7 @@ function loadNewFeature(addfeat)
     var feature_html = '<div name=' + sprintId + ' class = "featureBar" id="'+ addfeat.id + '">\
                             <div name=' + sprintId + ' id=' + addfeat.id + ' class= "toggle_feature" onclick="toggleFeature(this.id)">-</div>\
                             <div id=' + addfeat.id +' class="bar_title" onclick="featTitleClick(this.id)">' + name +'</div>\
-                            <div id=' + addfeat.id + ' class= "bar_add_button" onclick="div_newTask_show(this.id);">Add</div>\
+                            <div id=' + addfeat.id + ' class= "bar_add_button" onclick="div_newTask_show(this.id);">Add Task</div>\
                         </div>';
     $(feature_html).insertAfter('#' + addfeat.get("sprint_ptr").objectId);
     //var feature_num = "feature" + i;

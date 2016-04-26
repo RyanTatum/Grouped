@@ -11,7 +11,7 @@
       <div class = "my_sprint_container">
         <h2 class = "title">Sprint Board</h2>
         <hr>
-        
+        <div id="createSprint" onclick= "div_sp_show()">New Sprint</div>
         <%@colWidth = 100 / @columns.length%>
           <div class= "board_header">
             <%@columns.each do |col| %>
@@ -86,7 +86,7 @@
                 End Date:<br>
                 <input type="date" id = "endDate" name="endDate" required>
                 <!--<input type="submit" value="Submit" id="submit">-->
-                <input type="button" name="submit" id="submit" value="submit" onclick="newSprint();"/>
+                <input class= "newSprintSubmit" type="button" name="submit" id="submit" value="submit"/>
               </form>
             </div>
           <!-- Popup Div Ends Here -->
