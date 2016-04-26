@@ -14,7 +14,7 @@ $(document).ready(function() {
             var start = makeDate($('#startDate').val());
             var end = makeDate($('#endDate').val());
             var dateCheck = dateCompare(start, end);
-            if(dateCheck)
+            if(dateCheck && name != "" && name != undefined && name != "undefined")
             {
                 createSprint(name, start, end, loadNewSprint);
             }
@@ -733,12 +733,8 @@ function loadNewSprint(addSprint)
                                         <div class= "bar_title">' + addSprint.get("name") + '</div>\
                                         <div id=' + addSprint.id + ' class= "bar_add_button" onclick="div_abc_show(this.id);">Add Feature</div>\
                                   </div>';
-                if(i == 0)
-                {
-                    $('.board div:first-child').append(sprint_html);
-                    return;
-                }
-                else if(i == window.sprints.length - 1 && !(window.sprints[i].get("start_date") > addSprint.get("start_date")))
+                
+                if(i == window.sprints.length - 1 && !(window.sprints[i].get("start_date") > addSprint.get("start_date")))
                 {
                     $('.board div:last-child').append(sprint_html);
                     return;
