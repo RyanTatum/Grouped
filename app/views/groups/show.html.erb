@@ -78,6 +78,16 @@
                       <td><%= @group_record["star_count"] %></td>
                     </tr>
                     <tr>
+                      <td>Sprint Board Columns</td>
+                      <td><%= @sprint_columns.length%></td>
+                    </tr>
+                    <% @sprint_columns.each_with_index do |col,i| %>
+                      <tr>
+                        <td>Column <%=(i + 1)%></td>
+                        <td><%= col%></td>
+                      </tr>
+                    <%end%>
+                    <tr>
                       <td>Created on</td>
                       <% dt = DateTime.new(@group_record["createdAt"][0..3].to_i, @group_record["createdAt"][5..6].to_i, @group_record["createdAt"][8..9].to_i) %>
                       <td><%= dt.strftime("%B") %>  <%= @group_record["createdAt"][8..9].to_i.ordinalize %>, <%=dt.strftime("%Y") %></td>
@@ -127,6 +137,19 @@
                         <%=select_tag "starCount", options_for_select((2..10).step(1), @group_record["star_count"] )%>
                       </td>
                     </tr>
+                    <tr class= "col_dropdown">
+                      <td>Sprint Board Columns</td>
+                      <td>
+                        <%=select_tag "sprint_columns", options_for_select((2..6).step(1), @sprint_columns.length)%>
+                      </td>
+                    </tr>
+                    <% @sprint_columns.each_with_index do |col,i| %>
+                    <tr id="<%=i%>" class="sprint_row">
+                      <td>Column <%=(i+1)%></td>
+                      <td><input type="text" name="col<%=i%>_name" id="col<%=i%>_name" value=<%=col%> required="required" class="form-control sprint_col"></input></td>
+                      <!--<td><%= text_field_tag(:col_name, col, :required => true, class: "form-control") %></td>-->
+                    </tr>
+                    <%end%>
                     <tr>
                       <td>Created on</td>
                       <td><%= dt.strftime("%B") %>  <%= @group_record["createdAt"][8..9].to_i.ordinalize %>, <%=dt.strftime("%Y") %></td>

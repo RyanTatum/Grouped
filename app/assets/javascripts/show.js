@@ -24,6 +24,25 @@ $(document).ready(function() {
         })
     });
 
+    $( "#sprint_columns" ).change(function() {
+        var count = parseInt(this.value);
+        $(".sprint_row").remove();
+        for(var i = 0; i< count; i++)
+        {
+            var row_html = '<tr id="' + i + '" class="sprint_row">\
+                      <td>Column ' + (i+1) + '</td>\
+                      <td><input type="text" name="col' + i + '_name" id="col' + i + '_name" required="required" class="form-control sprint_col"></input></td>\
+                    </tr>';
+            if(i == 0)
+            {
+                $(row_html).insertAfter(".col_dropdown");
+            }
+            else
+            {
+                $(row_html).insertAfter('#' + (i-1) + '.sprint_row');
+            }
+        }
+    });
 
     $('[data-toggle="tooltip"]').tooltip();
 

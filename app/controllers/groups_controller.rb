@@ -55,32 +55,11 @@ class GroupsController < ApplicationController
             end
           end
         end
-=begin
-        @group_id = params[:id]
-        @group_record = @client.query("Group").eq("objectId", @group_id).get.first
         
-        
-        @user_group_query = @client.query("User_Group").tap do |q|
-            q.eq("group_id", @group_id)
-        end.get
-        
-        @user_ids = []
-        @status_hash = {}
-        @objectId_hash = {}
-        @permissions_hash = {}
-        @updated_hash = {}
-        @user_group_query.each do |i|
-            @status_hash[i["user_id"]] = i["status"]
-            @objectId_hash[i["user_id"]] = i["objectId"]
-            @permissions_hash[i["user_id"]] = i["permissions"]
-            @updated_hash[i["user_id"]] = i["updatedAt"]
-            @user_ids.push(i["user_id"])
+        @sprint_columns = @group_record["sprint_names"];
+        if(@sprint_columns == nil|| @sprint_columns == [] || @sprint_columns == "")
+           @sprint_columns = ["Todo", "Doing", "Done"] 
         end
-        
-        @users = @client.query("User_Info").tap do |i|
-            i.value_in("user_objectId", @user_ids)
-        end.get
-=end
     end
     
     def edit
@@ -107,6 +86,12 @@ class GroupsController < ApplicationController
         @group_id = params[:id]
         @updategroup = @client.query("Group").eq("objectId", @group_id).get.first
         @starCount = params[:starCount]
+        @sprintCount = params[:sprint_columns].to_i
+        @newCols = []
+        for i in 0..(@sprintCount - 1)
+          @newCols.push(params["col#{i}_name"])
+        end
+        
         if params[:file]
           @photo = @client.file({
             :body => IO.read(params[:file].tempfile),
@@ -121,6 +106,7 @@ class GroupsController < ApplicationController
           @updategroup["name"] = params[:new_name]
           @updategroup["group_icon"] = @photo
           @updategroup["star_count"] = @starCount.to_i
+          @updategroup["sprint_names"] = @newCols
           begin
             @group_record = @updategroup.save
           rescue Parse::ParseProtocolError
@@ -132,6 +118,7 @@ class GroupsController < ApplicationController
         else 
           @updategroup["name"] = params[:new_name]
           @updategroup["star_count"] = @starCount.to_i
+          @updategroup["sprint_names"] = @newCols
           begin
             @group_record = @updategroup.save
           rescue Parse::ParseProtocolError
