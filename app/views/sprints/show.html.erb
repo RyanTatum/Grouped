@@ -67,6 +67,8 @@
                     <option id = <%=u["user_info_ptr"]["objectId"]%> value= <%= u["user_info_ptr"]["objectId"]%>><%=u["user_info_ptr"]["first_name"]%> <%=u["user_info_ptr"]["last_name"]%></option>
                   <%end%>
                 </select>
+                Task Hours:<br>
+                <input class="taskhours" type="number" id ="thours" name="hours" required><br>
                 <input class="newTaskSubmit" type="button" name="submit" id="submit" value="submit"/>
               </form>
             </div>
@@ -173,6 +175,8 @@
                     <option id = <%=u["user_info_ptr"]["objectId"]%> value= <%= u["user_info_ptr"]["objectId"]%>><%=u["user_info_ptr"]["first_name"]%> <%=u["user_info_ptr"]["last_name"]%></option>>
                   <%end%>
                 </select>
+                Task Hours:<br>
+                <input class="taskhours" type="number" id ="edittaskhours" name="hours" required><br>
                 <input type="button" name="submit" id="updatetask" value="submit"/>
                 <input type="button" name="delete" id="deletetask" value="delete"/>
               </form>

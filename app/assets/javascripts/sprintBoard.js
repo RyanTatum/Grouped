@@ -83,7 +83,7 @@ $(document).ready(function() {
             var title = $('#tname').val();
             var description = $('#tdescription').val();
             var current_worker = $('#task_worker').val();
-            var totalHours;
+            var totalHours = parseInt($('#thours').val());;
             var type;
             createTask(feature_ptr, creator_ptr, title, description, current_worker, totalHours, type, getTask);
             div_newTask_hide();
@@ -95,7 +95,7 @@ $(document).ready(function() {
             var column = window.current_edit_item.get("current_column");
             var title = $('#edittaskname').val();
             var description = $('#edittaskdescription').val();
-            var totalHours;
+            var totalHours = parseInt($('#edittaskhours').val());
             var type;
             editTask(id, feature_ptr, current_worker, column, title, description, totalHours, type, getTask);
             div_et_hide();
@@ -476,7 +476,10 @@ function createTask(feature_ptr, creator_ptr, title, description, current_worker
     }
     newTask.set("Title", title);
     newTask.set("description", description);
-    newTask.set("total_hours", totalHours);
+    if(totalHours != null && totalHours != "")
+    {
+        newTask.set("total_hours", totalHours);
+    }
     newTask.set("type", type);
     newTask.set("current_column", 1);
     newTask.save(null, {
@@ -508,7 +511,10 @@ function editTask(id, feature_ptr, current_worker, column, title, description, t
             }
             updateTask.set("Title", title);
             updateTask.set("description", description);
-            updateTask.set("total_hours", totalHours);
+            if(totalHours != null && totalHours != "")
+            {
+                updateTask.set("total_hours", totalHours);
+            }
             updateTask.set("type", type);
             updateTask.set("current_column", column);
             updateTask.save({
@@ -765,8 +771,8 @@ function loadTasks()
                                 <div id=' + window.tasks[i].id +' class ="task_header handler" onclick="taskTitleClick(this.id)">' + name + '</div>\
                                 <div class ="task_description handler">' + description + '</div>\
                                 <div class ="task_footer handler">\
-                                    <div class = "task_worker">' + worker + '</div>\
-                                    <div class = "task_hours">Hrs: ' + hours + '</div>\
+                                    <div id=' + window.tasks[i].id +' class = "task_worker">' + worker + '</div>\
+                                    <div id=' + window.tasks[i].id +' class = "task_hours">Hrs: ' + hours + '</div>\
                                 </div>\
                             </div>';
             $('#column' + window.tasks[i].get("current_column") + 'feature' + window.tasks[i].get("feature_ptr").id).append(task_html);
@@ -804,6 +810,15 @@ function loadNewSprint(addSprint)
                 }
             }
         }
+    }
+    else
+    {
+        var sprint_html = '<div class = "sprintBar" id=' + addSprint.id + '>\
+                                <div id=' + addSprint.id + ' class= "toggle_sprint" onclick="toggleSprint(this.id)">-</div>\
+                                <div class= "bar_title">' + addSprint.get("name") + '</div>\
+                                <div id=' + addSprint.id + ' class= "bar_add_button" onclick="div_abc_show(this.id);">Add Feature</div>\
+                           </div>';
+        $('.board').append(sprint_html);
     }
 }
 
@@ -906,8 +921,8 @@ function reloadTask(item)
     }
     $('#' + item.id + '.task_header').text(name);
     $('#' + item.id + '.task_description').text(description);
-    $('#' + item.id + '.task_worker').text(hours);
-    $('#' + item.id + '.task_hours').text("Hrs: " + worker);
+    $('#' + item.id + '.task_worker').text(worker);
+    $('#' + item.id + '.task_hours').text("Hrs: " + hours);
 }
 
 function removeItem(id)
@@ -1094,6 +1109,7 @@ function div_newTask_show(id) {
     $('#tname').val("");
     $('#tdescription').val("");
     $('#task_worker').val("");
+    $('#thours').val("");
     document.getElementById('newTask').style.display = "block";
     window.new_task_feature_id = id;
 }
@@ -1140,6 +1156,7 @@ function div_ef_hide(){
 function div_et_show(item) {
     $('#edittaskname').val(item.get("Title"));
     $('#edittaskdescription').val(item.get('description'));
+    $('#edittaskhours').val(item.get('total_hours'));
     if(item.get("current_worker") != undefined)
     {
         $('#edittaskworker').val(item.get("current_worker").id);

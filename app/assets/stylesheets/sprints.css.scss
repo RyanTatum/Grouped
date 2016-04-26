@@ -456,14 +456,14 @@ button#popup {
   margin-bottom: 1em;
   padding:10px;
   font-size:16px;
-  font-family:raleway
+  font-family:raleway;
 }
 #tdescription{
   width:100%;
   margin-bottom: 1em;
   padding:10px;
   font-size:16px;
-  font-family:raleway
+  font-family:raleway;
 }
 #editTaskPopup {
   width:100%;
@@ -474,7 +474,7 @@ button#popup {
   display:none;
   position:fixed;
   background-color:#313131;
-  overflow:auto
+  overflow:auto;
 }
 #edittaskname{
   width:100%;
@@ -488,7 +488,7 @@ button#popup {
   margin-bottom: 1em;
   padding:10px;
   font-size:16px;
-  font-family:raleway
+  font-family:raleway;
 }
 #updatetask{
   text-decoration:none;
@@ -502,7 +502,7 @@ button#popup {
   font-size:20px;
   cursor:pointer;
   margin-top: 1em;
-  border-radius:5px
+  border-radius:5px;
 }
 #deletetask {
   text-decoration:none;
@@ -530,7 +530,7 @@ button#popup {
   font-size:20px;
   cursor:pointer;
   margin-top: 1em;
-  border-radius:5px
+  border-radius:5px;
 }
 #deleteSprint {
   text-decoration:none;
@@ -551,7 +551,7 @@ button#popup {
   margin-bottom: 1em;
   padding:10px;
   font-size:16px;
-  font-family:raleway
+  font-family:raleway;
 }
 #editStartDate{
   width:100%;
@@ -560,4 +560,11 @@ button#popup {
 #editEndDate{
   width:100%;
   margin-bottom: 1em;
+}
+.taskhours{
+  width:100%;
+  margin-bottom: 1em;
+  padding:10px;
+  font-size:16px;
+  font-family:raleway;
 }
