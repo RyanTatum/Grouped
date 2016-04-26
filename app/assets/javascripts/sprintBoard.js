@@ -2,6 +2,7 @@ $(document).ready(function() {
     if(document.getElementById("sprints_page"))
     {
         div_newTask_hide();
+        div_sp_edit_hide();
         getSprints(loadSprints);
         
         /*if(!getSprints(loadSprints) || !getFeatures(loadFeatures) || !getTasks(loadTasks) || !getGroupMembers())
@@ -20,6 +21,25 @@ $(document).ready(function() {
             }
             div_sp_hide()
             //getSprints(loadSprints);
+        });
+        
+        $('#updateSprint').click(function() {
+            var id = window.current_edit_item.id;
+            var name = $('#editSprintName').val();
+            var start = makeDate($('#editStartDate').val());
+            var end = makeDate($('#editEndDate').val());
+            var dateCheck = dateCompare(start, end);
+            if(dateCheck && name != "" && name != undefined && name != "undefined")
+            {
+                editSprint(id, name, start, end, reloadFeature);
+            }
+            div_sp_edit_hide()
+            //getSprints(loadSprints);
+        });
+        
+        $('#deleteSprint').click(function() {
+            getFeaturesInSprint(window.current_edit_item.id, deleteSprint);
+            div_sp_edit_hide();
         });
         
         $('.newFeatureSubmit').click(function() {
@@ -112,11 +132,10 @@ function getSprint(id,callback)
 {
     var sprintObject = Parse.Object.extend("Sprint");
     var query = new Parse.Query(sprintObject);
-    query.equalTo("group_ptr", {"__type":"Pointer","className":"Group","objectId":""+ selected_group_id +""});
-    query.equalTo("objectId", id);
+    //query.equalTo("group_ptr", {"__type":"Pointer","className":"Group","objectId":""+ selected_group_id +""});
+    //query.equalTo("objectId", id);
     query.include("group_ptr");
-    query.ascending("start_date");
-    query.find({
+    query.get(id,{
         success: function(sprint) {
             if(typeof callback === 'function')
             {
@@ -150,7 +169,7 @@ function createSprint(name, start, end, callback)
         }
     });
 }
-function editSprint(id, name, startDate, endDate)
+function editSprint(id, name, startDate, endDate, callback)
 {
     var sprintObject = Parse.Object.extend("Sprint");
     var query = new Parse.Query(sprintObject);
@@ -160,8 +179,11 @@ function editSprint(id, name, startDate, endDate)
             updateSprint.set("start_date", startDate);
             updateSprint.set("end_date", endDate);
             updateSprint.save({
-                success:function() {
-                    return "true";
+                success:function(myObj) {
+                    if(typeof callback === 'function')
+                    {
+                        callback(myObj);
+                    }
                 },
                 error: function() {
                     return "Sorry, an error occurred with the database";
@@ -178,12 +200,13 @@ function deleteSprint(id, featuresToDelete)
     //var featuresToDelete = getFeaturesInSprint(id);
     for(var i = 0; i< featuresToDelete.length; i++)
     {
-        var result = deleteFeature(featuresToDelete[i].get("objectId"));
-        if(result != "true")
+        var result = getTasksInFeature(featuresToDelete[i].id, deleteFeature);
+        /*if(result != "true")
         {
             return "Unable to delete the Sprint";
-        }
+        }*/
     }
+    var sprintObject = Parse.Object.extend("Sprint");
     var query = new Parse.Query(sprintObject);
     query.get(id, {
         success: function(myObj) {
@@ -193,12 +216,12 @@ function deleteSprint(id, featuresToDelete)
                     return "true";
                 },
                 error: function(error) {
-                    return "Unable to delete the Sprint";
+                    return "Unable to delete the feature";
                 }
             });
         },
         error: function(error) {
-            return "Unable to delete the Sprint";
+            return "Unable to delete the feature";
         }
     });
 }
@@ -214,6 +237,10 @@ function getFeatures(callback)
     query.find({
         success: function(feature_list) {
             window.features = feature_list;
+            if(feature_list != "" && feature_list != undefined)
+            {
+                window.featureCount = feature_list.length;
+            }
             if(typeof callback === 'function')
             {
                 callback();
@@ -258,6 +285,13 @@ function getFeaturesInSprint(sprint_id, callback)
     query.include("owner_ptr");
     query.find({
         success: function(feature_list) {
+            /*if(feature_list != "" && feature_list != undefined && feature_list != [])
+            {
+                for(var i = 0; i < feature_list.length; i++)
+                {
+                    getTasksInFeature(feature_list[i].id, deleteFeature);
+                }
+            }*/
             if(typeof callback === 'function')
             {
                 callback(sprint_id, feature_list);
@@ -598,6 +632,28 @@ function makeDate(dateString)
     return false;
   }
 }
+function makeDateInput(date)
+{
+    if((date.getMonth() + 1) < 10)
+    {
+          var month = "0" + (date.getMonth() + 1);
+    }
+    else
+    {
+        var month = (date.getMonth() + 1);
+    }
+    if(date.getDate() < 10)
+    {
+        var day = "0" + date.getDate();
+    }
+    else
+    {
+        var day = date.getDate();
+    }
+    
+    var rDate = date.getFullYear() + "-" + month + "-" + day;
+    return rDate;
+}
 function dateCompare(start, end)
 {
    if(start == false || end == false || start == undefined || end == undefined)
@@ -625,7 +681,7 @@ function loadSprints()
         {
             var sprint_html = '<div class = "sprintBar" id=' + window.sprints[i].id + '>\
                                     <div id=' + window.sprints[i].id + ' class= "toggle_sprint" onclick="toggleSprint(this.id)">-</div>\
-                                    <div class= "bar_title">' + window.sprints[i].get("name") + '</div>\
+                                    <div id=' + window.sprints[i].id + ' class="bar_title" onclick="sprintTitleClick(this.id)">' + window.sprints[i].get("name") + '</div>\
                                     <div id=' + window.sprints[i].id + ' class= "bar_add_button" onclick="div_abc_show(this.id);">Add Feature</div>\
                               </div>';
             if($('.board').children() == [])
@@ -659,16 +715,18 @@ function loadFeatures()
                                     <div id=' + window.features[i].id + ' class= "bar_add_button" onclick="div_newTask_show(this.id);">Add Task</div>\
                                 </div>';
             $(feature_html).insertAfter('#' + window.features[i].get("sprint_ptr").id);
-            //var feature_num = "feature" + i;
-            //var column_container = '<div class="my_column_container" id=' + feature_num +'></div>';
-            //$(column_container).insertAfter('#' + window.features[i].id);
-            var column_width = Math.floor(100 / number_of_columns);
-            var style_string = " width:" + String(column_width) + "% ";
-            for(var j = number_of_columns; j > 0; j--)
+            var feature_num = "feature" + i;
+            var column_container = '<div class="my_column_container" id=' + feature_num +'></div>';
+            $(column_container).insertAfter('#' + window.features[i].id);
+            var column_width = Math.floor(100 / number_of_columns) - 1;
+            var style_string = "width:" + String(column_width) + "%;";
+            //for(var j = number_of_columns; j > 0; j--)
+            for(var j = 1; j <= number_of_columns; j++)
             {
                 var id_string = "column" + j + "feature" + window.features[i].id;
-                var column_html = '<div style= ' + style_string + 'class= "my_column columnSort" id= ' + id_string + ' name=' + sprintId + '></div>';
-                $(column_html).insertAfter('#' + window.features[i].id);
+                var column_html = '<div style=' + style_string + ' class= "my_column columnSort" id= ' + id_string + ' name=' + sprintId + '></div>';
+                //$(column_html).insertAfter('#' + window.features[i].id);
+                $('#' + feature_num).append(column_html);
                 //$('#feature' + i).append(column_html);
             }
             
@@ -764,16 +822,19 @@ function loadNewFeature(addfeat)
                             <div id=' + addfeat.id + ' class= "bar_add_button" onclick="div_newTask_show(this.id);">Add Task</div>\
                         </div>';
     $(feature_html).insertAfter('#' + addfeat.get("sprint_ptr").objectId);
-    //var feature_num = "feature" + i;
-    //var column_container = '<div class="my_column_container" id=' + feature_num +'></div>';
-    //$(column_container).insertAfter('#' + window.features[i].id);
+    var feature_num = "feature" + window.featureCount;
+    window.featureCount += 1;
+    var column_container = '<div class="my_column_container" id=' + feature_num +'></div>';
+    $(column_container).insertAfter('#' + addfeat.id);
     var column_width = Math.floor(100 / number_of_columns);
     var style_string = " width:" + String(column_width) + "% ";
-    for(var j = number_of_columns; j > 0; j--)
+    //for(var j = number_of_columns; j > 0; j--)
+    for(var j = 1; j <= number_of_columns; j++)
     {
         var id_string = "column" + j + "feature" + addfeat.id;
         var column_html = '<div style= ' + style_string + 'class= "my_column columnSort" id= ' + id_string + ' name=' + sprintId + '></div>';
-        $(column_html).insertAfter('#' + addfeat.id);
+        //$(column_html).insertAfter('#' + addfeat.id);
+        $('#' + feature_num).append(column_html);
         //$('#feature' + i).append(column_html);
     }
 }
@@ -811,6 +872,10 @@ function loadNewTask(addtask)
                     </div>';
     $('#column' + addtask.get("current_column") + 'feature' + addtask.get("feature_ptr").id).append(task_html);
     activateSort();
+}
+function reloadSprint(item)
+{
+    $('#' + item.id + '.bar_title').text(item.get("name"));   
 }
 
 function reloadFeature(item)
@@ -985,11 +1050,30 @@ function toggleFeature(id)
 }
 
 function div_sp_show() {
+    $('#sprintName').val("");
+    $('#startDate').val("");
+    $('#endDate').val("");
     document.getElementById('sprintPopup').style.display = "block";
 }
         //Function to Hide Popup
 function div_sp_hide(){
     document.getElementById('sprintPopup').style.display = "none";
+}
+
+function div_sp_edit_show(item) {
+    $('#editSprintName').val(item.get("name"));
+    var start = new Date(item.get("start_date"));
+    var end = new Date(item.get("end_date"));
+    var sDate = makeDateInput(start);
+    var eDate = makeDateInput(end);
+    $('#editStartDate').val(sDate);
+    $('#editEndDate').val(eDate);
+    window.current_edit_item = item;
+    document.getElementById('editSprint').style.display = "block";
+}
+        //Function to Hide Popup
+function div_sp_edit_hide(){
+    document.getElementById('editSprint').style.display = "none";
 }
 
 function div_abc_show(id) {
@@ -1076,7 +1160,10 @@ function div_et_show(item) {
 function div_et_hide(){
     document.getElementById('editTaskPopup').style.display = "none";
 }
-
+function sprintTitleClick(id)
+{
+    getSprint(id, div_sp_edit_show);
+}
 function featTitleClick(id)
 {
     getFeature(id,div_ef_show);

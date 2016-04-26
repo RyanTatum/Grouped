@@ -12,10 +12,10 @@
         <h2 class = "title">Sprint Board</h2>
         <hr>
         <div id="createSprint" onclick= "div_sp_show()">New Sprint</div>
-        <%@colWidth = 100 / @columns.length%>
+        <%@colWidth = (100 / @columns.length) - 1%>
           <div class= "board_header">
             <%@columns.each do |col| %>
-                <div class= "my_col_header" style = "width: <%=@colWidth%>%">
+                <div class= "my_col_header" style = "min-width: 200px;width:<%=@colWidth%>%;">
                   <div class='my_title'><%=col%></div>
                 </div>
             <%end %>
@@ -92,6 +92,26 @@
           <!-- Popup Div Ends Here -->
           </div>
           
+          <div id="editSprint">
+          <!-- Popup Div Starts Here -->
+            <div id="popupContact">
+            <!-- Contact Us Form -->
+            <%=image_tag("closebutton.png", alt: "Example Image", :onclick => 'div_sp_edit_hide()', :id => 'close')%>
+              <form id = "form">
+                Sprint Name:<br>
+                <input type="text" id = "editSprintName" name="name" placeholder="Sprint Name" required><br>
+                Start Date:<br>
+                <input type="date" id = "editStartDate" name="startDate" required>
+                End Date:<br>
+                <input type="date" id = "editEndDate" name="endDate" required>
+                <!--<input type="submit" value="Submit" id="submit">-->
+                <input type="button" name="submit" id="updateSprint" value="submit"/>
+                <input type="button" name="delete" id="deleteSprint" value="delete"/>
+              </form>
+            </div>
+          <!-- Popup Div Ends Here -->
+          </div>
+          
           <!--<div id="editPopup">
             <div id="popupContact">
             <%=image_tag("closebutton.png", alt: "Example Image", :onclick => 'div_sp_hide()', :id => 'close')%>
@@ -159,7 +179,6 @@
             </div>
           <!-- Popup Div Ends Here -->
           </div>
-    
     
       </div>
   </div>

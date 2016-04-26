@@ -162,7 +162,7 @@ div#popupContact {
   font-size:16px;
   font-family:raleway
 }
-#sprintName {
+#sprintName{
   width:100%;
   margin-bottom: 1em;
   padding:10px;
@@ -190,11 +190,11 @@ div#popupContact {
   font-size:16px;
   font-family:raleway
 }
-#startDate {
+#startDate{
   width:100%;
   margin-bottom: 1em;
 } 
-#endDate {
+#endDate{
   width:100%;
   margin-bottom: 1em;
 }
@@ -293,11 +293,12 @@ button#popup {
   vertical-align: top;
   position: relative;
   height: 100%;
-  overflow: auto;
 }
 .my_column_container
 {
-   width:100%; 
+   width:100%;
+   min-width:1035px;
+   
 }
 .my_column {
   display: inline-block;
@@ -325,7 +326,8 @@ button#popup {
   margin: auto;
   height: 7%;
   background: linear-gradient(#BF0000, #DA0303, #BF0000);
-  board: solid black
+  overflow:auto;
+  board: solid black;
 }
 
 .my_title {
@@ -341,6 +343,7 @@ button#popup {
   //background-color:black;
   background: linear-gradient(#474747, #8C8C8C, #474747);
   text-align:left;
+  min-width:1035px;
 }
 
 .featureBar{
@@ -349,6 +352,7 @@ button#popup {
   line-height: 3em;
   background-color: green; 
   text-align:left;
+  min-width:1035px;
 }
 
 .bar_title{
@@ -513,4 +517,47 @@ button#popup {
   cursor:pointer;
   border-radius:5px;
   margin-top: 1em;
+}
+#updateSprint{
+  text-decoration:none;
+  width:100%;
+  text-align:center;
+  display:block;
+  background-color:#FFBC00;
+  color:#fff;
+  border:1px solid #FFCB00;
+  padding:10px 0;
+  font-size:20px;
+  cursor:pointer;
+  margin-top: 1em;
+  border-radius:5px
+}
+#deleteSprint {
+  text-decoration:none;
+  width:100%;
+  text-align:center;
+  display:block;
+  background-color:#FFBC00;
+  color:#fff;
+  border:1px solid #FFCB00;
+  padding:10px 0;
+  font-size:20px;
+  cursor:pointer;
+  border-radius:5px;
+  margin-top: 1em;
+}
+#editSprintName{
+  width:100%;
+  margin-bottom: 1em;
+  padding:10px;
+  font-size:16px;
+  font-family:raleway
+}
+#editStartDate{
+  width:100%;
+  margin-bottom: 1em;
+} 
+#editEndDate{
+  width:100%;
+  margin-bottom: 1em;
 }
