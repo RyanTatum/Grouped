@@ -54,6 +54,7 @@ $(document).ready(function() {
                 else if(path.indexOf("video") >= 0)
                 {
                     newLocation = window.location.href.slice(0, window.location.href.indexOf("video")) + "/video";
+                    //newLocation = "https://larry.eng.uiowa.edu/asdfgh";
                 }
                 else if(path.indexOf("user") >= 0 || path.indexOf("group") >= 0)
                 {

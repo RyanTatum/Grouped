@@ -1,9 +1,10 @@
 // Place all the styles related to the sprints controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
-body {
+/*body {
   min-width: 520px;
-}
+}*/
+
 .poker_checkbox {
   padding-top: 15px;
 }
@@ -33,6 +34,7 @@ body {
 }
 .portlet {
   margin: 0 1em 1em 0;
+  //margin: .8em;
   padding: 0.3em;
 }
 .portlet-header {
@@ -266,4 +268,249 @@ button#popup {
   font-family:'Raleway',sans-serif;
   font-size:18px;
   cursor:pointer
+}
+
+//---------------------------------------------------------------------------------------
+.my_sprint_container{
+  display: inline-block;
+  width: 90%;
+  background-color: #e3e3e3;
+  margin: auto;
+  height: 92%;
+  
+}
+
+.hundredPercent{
+  width: 100%;
+  height: 100%;
+  clip: auto;
+  position: absolute;
+  overflow: hidden;
+}
+
+.my_col_header {
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+  height: 100%;
+  overflow: auto;
+}
+.my_column_container
+{
+   width:100%; 
+}
+.my_column {
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+  min-height: 20em;
+  //padding-bottom:100px;
+  //height: 100%;
+  //background-color: white;
+}
+
+.board {
+  position:relative;
+  width: 99%;
+  height: 78%;
+  margin: auto;
+  background-color: #ADA7A7;
+  bottom: 0;
+  overflow: auto;
+}
+
+.board_header {
+  position:relative;
+  width: 99%;
+  margin: auto;
+  height: 7%;
+  background: linear-gradient(#BF0000, #DA0303, #BF0000);
+  board: solid black
+}
+
+.my_title {
+  font-size: 2.2em;
+  color: white;
+  height: 100%;
+}
+
+.sprintBar{
+  width:100%;
+  height: 3em;
+  line-height: 3em;
+  //background-color:black;
+  background: linear-gradient(#474747, #8C8C8C, #474747);
+  text-align:left;
+}
+
+.featureBar{
+  width:100%;
+  height: 3em;
+  line-height: 3em;
+  background-color: green; 
+  text-align:left;
+}
+
+.bar_title{
+  display: inline-block;
+  font-size: 2.2em;
+  color: white;
+  margin-left: 10px;
+  cursor:pointer;
+}
+.bar_add_button{
+  display: inline-block;
+  font-size: 1em;
+  color: white;
+  margin-left: 1em;
+  cursor:pointer;
+}
+
+.toggle_sprint{
+    display: inline-block;
+    font-weight: bold;
+    color: white;
+    margin-left: 1em;
+    font-size: 2em;
+    cursor:pointer;
+}
+
+.toggle_feature{
+    display: inline-block;
+    font-weight: bold;
+    color: white;
+    margin-left: 1em;
+    font-size: 2em;
+    cursor:pointer;
+}
+
+.task_container{
+  display: inline-block;
+  position: relative;
+  height: 17em;
+  //margin: .8em;
+  width: 85%;
+  background-color:white;
+  margin-top:.8em;
+  margin-bottom:.8em;
+}
+.task_header{
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  height: 2em;
+  line-height: 2em;
+  top:0;
+  left:0;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.3em;
+  cursor:pointer;
+  background-color:red;
+  
+}
+.task_description{
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  text-align: left;
+  height: 12.5em;
+  padding: .6em;
+  background-color:green;
+  //overflow:auto;
+  
+}
+.task_footer{
+  display: inline-block;
+  position: absolute;
+  width: 100%;
+  height: 2em;
+  line-height: 2em;
+  left:0;
+  bottom:0;
+  background-color:blue;
+}
+
+.task_hours{
+  display: inline-block;
+  position: relative;
+  font-weight: bold;
+  margin-right: 1em;
+  float:right;
+}
+
+.task_worker{
+  display: inline-block;
+  position: relative;
+  font-weight: bold;
+  float:left;
+  margin-left: 1em;
+}
+
+#tname {
+  width:100%;
+  margin-bottom: 1em;
+  padding:10px;
+  font-size:16px;
+  font-family:raleway
+}
+#tdescription{
+  width:100%;
+  margin-bottom: 1em;
+  padding:10px;
+  font-size:16px;
+  font-family:raleway
+}
+#editTaskPopup {
+  width:100%;
+  height:100%;
+  opacity:.95;
+  top:0;
+  left:0;
+  display:none;
+  position:fixed;
+  background-color:#313131;
+  overflow:auto
+}
+#edittaskname{
+  width:100%;
+  margin-bottom: 1em;
+  padding:10px;
+  font-size:16px;
+  font-family:raleway
+}
+#edittaskdescription{
+  width:100%;
+  margin-bottom: 1em;
+  padding:10px;
+  font-size:16px;
+  font-family:raleway
+}
+#updatetask{
+  text-decoration:none;
+  width:100%;
+  text-align:center;
+  display:block;
+  background-color:#FFBC00;
+  color:#fff;
+  border:1px solid #FFCB00;
+  padding:10px 0;
+  font-size:20px;
+  cursor:pointer;
+  margin-top: 1em;
+  border-radius:5px
+}
+#deletetask {
+  text-decoration:none;
+  width:100%;
+  text-align:center;
+  display:block;
+  background-color:#FFBC00;
+  color:#fff;
+  border:1px solid #FFCB00;
+  padding:10px 0;
+  font-size:20px;
+  cursor:pointer;
+  border-radius:5px;
+  margin-top: 1em;
 }
