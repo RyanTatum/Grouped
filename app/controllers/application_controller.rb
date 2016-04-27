@@ -43,12 +43,20 @@ class ApplicationController < ActionController::Base
         redirect_to users_path
       end
     end
+<<<<<<< HEAD
     
     if session[:current_user] 
       @user_info = @client.query("User_Info").eq("user_objectId", session[:current_user]["objectId"]).get.first
       @groups = @client.query("User_Group").tap do |q|
           q.eq("user_info_ptr", Parse::Pointer.new({"className" => "User_Info","objectId"  =>  @user_info["objectId"]}))
           q.include = "group_ptr,user_info_ptr"
+=======
+    @current_user=User.find_by_id(1)
+    @user_info = @client.query("User_Info").eq("user_objectId", session[:current_user]["objectId"]).get.first
+    @groups = @client.query("User_Group").tap do |q|
+        q.eq("user_info_ptr", Parse::Pointer.new({"className" => "User_Info","objectId"  =>  @user_info["objectId"]}))
+        q.include = "group_ptr,user_info_ptr"
+>>>>>>> Ryan
       end.get
       if !session[:current_user]["current_groupId"] || session[:current_user]["current_groupId"] == ""
         puts "*************"

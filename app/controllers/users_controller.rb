@@ -3,14 +3,19 @@ class UsersController < ApplicationController
     #before_filter :set_current_user
     before_filter :set_client
     before_filter :set_cache_headers
-    before_filter :set_current_user, :only => ['show', 'edit', 'update', 'delete']
+    before_filter :set_current_user, :only => ['show', 'edit', 'update', 'delete', 'index']
     
-    def index
+    def new
         expires_now
         if session[:current_user]
             flash[:notice]="You are already logged in!"
             redirect_to home_index_path
         end
+    end
+    
+    def index
+      @users = User.where.not("id = ?", @current_user.id).order("created_at DESC")
+      @conversations = Conversation.involving(@current_user).order("created_at DESC")
     end
     
     def show
@@ -110,6 +115,9 @@ class UsersController < ApplicationController
                 flash[:notice]="Error: " + e.error + "!"
             end
             if @no_error
+                params_hash = {:name => params["fname"]+" "+params[:user]["lname"], :user_id => params["fname"]+" "+params["lname"], :email => params["email"]} 
+                @chatuser = User.new(params_hash)
+                @chatuser.save
                 UserMailer.welcome_email(params["email"], params["fname"]).deliver_now
                 flash[:notice]="You have successfully registered a new account!"
                 @userquery = @client.query("_User").eq("username", params["email"]).get.first
