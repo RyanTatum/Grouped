@@ -793,14 +793,14 @@ function loadNewSprint(addSprint)
             if(window.sprints[i].get("start_date") > addSprint.get("start_date") || (i == window.sprints.length - 1))
             {
                 var sprint_html = '<div class = "sprintBar" id=' + addSprint.id + '>\
-                                        <div id=' + addSprint.id + ' class= "toggle_sprint" onclick="toggleSprint(this.id)">-</div>\
-                                        <div class= "bar_title">' + addSprint.get("name") + '</div>\
-                                        <div id=' + addSprint.id + ' class= "bar_add_button" onclick="div_abc_show(this.id);">Add Feature</div>\
-                                  </div>';
+                                    <div id=' + addSprint.id + ' class= "toggle_sprint" onclick="toggleSprint(this.id)">-</div>\
+                                    <div id=' + addSprint.id + ' class="bar_title" onclick="sprintTitleClick(this.id)">' + addSprint.get("name") + '</div>\
+                                    <div id=' + addSprint.id + ' class= "bar_add_button" onclick="div_abc_show(this.id);">Add Feature</div>\
+                              </div>';
                 
                 if(i == window.sprints.length - 1 && !(window.sprints[i].get("start_date") > addSprint.get("start_date")))
                 {
-                    $('.board div:last-child').append(sprint_html);
+                    $('.board').append(sprint_html);
                     return;
                 }
                 else
