@@ -92,7 +92,7 @@ $(document).ready(function() {
             var id = window.current_edit_item.id;
             var feature_ptr = window.current_edit_item.get("feature_ptr").id;
             var current_worker= $('#edittaskworker').val();
-            var column = window.current_edit_item.get("current_column");
+            var column = parseInt($('#edit_task_col').val());
             var title = $('#edittaskname').val();
             var description = $('#edittaskdescription').val();
             var totalHours = parseInt($('#edittaskhours').val());
@@ -911,6 +911,12 @@ function reloadFeature(item)
 }
 function reloadTask(item)
 {
+    if(window.old_column != item.get("current_column"))
+    {
+        removeItem(item.id);
+        loadNewTask(item);
+        return;
+    }
     var name = item.get("Title");
     var description = item.get("description");
     if(description == undefined || description == null || description == "")
@@ -1166,7 +1172,9 @@ function div_ef_hide(){
 function div_et_show(item) {
     $('#edittaskname').val(item.get("Title"));
     $('#edittaskdescription').val(item.get('description'));
-    $('#edittaskhours').val(item.get('total_hours'));
+    $('#edittaskhours').val(item.get('total_hours'))
+    $('#edit_task_col').val(item.get('current_column'));
+    window.old_column = item.get('current_column');
     if(item.get("current_worker") != undefined)
     {
         $('#edittaskworker').val(item.get("current_worker").id);
