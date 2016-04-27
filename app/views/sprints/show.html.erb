@@ -1,3 +1,4 @@
+<html class = "hundredPercent">
 <body class = "hundredPercent">
     <div id= 'sprints_page' hidden></div>
     <%= javascript_tag do %>
@@ -7,10 +8,8 @@
         window.current_user_lname = '<%= @user_info["last_name"] %>';
         window.number_of_columns = <%= @columns.length %>;
     <% end %>
-    <div class= "center_wrapper hundredPercent">
-      <div class = "my_sprint_container">
-        <h2 class = "title">Sprint Board</h2>
-        <hr>
+    <div class= "main" style="height:100%;">
+      <div class = "center_wrapper" style="height:100%;">
         <div id="createSprint" onclick= "div_sp_show()">New Sprint</div>
         <%@colWidth = (100 / @columns.length) - 1%>
           <!--<div class= "board_header">
@@ -21,15 +20,13 @@
             <%end %>
           </div>-->
           <div class= "board">
-            
-          <div class= "board_header">
-            <%@columns.each do |col| %>
-                <div class= "my_col_header" style = "min-width: 200px;width:<%=@colWidth%>%;">
-                  <div class='my_title'><%=col%></div>
-                </div>
-            <%end %>
-          </div>
-            
+            <div class= "board_header">
+              <%@columns.each do |col| %>
+                  <div class= "my_col_header" style = "min-width: 200px;width:<%=@colWidth%>%;">
+                    <div class='my_title'><%=col%></div>
+                  </div>
+              <%end %>
+            </div>
           </div>
           
           
@@ -196,3 +193,4 @@
       </div>
   </div>
 </body>
+</html>
