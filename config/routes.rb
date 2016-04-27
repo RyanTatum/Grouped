@@ -61,8 +61,13 @@ Rails.application.routes.draw do
   resources :users
   resources :groups
   resources :calendars
+  match '/video', to: 'videos#show', via: :get
   match '/status', to: 'users#status', via: :post
   match '/status', to: 'users#status', via: :get
   match '/password_reset/', to: 'users#password', via: :post
-  root 'users#index'
+  root 'users#new'
+  
+  resources :conversations do
+    resources :messages
+  end
 end

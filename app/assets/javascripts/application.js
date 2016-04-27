@@ -14,6 +14,9 @@
 //= require jquery-ui
 //= require jquery.turbolinks
 //= require jquery_ujs
+//= require private_pub
+//= require chat
+//= require conference
 //= require turbolinks
 //= require_tree .
 //= require_self

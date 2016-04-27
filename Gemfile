@@ -11,7 +11,8 @@ gem 'uglifier', '>= 1.3.0'
 gem 'coffee-rails', '~> 4.1.0'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
-
+gem 'private_pub'
+gem 'thin'
 # Use jquery as the JavaScript library
 gem 'jquery-rails', "~> 4.1.0"
 gem 'jquery-ui-rails'
@@ -23,7 +24,6 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
-gem 'factory_girl_rails'
 gem 'bootstrap-sass', '~> 3.2.0'
 gem 'simplecov', :require => false
 gem 'mailgun-ruby', '~>1.0.2', require: 'mailgun'
@@ -55,3 +55,7 @@ group :development do
   gem 'spring'
 end
 
+group :production do
+  gem 'pg' # for Heroku deployment
+  gem 'rails_12factor'
+end

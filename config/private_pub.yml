@@ -1,0 +1,10 @@
+development:
+  server: "https://ramfayeserver.herokuapp.com/faye"
+  secret_token: "batkaro"
+test:
+  server: "https://ramfayeserver.herokuapp.com/faye"
+  secret_token: "batkaro"
+production:
+  server: "https://ramfayeserver.herokuapp.com/faye"
+  secret_token: "batkaro"
+  signature_expiration: 3600 # one hour
