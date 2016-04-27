@@ -115,6 +115,9 @@ class UsersController < ApplicationController
                 flash[:notice]="Error: " + e.error + "!"
             end
             if @no_error
+                params_hash = {:name => params["fname"]+" "+params[:user]["lname"], :user_id => params["fname"]+" "+params["lname"], :email => params["email"]} 
+                @chatuser = User.new(params_hash)
+                @chatuser.save
                 UserMailer.welcome_email(params["email"], params["fname"]).deliver_now
                 flash[:notice]="You have successfully registered a new account!"
                 @userquery = @client.query("_User").eq("username", params["email"]).get.first
