@@ -781,8 +781,8 @@ function loadTasks()
             }
             var task_html = '<div id=' + id + ' class="task_container">\
                                 <div id=' + window.tasks[i].id +' class ="task_header handler" onclick="taskTitleClick(this.id)">' + name + '</div>\
-                                <div class ="task_description handler">' + description + '</div>\
-                                <div class ="task_footer handler">\
+                                <div id=' + window.tasks[i].id +' class ="task_description handler">' + description + '</div>\
+                                <div id=' + window.tasks[i].id +' class ="task_footer handler">\
                                     <div id=' + window.tasks[i].id +' class = "task_worker">' + worker + '</div>\
                                     <div id=' + window.tasks[i].id +' class = "task_hours">Hrs: ' + hours + '</div>\
                                 </div>\

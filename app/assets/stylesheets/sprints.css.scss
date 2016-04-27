@@ -422,6 +422,7 @@ button#popup {
   font-size: 1.3em;
   cursor:pointer;
   background-color:#D9D9D9;
+  overflow:hidden;
   
 }
 .task_description{
@@ -432,7 +433,7 @@ button#popup {
   height: 8.5em;
   padding: .6em;
   background-color:white;
-  //overflow:auto;
+  overflow:hidden;
   
 }
 .task_footer{
@@ -444,6 +445,7 @@ button#popup {
   left:0;
   bottom:0;
   background-color: #D9D9D9;
+  overflow:hidden;
 }
 
 .task_hours{
