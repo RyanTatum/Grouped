@@ -184,8 +184,8 @@
                 <input class="taskhours" type="number" id ="edittaskhours" name="hours" required><br>
                 Column:<br>
                 <select name="column" id="edit_task_col" class="form-control">  
-                  <% for i in 1..@columns.length%>
-                    <option value= '<%= i%>'><%=i%></option>
+                  <%for i in 1..@columns.length%>
+                    <option value= '<%= i%>'><%=@columns[i-1]%></option>
                   <%end%>
                 </select>
                 <input type="button" name="submit" id="updatetask" value="submit"/>
