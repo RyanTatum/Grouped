@@ -692,7 +692,7 @@ function loadSprints()
                               </div>';
             if($('.board').children() == [])
             {
-                $('.board div:last-child').append(sprint_html);
+                $('.board').append(sprint_html);
             }
             else
             {
@@ -705,7 +705,7 @@ function loadSprints()
                               </div>';
             if($('.board').children() == [])
             {
-                $('.board div:last-child').append(add_sprint_html);
+                $('.board').append(add_sprint_html);
             }
             else
             {
@@ -812,7 +812,8 @@ function loadNewSprint(addSprint)
                 
                 if(i == window.sprints.length - 1 && !(window.sprints[i].get("start_date") > addSprint.get("start_date")))
                 {
-                    $('.board').append(sprint_html);
+                    //$('.board').append(sprint_html);
+                    $(sprint_html).insertBefore('#addSprint.sprintBar');
                     return;
                 }
                 else
