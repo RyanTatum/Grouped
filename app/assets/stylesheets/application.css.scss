@@ -48,17 +48,19 @@ body {
 
 .nav_tab:active{
     color:white;
-    background: linear-gradient(#000080,#0000CD, #000080);
+    background: #007ac7;
+    //background: linear-gradient(#000080,#0000CD, #000080);
     text-decoration: none;
 }
 .nav_tab_active{
     color:white;
-    background: linear-gradient(#000080,#0000CD, #000080);
+    background: #007ac7;
+    //background: linear-gradient(#000080,#0000CD, #000080);
     text-decoration: none;
 }
 
 #nav_btns:hover{
-    background-color: black;
+    background-color: #565656;
 }
 
 #blue_grad{
@@ -67,7 +69,8 @@ body {
 }
 
 #grey_grad{
-    background: linear-gradient(#474747, #8C8C8C, #474747);
+    background: #A9A9A9;
+    //background: linear-gradient(#474747, #8C8C8C, #474747);
     border-radius: 0px;
     margin-bottom: 0px;
 }
@@ -89,12 +92,12 @@ body {
 }
 
 .nav > li > a:hover, .dropdown-menu > li > a:focus {
-            background-color:black;
+    background-color:black;
 }
  
 .nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
-    //background-color: black;
-    background: linear-gradient(#000080,#0000CD, #000080);
+    //background: black;
+    //background: linear-gradient(#000080,#0000CD, #000080);
     border-color: none;
 }
 

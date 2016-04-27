@@ -699,6 +699,18 @@ function loadSprints()
                 $('.board').append(sprint_html);
             }
         }
+        var add_sprint_html = '<div class = "sprintBar" id="addSprint">\
+                                    <div class= "toggle_sprint" onclick="div_sp_show()">+</div>\
+                                    <div id="add_sprint_title"class="bar_title" onclick="div_sp_show()">Add New Sprint</div>\
+                              </div>';
+            if($('.board').children() == [])
+            {
+                $('.board div:last-child').append(add_sprint_html);
+            }
+            else
+            {
+                $('.board').append(add_sprint_html);
+            }
         getFeatures(loadFeatures);
     }
 }
@@ -1029,7 +1041,6 @@ function toggleSprint(id)
     {
         $('[name=' + id + ']').hide();
         item.text("+");
-        
     }
     else
     {
@@ -1052,7 +1063,6 @@ function toggleFeature(id)
             $('#column' + i + 'feature' + id).hide();
         }
         item.text("+");
-        
     }
     else
     {
