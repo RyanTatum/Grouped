@@ -1,0 +1,23 @@
+// Place all the styles related to the video controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+.videoWrapper {
+	position: relative;
+	padding-bottom: 70%; /* 16:9 */
+	margin-bottom: 5em;
+	padding-top: 25px;
+	height: 50%;
+}
+.videoWrapper iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	margin-bottom: 5em;
+	width: 100%;
+	height: 70%;
+}
+
+.videoContainer {
+	height: 80%;
+}

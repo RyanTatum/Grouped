@@ -1,0 +1,20 @@
+
+<!doctype html>
+<html lang="en">
+    <head>
+        <script>
+        $(document).on('page:load', function() {
+            var myURL = 'https://larry.eng.uiowa.edu/'+ '<%= session[:current_user]["current_groupId"]%>';
+            document.getElementById('videoFrame').src = myURL;  
+        });
+        </script>
+    </head>
+    <body>
+        <%= javascript_tag do %>
+            window.selected_group_id = '<%= session[:current_user]["current_groupId"]%>';
+        <% end %>
+        <div class="videoWrapper">
+        <iframe id="videoFrame" src="https://larry.eng.uiowa.edu/" name="iframe_a"></iframe>
+        </div>
+    </body>
+</html>

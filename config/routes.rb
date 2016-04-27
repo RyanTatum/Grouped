@@ -61,6 +61,7 @@ Rails.application.routes.draw do
   resources :users
   resources :groups
   resources :poker
+  resources :video
   match '/vote', to: 'poker#vote', via: :post
   match '/comment', to: 'poker#comment', via: :post
   match '/submitVote', to: 'poker#submitVote', via: :post
