@@ -1053,6 +1053,11 @@ function toggleSprint(id)
     {
         $('[name=' + id + ']').show();
         item.text("-");
+        var featureAttributes = $('.featureBar[name="' + id + '"]');
+        for(var i=0; i < featureAttributes.length; i++)
+        {
+            toggleFeature(featureAttributes[i].id);
+        }
     }
 }
 
