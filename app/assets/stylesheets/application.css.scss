@@ -218,7 +218,26 @@ body {
     transform: rotate(360deg);
   }
 }
-@media (max-width: 1231px) {
+@media (min-width: 1090px) and (max-width: 1231px) {
+    .main{
+        width: 1087px;
+        margin-left:auto;
+        margin-right:auto;
+    }
+    .navbar{
+        width: 1087px;
+        margin-left:auto;
+        margin-right:auto;
+    }
+    body{
+        padding:0;
+        text-align:center;
+    }
+}
+@media (max-width: 1090px) {
+    body{
+        padding:0;
+    }
     .navbar-header {
         float: none;
     }
