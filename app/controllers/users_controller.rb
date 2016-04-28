@@ -14,8 +14,8 @@ class UsersController < ApplicationController
     end
     
     def index
-      @users = User.where.not("id = ?", @current_user.id).order("created_at DESC")
-      @conversations = Conversation.involving(@current_user).order("created_at DESC")
+       @users = User.where.not("id = ?",@current_user.id).order("created_at DESC")
+       @conversations = Conversation.involving(@current_user).order("created_at DESC")
     end
     
     def show
@@ -115,7 +115,7 @@ class UsersController < ApplicationController
                 flash[:notice]="Error: " + e.error + "!"
             end
             if @no_error
-                params_hash = {:name => params["fname"]+" "+params[:user]["lname"], :user_id => params["fname"]+" "+params["lname"], :email => params["email"]} 
+                params_hash = {:name => params["fname"]+" "+params["lname"], :user_id => params["fname"]+" "+params["lname"], :email => params["email"]} 
                 @chatuser = User.new(params_hash)
                 @chatuser.save
                 UserMailer.welcome_email(params["email"], params["fname"]).deliver_now

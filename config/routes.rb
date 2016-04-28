@@ -62,21 +62,17 @@ Rails.application.routes.draw do
   resources :groups
   resources :poker
   resources :video
+  resources :calendars
   match '/vote', to: 'poker#vote', via: :post
   match '/comment', to: 'poker#comment', via: :post
   match '/submitVote', to: 'poker#submitVote', via: :post
-  resources :calendars
-<<<<<<< HEAD
   match '/group_change', to: 'home#group_change', via: :post
   match '/group_change', to: 'home#group_change', via: :get
-=======
-  match '/video', to: 'videos#show', via: :get
->>>>>>> Ryan
   match '/status', to: 'users#status', via: :post
   match '/status', to: 'users#status', via: :get
   match '/password_reset/', to: 'users#password', via: :post
+  match '/chat', to: 'users#index', via: :get
   root 'users#new'
-  
   resources :conversations do
     resources :messages
   end
