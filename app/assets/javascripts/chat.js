@@ -51,7 +51,7 @@ var ready = function () {
 
                 if ($("#chatbox_" + chatbox_id).css('display') != 'none') {
                     if (align == 0) {
-                        $("#chatbox_" + chatbox_id).css('right', '20px');
+                        $("#chatbox_" + chatbox_id).css('right', '8%');
                     } else {
                         width = (align) * (280 + 7) + 20;
                         $("#chatbox_" + chatbox_id).css('right', width + 'px');
@@ -84,7 +84,7 @@ var ready = function () {
                 return;
             }
 
-            $("body").append('<div id="chatbox_' + conversation_id + '" class="chatbox"></div>');
+            $(".main").append('<div id="chatbox_' + conversation_id + '" class="chatbox"></div>');
             $.get("/conversations/" + conversation_id, function (data) {
                 $('#chatbox_' + conversation_id).html(data);
                 $("#chatbox_" + conversation_id + " .chatboxcontent").scrollTop($("#chatbox_" + conversation_id + " .chatboxcontent")[0].scrollHeight);
@@ -101,7 +101,7 @@ var ready = function () {
             }
 
             if (chatBoxeslength == 0) {
-                $("#chatbox_" + conversation_id).css('right', '20px');
+                $("#chatbox_" + conversation_id).css('right', '8%');
             } else {
                 width = (chatBoxeslength) * (280 + 7) + 20;
                 $("#chatbox_" + conversation_id).css('right', width + 'px');
