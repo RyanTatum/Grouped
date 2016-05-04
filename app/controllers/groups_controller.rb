@@ -14,7 +14,8 @@ class GroupsController < ApplicationController
       
         new_group = @client.object("Group")
         new_group["name"] = "New Group"
-        new_group["group_count"] = 5
+        #new_group["group_count"] = 5
+        new_group["star_count"] = 5
         group_result = new_group.save
         
         new_user_group = @client.object("User_Group")

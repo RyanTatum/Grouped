@@ -52,7 +52,7 @@ class PokerController < ApplicationController
         
         if !@features || @features == []
             flash[:notice] = "The selected group has no features to poker"
-           #redirect_to user_path
+           redirect_to sprints_path
            #return
         end
         
