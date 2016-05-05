@@ -51,9 +51,9 @@ var ready = function () {
 
                 if ($("#chatbox_" + chatbox_id).css('display') != 'none') {
                     if (align == 0) {
-                        $("#chatbox_" + chatbox_id).css('right', '20px');
+                        $("#chatbox_" + chatbox_id).css('right', '85px');
                     } else {
-                        width = (align) * (280 + 7) + 20;
+                        width = (align) * (280 + 7) + 85;
                         $("#chatbox_" + chatbox_id).css('right', width + 'px');
                     }
                     align++;
@@ -101,9 +101,9 @@ var ready = function () {
             }
 
             if (chatBoxeslength == 0) {
-                $("#chatbox_" + conversation_id).css('right', '20px');
+                $("#chatbox_" + conversation_id).css('right', '85px');
             } else {
-                width = (chatBoxeslength) * (280 + 7) + 20;
+                width = (chatBoxeslength) * (280 + 7) + 85;
                 $("#chatbox_" + conversation_id).css('right', width + 'px');
             }
 
