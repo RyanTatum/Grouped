@@ -37,10 +37,10 @@
           <li><a id = "nav_btns" class = "nav_tab <%='nav_tab_active' if request.fullpath.include? 'users/' %>" href = <%=user_path(session[:current_user]["objectId"])%> style = "color: white">Overview</a></li>
           <li><a id = "nav_btns" class = "nav_tab <%='nav_tab_active' if request.fullpath.include? 'sprints' %>" href = "/sprints" style = "color: white">Breakdown</a></li>
           <li><a id = "nav_btns" class = "nav_tab <%='nav_tab_active' if request.fullpath.include? 'poker' %>" href = "/poker" style = "color: white">Poker</a></li>
-          <li><a id = "nav_btns" class = "nav_tab <%='nav_tab_active' if request.fullpath.include? 'chat' %>" href = "/users" style = "color: white">Chat</a></li>
+          <li><a id = "nav_btns" class = "nav_tab <%='nav_tab_active' if request.fullpath.include? 'chat' %>" href = "/chat" style = "color: white">Chat</a></li>
           <li><a id = "nav_btns" class = "nav_tab <%='nav_tab_active' if request.fullpath.include? 'video' %>" href = "/video" style = "color: white">Video Chat</a></li>
           <li><a id = "nav_btns" class = "nav_tab <%='nav_tab_active' if request.fullpath.include? 'mycalendar' %>" href = "/mycalendar" style = "color: white">My Calendar</a></li>
-          <li><a id = "nav_btns" class = "nav_tab <%='nav_tab_active' if request.fullpath.include? 'groupcalendar' %>" href = "/calendars/<%=session[:current_user]['current_groupId']%>" style = "color: white">Group Calendar</a></li>
+          <li><a id = "nav_btns" class = "nav_tab <%='nav_tab_active' if request.fullpath.include? 'calendars' %>" href = "/calendars/<%=session[:current_user]['current_groupId']%>" style = "color: white">Group Calendar</a></li>
         <% end %>
       </ul>
       <ul class="nav navbar-nav navbar-right">

@@ -54,7 +54,7 @@ $(document).ready(function() {
                 }
                 else if(path.indexOf("chat") >= 0)
                 {
-                    newLocation = window.location.href.slice(0, window.location.href.indexOf("chat")) + "/chat";
+                    newLocation = window.location.href.slice(0, window.location.href.indexOf("chat")) + "chat";
                 }
                 else if(path.indexOf("video") >= 0)
                 {
@@ -68,7 +68,7 @@ $(document).ready(function() {
                 {
                     newLocation = window.location.href.slice(0, window.location.href.indexOf("calendars")) + "/calendars/" + selected;
                 }
-                else if(path.indexOf("user") >= 0 || path.indexOf("group") >= 0)
+                else if(path.indexOf("users/") >= 0 || path.indexOf("group") >= 0)
                 {
                     newLocation = window.location.href;
                     $('.loading').remove();
