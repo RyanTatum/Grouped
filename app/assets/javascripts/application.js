@@ -25,12 +25,6 @@
 
 $(document).ready(function() {
     $('.loading').remove();
-    
-    if(!document.getElementById("sprints_page"))
-    {
-        $(".hundredPercent").removeClass('hundredPercent');
-    }
-    
     $(".group_selection").click(function(){
         var selected = this.id;
         var path = this.name;
