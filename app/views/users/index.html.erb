@@ -39,6 +39,7 @@
             <% if @conversations.any? %>
                 <ul class="media-list">
                   <% @conversations.each do |conversation| %>
+                      <a class="conversation" data-cid= <%=conversation.id%> href= "conversations/<%=conversation.id%>">
                       <li class="media">
                         <%= image_tag("http://placehold.it/50x50", class: "media-object pull-left") %>
                         <div class="media-body">
@@ -47,6 +48,7 @@
                               <p id = "lastMessage"><%= conversation.messages.last.nil? ? "No messages" : truncate(conversation.messages.last.body, length: 45) %></p>
                         </div>
                       </li>
+                      </a>
                   <% end %>
                 </ul>
             <% else %>
