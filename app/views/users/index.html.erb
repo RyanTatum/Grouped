@@ -32,10 +32,10 @@
             </div>
       
           </div>
-          <hr>
-          <h3>Your Conversations</h3>
       
-          <div style="height: 400px; overflow-y: auto;">
+          <div id="conversations"style="height: 400px; overflow-y: auto;">
+            <h3>Your Conversations</h3>
+            <hr>
             <% if @conversations.any? %>
                 <ul class="media-list">
                   <% @conversations.each do |conversation| %>
@@ -44,10 +44,9 @@
                         <div class="media-body">
                           <%= link_to "", conversation_path(conversation), class: "conversation", "data-cid" => conversation.id %>
                               <h4 class="media-heading"><%= conversation_interlocutor(conversation).name %></h4>
-                              <p><%= conversation.messages.last.nil? ? "No messages" : truncate(conversation.messages.last.body, length: 45) %></p>
+                              <p id = "lastMessage"><%= conversation.messages.last.nil? ? "No messages" : truncate(conversation.messages.last.body, length: 45) %></p>
                         </div>
                       </li>
-      
                   <% end %>
                 </ul>
             <% else %>

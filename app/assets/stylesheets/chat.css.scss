@@ -185,8 +185,16 @@
     display: block;
     float:right;
 }
-
 .main {
     height: 100%;
     padding-top: 1%;
+}
+.panel-default {
+    margin: 1.5%;
+}
+#conversations {
+    margin: 1.5%;
+}
+#lastMessage {
+    text-align: left;
 }
