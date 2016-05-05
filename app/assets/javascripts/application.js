@@ -33,7 +33,7 @@ $(document).ready(function() {
             url: '/group_change',
             data: {groupId: selected, cur_path: path},
             type: 'post',
-            success: function(data) 
+            success: function() 
             {
                 $(".check_mark").hide();
                 $("#check" + selected).show();
@@ -54,7 +54,15 @@ $(document).ready(function() {
                 }
                 else if(path.indexOf("video") >= 0)
                 {
-                    newLocation = window.location.href.slice(0, window.location.href.indexOf("video")) + "video";
+                    newLocation = window.location.href.slice(0, window.location.href.indexOf("video")) + "/video";
+                }
+                else if(path.indexOf("mycalendar") >= 0)
+                {
+                    newLocation = window.location.href.slice(0, window.location.href.indexOf("mycalendar")) + "/mycalendar";
+                }
+                else if(path.indexOf("calendars") >= 0)
+                {
+                    newLocation = window.location.href.slice(0, window.location.href.indexOf("calendars")) + "/calendars/" + selected;
                 }
                 else if(path.indexOf("user") >= 0 || path.indexOf("group") >= 0)
                 {
