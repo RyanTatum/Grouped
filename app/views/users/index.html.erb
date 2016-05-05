@@ -24,15 +24,6 @@
                 </tr>
                 </thead>
                 <tbody>
-                <% @users.each_with_index do |user| %>
-                    <tr>
-                      <td><%= user.name %></td>
-                      <td>
-                        <%= link_to "Send Message", "#", class: "btn btn-success btn-xs start-conversation",
-                                    "data-sid" => @current_user.id, "data-rip" => user.id %>
-                      </td>
-                    </tr>
-                <% end %>
             <% end %>
       
                 </tbody>

@@ -20,9 +20,6 @@ class UsersController < ApplicationController
        end.get
        #@users =  User.where("email = ?", "bot@bot.com")
        @users = User.where("id = ?", 1)
-       #@user3 = User.where("id = ?", 3)
-       #@users = @user1 + @user2
-       #@users = @users + @user3
        @groupusers.each do |user|
          @users = @users + User.where("email = ?", user["user_info_ptr"]["email"])
        end
