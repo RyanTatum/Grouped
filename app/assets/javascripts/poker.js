@@ -118,7 +118,7 @@ $(document).ready(function() {
                     for(var i = number_of_comments; i < comment_list.length; i++)
                     {   
                         var img_src = "";
-                        if(comment_list[i].get("user_info_ptr").get("profile_picture")._url)
+                        if(comment_list[i].get("user_info_ptr").get("profile_picture") != undefined)
                         {
                             img_src = comment_list[i].get("user_info_ptr").get("profile_picture")._url
                             img_src = img_src.replace("http", "https");
