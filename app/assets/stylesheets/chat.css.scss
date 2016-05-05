@@ -157,6 +157,8 @@
 
 .chatboxoptions {
     float: right;
+    height: 20px;
+    width: 60px;
 }
 
 .chatboxoptions a {
@@ -167,4 +169,24 @@
 
 .chatboxtitle {
     float: left;
+}
+
+.toggleChatBox {
+    width: 60%;
+    height: 20px;
+    background: lightgrey;
+    display: inline-block;
+}
+
+.closeChat {
+    width: 15%;
+    height: 20px;
+    background: red;
+    display: block;
+    float:right;
+}
+
+.main {
+    height: 100%;
+    padding-top: 1%;
 }

@@ -7,3 +7,4 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 User.create(user_id: 'Bot', name: 'Bot', email: 'bot@bot.com')
 User.create(user_id: 'Ryan Tatum', name: 'Ryan Tatum', email: 'ryant9211@gmail.com')
+User.create(user_id: 'Blake Dunham', name: 'Blake Dunham', email: 'bdunham54@gmail.com')
