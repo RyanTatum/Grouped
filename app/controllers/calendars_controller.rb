@@ -44,9 +44,16 @@ class CalendarsController < ApplicationController
             end
           end
         end
+        
+        if @calendar["times"].class == NilClass
+          @calendar["times"] = Array.new(255, 0)
+        end
     end
     
     def edit
         @calendar = @client.query("User_Info").eq("user_objectId", session[:current_user]["objectId"]).get.first
+        if @calendar["times"].class == NilClass
+          @calendar["times"] = Array.new(255, 0)
+        end
     end
 end

@@ -1,18 +1,26 @@
-<html class = "hundredPercent">
-  <body class = "hundredPercent">
-    <div id= 'chat_page' hidden></div>
-    <div class="main"> 
-      <div class="row">
-        <div class="col-md-4">
-          <div style="height: 300px; overflow-y: auto;">
-            <div class="panel panel-default">
-              <div class="panel-heading">Group Members</div>
-              <table class="table">
-                <thead>
+<div id= 'chat_page' hidden></div>
+<div class="main"> 
+  <div class="row">
+    <div class="col-md-4">
+      <div style="height: 300px; overflow-y: auto;">
+        <div class="panel panel-default">
+          <div class="panel-heading">Group Members</div>
+          <table class="table">
+            <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <% @users.each do |user| %>
                 <tr>
-                  <th>#</th>
-                  <th>Name</th>
-                  <th></th>
+                  <td><%= user.name %></td>
+                  <td>
+                    <%= link_to "Send Message", "#", class: "btn btn-success btn-xs start-conversation",
+                                "data-sid" => @current_user.id, "data-rip" => user.id %>
+                  </td>
                 </tr>
                 </thead>
                 <tbody>
