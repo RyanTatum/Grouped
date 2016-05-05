@@ -72,6 +72,7 @@ Rails.application.routes.draw do
   match '/status', to: 'users#status', via: :get
   match '/password_reset/', to: 'users#password', via: :post
   match '/chat', to: 'users#index', via: :get
+  match '/mycalendar', to: 'calendars#edit', via: :get
   root 'users#new'
   resources :conversations do
     resources :messages

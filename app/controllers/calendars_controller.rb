@@ -25,5 +25,28 @@ class CalendarsController < ApplicationController
     
     def show
         @calendar = @client.query("User_Info").eq("user_objectId", session[:current_user]["objectId"]).get.first
+        @group_id = params[:id]
+        @group_record = @client.query("Group").eq("objectId", @group_id).get.first
+        
+        @user_info = @client.query("User_Info").eq("user_objectId", session[:current_user]["objectId"]).get.first
+        
+        @users = @client.query("User_Group").tap do |q|
+          q.eq("group_ptr", Parse::Pointer.new({"className" => "Group","objectId"  =>  @group_id.to_s}))
+          q.include = "group_ptr,user_info_ptr"
+        end.get
+        
+        @users.each do |i|
+          if i["user_info_ptr"]["objectId"] == @user_info["objectId"]
+            if i["permissions"] == "group_admin"
+              @permissions = true;
+            else
+              @permissions = false;
+            end
+          end
+        end
+    end
+    
+    def edit
+        @calendar = @client.query("User_Info").eq("user_objectId", session[:current_user]["objectId"]).get.first
     end
 end
