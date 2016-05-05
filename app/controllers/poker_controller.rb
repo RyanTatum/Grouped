@@ -17,7 +17,7 @@ class PokerController < ApplicationController
                 q.include = "group_ptr,sprint_ptr,owner_ptr"  
             end.get.first
             if @feature
-                @feature["difficulty"] = @diff.to_i
+                @feature["difficulty"] = @diff.to_s
                 @feature.save
             end
             redirect_to poker_path(@feature_id)
