@@ -14,7 +14,18 @@ class UsersController < ApplicationController
     end
     
     def index
-       @users = User.where.not("id = ?",@current_user.id).order("created_at DESC")
+       @groupusers = @client.query("User_Group").tap do |q|
+          q.eq("group_ptr", Parse::Pointer.new({"className" => "Group","objectId"  =>  session[:current_user]['current_groupId']}))
+          q.include = "group_ptr,user_info_ptr"
+       end.get
+       #@users =  User.where("email = ?", "bot@bot.com")
+       @users = User.where("id = ?", 1)
+       #@user3 = User.where("id = ?", 3)
+       #@users = @user1 + @user2
+       #@users = @users + @user3
+       @groupusers.each do |user|
+         @users = @users + User.where("email = ?", user["user_info_ptr"]["email"])
+       end
        @conversations = Conversation.involving(@current_user).order("created_at DESC")
     end
     
