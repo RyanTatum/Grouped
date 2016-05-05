@@ -11,10 +11,10 @@
         <div class= "center_wrapper">
             <select class= "dropdown-poker">
                 <% @sprints.each do |s|%>
-                    <optgroup id = <%= s["objectId"]%> label= <%=s["name"]%>>
+                    <optgroup id = <%= s["objectId"]%> label= '<%=s["name"]%>'>
                         <% @features.each do |f|%>
                             <% if f["sprint_ptr"]["objectId"] == s["objectId"]%>
-                                <option id = <%= f["objectId"]%> value= <%= f["objectId"]%> <%=selected = "selected" if f["objectId"] == @feature_id%> <%=disabled = "disabled" if !f["use_poker"] %>><%= f["name"]%></option>
+                                <option id = <%= f["objectId"]%> value= <%= f["objectId"]%> <%=selected = "selected" if f["objectId"] == @feature_id%> <%=disabled = "disabled" if !f["use_poker"] %>> <%=f["name"]%></option>
                             <%end%>
                         <% end %>
                     </optgroup>
